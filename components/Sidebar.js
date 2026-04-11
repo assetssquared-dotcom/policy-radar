@@ -1,7 +1,16 @@
 import Link from 'next/link';
 import { COUNTRIES, MACRO_THEMES } from '../data/policies';
 
-export default function Sidebar({ activeCountry, activeTheme }) {
+const NAV_SECTIONS = [
+  { id: 'screener',  label: '수혜주 스크리너',    href: '/screener',  icon: '◈' },
+  { id: 'heatmap',   label: '정책 강도 히트맵',   href: '/heatmap',   icon: '▦' },
+  { id: 'calendar',  label: '정책 이벤트 캘린더', href: '/calendar',  icon: '◷' },
+  { id: 'macro',     label: '매크로 지표 연결',   href: '/macro',     icon: '↗' },
+  { id: 'risk',      label: '리스크 레이더',      href: '/risk',      icon: '⚠' },
+  { id: 'flow',      label: '정책 연결고리 맵',   href: '/flow',      icon: '⬡' },
+];
+
+export default function Sidebar({ activeCountry, activeTheme, activePage }) {
   return (
     <aside style={{
       width: 200,
@@ -85,6 +94,34 @@ export default function Sidebar({ activeCountry, activeTheme }) {
       </div>
 
       <div style={{ height: 1, background: 'var(--wire)', margin: '4px 0' }} />
+
+      {/* Tools */}
+      <div style={{ height: 1, background: 'var(--wire)', margin: '4px 0' }} />
+      <div style={{ padding: '10px 0' }}>
+        <div style={{
+          fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--t3)',
+          letterSpacing: '.1em', padding: '0 14px', marginBottom: 6,
+        }}>분석 도구</div>
+        {NAV_SECTIONS.map(item => {
+          const isOn = activePage === item.id;
+          return (
+            <Link key={item.id} href={item.href}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 9,
+                padding: '7px 14px', cursor: 'pointer',
+                background: isOn ? 'var(--s2)' : 'transparent',
+                borderLeft: isOn ? '2px solid var(--amber)' : '2px solid transparent',
+                transition: 'background .12s',
+              }}
+                onMouseEnter={e => { if (!isOn) e.currentTarget.style.background = 'var(--s2)'; }}
+                onMouseLeave={e => { if (!isOn) e.currentTarget.style.background = 'transparent'; }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: isOn ? 'var(--amber)' : 'var(--t3)', flexShrink: 0 }}>{item.icon}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: isOn ? 'var(--t1)' : 'var(--t2)' }}>{item.label}</span>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
 
       {/* Update info */}
       <div style={{ padding: '12px 14px', marginTop: 'auto' }}>
