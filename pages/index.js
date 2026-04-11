@@ -40,7 +40,7 @@ const FLOW_DATA = [
       {l:'AI 서비스 = 달러', s:'글로벌 AI 인프라 달러화', t:'effect'},
       {l:'디지털 달러 패권', s:'AI 시대의 기축통화', t:'outcome'},
     ],
-    bens:['코인베이스(COIN)','서클(USDC 발행사)','엔비디아(NVDA)','SK하이닉스(000660)'],
+    bens:['써클(CRCL)','코인베이스(COIN)','엔비디아(NVDA)','SK하이닉스(000660)'],
     risks:['e-CNY 국경간 결제 확산','EU MiCA 디지털유로 경쟁'] },
   { id:'hbm', title:'HBM 병목 — AI의 급소', color:'#c9a83a',
     steps:[
@@ -66,15 +66,15 @@ const FLOW_DATA = [
     risks:['유럽 자국 방산 육성(라인메탈 확장)','원화 강세 시 수익성 압박'] },
   { id:'tga', title:'재무부 TGA 방출 → 유동성 서프라이즈', color:'#3d9e6a',
     steps:[
-      {l:'부채한도 X-date', s:'2026년 5~6월 예상', t:'trigger'},
-      {l:'의회 협상 타결', s:'부채한도 유예 통과', t:'policy'},
-      {l:'TGA 잔고 급감', s:'수조 달러 시중 방출', t:'effect'},
-      {l:'역RRP 잔고 확인', s:'잔고 낮을수록 효과 대', t:'effect'},
+      {l:'OBBBA 부채한도 +5조$', s:'2025년 7월 서명·5조 달러 증액', t:'policy'},
+      {l:'TGA 잔고 1조$ 급증', s:'2025년 가을 급격한 유동성 흡수', t:'effect'},
+      {l:'TGA 지출 → 유동성 방출', s:'정부 지출로 시중 달러 증가', t:'effect'},
+      {l:'은행 준비금 증가', s:'역RRP 바닥난 상황이 관건', t:'effect'},
       {l:'위험자산 급등', s:'나스닥·BTC·신흥국', t:'outcome'},
       {l:'연준 대응 관찰', s:'추가 긴축 가능성 여부', t:'outcome'},
     ],
-    bens:['QQQ(나스닥)','비트코인(IBIT)','신흥국(EEM)','금(GLD)'],
-    risks:['연준 역레포 즉각 흡수','시장이 이미 선반영한 경우 효과 제한'] },
+    bens:['QQQ(나스닥)','비트코인(IBIT)','뱅크오브뉴욕멜론(BK)','신흥국(EEM)'],
+    risks:['TGA 리필로 반대로 유동성 흡수(2025년 가을 패턴)','연준 QT 동시 진행 시 상쇄'] },
 ];
 
 const TC = { trigger:'#b84a4a', threat:'#b84a4a', base:'#555', policy:'#4a7fd4', chokepoint:'#c9a83a', effect:'#3d9e6a', outcome:'#b8924a' };
@@ -86,8 +86,8 @@ const RISK_DATA = [
     desc:'2025년 10월 임시 합의로 관세율 하향 조정됐으나, 2026년 중간선거를 앞두고 트럼프의 강경 재선회 가능성. 중국의 대만 군사압박과 맞물리면 관세 전쟁 2라운드 돌입. 중국은 희귀광물 카드, 미국은 금융제재 카드를 동시에 보유.',
     affected:['반도체 공급망','한국 수출 기업','위안화·원화 동반 약세'],
     hedge:['금(GLD)','달러 인버스(UDN)','국내 방산주','에너지(XLE)'], color:'#b84a4a' },
-  { id:'tga_risk', lvl:5, title:'재무부 TGA 방출 → 유동성 서프라이즈', cat:'유동성', prob:'높음', impact:'대', time:'2026 Q2 (5~6월)',
-    desc:'부채한도 협상 타결 후 TGA(재무부 일반계정) 잔고 급감, 수조 달러 유동성이 시중에 방출. 2023년과 동일한 패턴. 유동성은 단기적으로 위험자산(나스닥·비트코인·신흥국) 급등 트리거. 연준의 대응 속도와 역RRP 잔고가 핵심 변수.',
+  { id:'tga_risk', lvl:4, title:'재무부 TGA 관리 → 유동성 양방향 리스크', cat:'유동성', prob:'높음', impact:'대', time:'2026 지속',
+    desc:'2025년 OBBBA로 부채한도 5조 달러 증액 후 TGA가 1조 달러까지 급증하며 가을 유동성 급격 흡수(은행 준비금 2% 감소). 이후 정부 지출로 다시 방출. 2026년에도 동일 사이클 반복 예상. TGA 증가=유동성 흡수, TGA 감소=유동성 방출. 역RRP 잔고 소진으로 완충재 없어 충격 직접 전달.',
     affected:['나스닥 성장주','비트코인·암호화폐','신흥국 ETF','금'],
     hedge:['현금 비중 유지 후 방출 시 매수','역RRP 잔고 주시'], color:'#3d9e6a' },
   { id:'boj', lvl:4, title:'BOJ 추가 금리 인상 → 엔 캐리 청산', cat:'통화', prob:'높음', impact:'대', time:'2026 상반기',
@@ -563,69 +563,63 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 섹션 이동 */}
+              {/* 섹션 네비 (국가 필터 통합) */}
               <div style={{padding:'10px 0'}}>
-                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',
-                  padding:'0 14px',marginBottom:4}}>섹션</div>
                 {SECS.map(s => {
                   const on = activeSection===s.id;
+                  const isPolicies = s.id==='policies';
                   return (
-                    <div key={s.id} onClick={()=>goTo(s.id)}
-                      style={{display:'flex',alignItems:'center',gap:8,padding:'8px 14px',
-                        cursor:'pointer',transition:'all .12s',
-                        background:on?'var(--s2)':'transparent',
-                        borderLeft:on?'2px solid var(--amber)':'2px solid transparent'}}
-                      onMouseEnter={e=>{if(!on)e.currentTarget.style.background='var(--s2)';}}
-                      onMouseLeave={e=>{if(!on)e.currentTarget.style.background='transparent';}}>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:10,
-                        color:on?'var(--amber)':'var(--t3)',width:14,flexShrink:0}}>
-                        {s.icon}
-                      </span>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                        color:on?'var(--t1)':'var(--t2)'}}>
-                        {s.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div style={{height:1,background:'var(--wire)',margin:'4px 0'}} />
-
-              {/* 국가 필터 */}
-              <div style={{padding:'10px 0'}}>
-                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',
-                  padding:'0 14px',marginBottom:4}}>국가 필터</div>
-                <div onClick={()=>{setFilterCountry(null);goTo('policies');}}
-                  style={{display:'flex',alignItems:'center',justifyContent:'space-between',
-                    padding:'7px 14px',cursor:'pointer',transition:'all .12s',
-                    background:!filterCountry?'var(--s2)':'transparent',
-                    borderLeft:!filterCountry?'2px solid var(--amber)':'2px solid transparent'}}
-                  onMouseEnter={e=>{if(filterCountry)e.currentTarget.style.background='var(--s2)';}}
-                  onMouseLeave={e=>{if(filterCountry)e.currentTarget.style.background='transparent';}}>
-                  <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                    color:!filterCountry?'var(--t1)':'var(--t2)'}}>전체</span>
-                  <span style={{fontFamily:'var(--font-mono)',fontSize:10,
-                    color:'var(--amber)'}}>{total}</span>
-                </div>
-                {countries.map(c => {
-                  const on = filterCountry===c.id;
-                  return (
-                    <div key={c.id}
-                      onClick={()=>{setFilterCountry(on?null:c.id);goTo('policies');}}
-                      style={{display:'flex',alignItems:'center',gap:8,padding:'7px 14px',
-                        cursor:'pointer',transition:'all .12s',
-                        background:on?'var(--s2)':'transparent',
-                        borderLeft:on?`2px solid ${c.color}`:'2px solid transparent'}}
-                      onMouseEnter={e=>{if(!on)e.currentTarget.style.background='var(--s2)';}}
-                      onMouseLeave={e=>{if(!on)e.currentTarget.style.background='transparent';}}>
-                      <span style={{fontSize:14,flexShrink:0}}>{c.flag}</span>
-                      <span style={{fontFamily:'var(--font-serif)',fontSize:13,
-                        color:'var(--t1)',flex:1}}>{c.name}</span>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:10,
-                        color:c.color}}>{c.policies.length}</span>
+                    <div key={s.id}>
+                      <div onClick={()=>goTo(s.id)}
+                        style={{display:'flex',alignItems:'center',gap:8,
+                          padding:'8px 14px',cursor:'pointer',transition:'all .12s',
+                          background:on&&!isPolicies?'var(--s2)':isPolicies&&!filterCountry&&on?'var(--s2)':'transparent',
+                          borderLeft:on&&!filterCountry?'2px solid var(--amber)':'2px solid transparent'}}
+                        onMouseEnter={e=>{if(!(on&&!filterCountry))e.currentTarget.style.background='var(--s2)';}}
+                        onMouseLeave={e=>{if(!(on&&!filterCountry))e.currentTarget.style.background='transparent';}}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,
+                          color:on?'var(--amber)':'var(--t3)',width:14,flexShrink:0}}>
+                          {s.icon}
+                        </span>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:11,
+                          color:on?'var(--t1)':'var(--t2)'}}>
+                          {s.label}
+                        </span>
+                      </div>
+                      {/* 국가별 정책 아래에 국가 필터 인라인으로 */}
+                      {isPolicies && (
+                        <div style={{paddingLeft:8}}>
+                          <div onClick={()=>{setFilterCountry(null);goTo('policies');}}
+                            style={{display:'flex',alignItems:'center',justifyContent:'space-between',
+                              padding:'5px 14px 5px 22px',cursor:'pointer',transition:'all .12s',
+                              background:!filterCountry&&on?'var(--s2)':'transparent',
+                              borderLeft:!filterCountry&&on?'2px solid var(--amber)':'2px solid transparent'}}
+                            onMouseEnter={e=>{e.currentTarget.style.background='var(--s2)';}}
+                            onMouseLeave={e=>{if(filterCountry||!on)e.currentTarget.style.background='transparent';}}>
+                            <span style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t2)'}}>전체</span>
+                            <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--amber)'}}>{total}</span>
+                          </div>
+                          {countries.map(c => {
+                            const cOn = filterCountry===c.id;
+                            return (
+                              <div key={c.id}
+                                onClick={()=>{setFilterCountry(cOn?null:c.id);goTo('policies');}}
+                                style={{display:'flex',alignItems:'center',gap:7,
+                                  padding:'5px 14px 5px 22px',cursor:'pointer',transition:'all .12s',
+                                  background:cOn?'var(--s2)':'transparent',
+                                  borderLeft:cOn?`2px solid ${c.color}`:'2px solid transparent'}}
+                                onMouseEnter={e=>{if(!cOn)e.currentTarget.style.background='var(--s2)';}}
+                                onMouseLeave={e=>{if(!cOn)e.currentTarget.style.background='transparent';}}>
+                                <span style={{fontSize:13,flexShrink:0}}>{c.flag}</span>
+                                <span style={{fontFamily:'var(--font-sans)',fontSize:11,
+                                  color:cOn?'var(--t1)':'var(--t2)',flex:1}}>{c.name}</span>
+                                <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                                  color:c.color}}>{c.policies.length}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
