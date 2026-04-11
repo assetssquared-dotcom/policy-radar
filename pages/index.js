@@ -60,7 +60,7 @@ function PolicyRow({ policy, color }) {
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          {!isMobile && <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)' }}>{policy.date}</div>}
+          {!isMobile && <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--t2)' }}>{policy.date}</div>}
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: open ? color : 'var(--t3)', transition: 'color .15s', width: 16, textAlign: 'center' }}>{open ? '▲' : '▼'}</div>
         </div>
       </div>
@@ -140,7 +140,7 @@ function CountrySection({ country, isMobile }) {
             <span style={{ fontSize: isMobile ? 28 : 34, lineHeight: 1 }}>{country.flag}</span>
             <div>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: isMobile ? 26 : 32, fontWeight: 400, color: country.color, lineHeight: 1 }}>{country.name}</h2>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--t3)', marginTop: 5, letterSpacing: '.03em' }}>{country.tagline}</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--t2)', marginTop: 6, letterSpacing: '.03em' }}>{country.tagline}</div>
             </div>
           </div>
           <p style={{ fontSize: isMobile ? 13 : 14, color: 'var(--t2)', lineHeight: 1.85, maxWidth: 520 }}>{country.summary}</p>
@@ -153,14 +153,14 @@ function CountrySection({ country, isMobile }) {
               { label: '핵심 테마', value: [...new Set(country.policies.flatMap(p=>p.themes||[]))].length+'개' },
             ].map(({ label, value }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 12px', background: 'var(--s1)', borderLeft: `2px solid ${country.color}40` }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)' }}>{label}</span>
-                <span style={{ fontFamily: 'var(--font-serif)', fontSize: 14, color: country.color }}>{value}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--t2)' }}>{label}</span>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: 16, color: country.color }}>{value}</span>
               </div>
             ))}
             <div style={{ marginTop: 8, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
               {[...new Set(country.policies.flatMap(p=>p.themes||[]))].map(tid => {
                 const t = THEMES[tid];
-                return t ? <span key={tid} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: t.color, border: `1px solid ${t.color}30`, borderRadius: 2, padding: '2px 5px', background: t.color+'0d' }}>{t.label}</span> : null;
+                return t ? <span key={tid} style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: t.color, border: `1px solid ${t.color}30`, borderRadius: 2, padding: '2px 5px', background: t.color+'0d' }}>{t.label}</span> : null;
               })}
             </div>
           </div>
@@ -289,41 +289,16 @@ export default function Home() {
             <a href="https://assetx2-geomap.vercel.app" target="_blank" rel="noopener" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>GeoMap ↗</a>
           </div>
         )}
-
-        {/* ── TICKER (desktop only) ── */}
-        {!isMobile && (
-          <div style={{ height: 28, borderBottom: '1px solid rgba(255,255,255,0.055)', background: 'var(--s1)', display: 'flex', alignItems: 'center', padding: '0 20px', gap: 0, overflowX: 'auto' }}>
-            {[
-              {l:'S&P 500',v:'5,431',c:'▼1.24%',up:false},
-              {l:'NASDAQ',v:'17,032',c:'▼1.67%',up:false},
-              {l:'KOSPI',v:'2,432',c:'▼0.89%',up:false},
-              {l:'GOLD',v:'3,238',c:'▲0.44%',up:true},
-              {l:'DXY',v:'100.2',c:'▼0.31%',up:false},
-              {l:'USD/KRW',v:'1,428',c:'▲0.18%',up:false},
-              {l:'WTI',v:'60.4',c:'▼2.11%',up:false},
-              {l:'BTC',v:'79,201',c:'▼3.44%',up:false},
-              {l:'VIX',v:'38.2',c:'▲ HIGH',warn:true},
-            ].map((tk,i) => (
-              <div key={i} style={{ display:'flex', alignItems:'center', gap:0, flexShrink:0 }}>
-                {i>0 && <span style={{ width:1, height:10, background:'rgba(255,255,255,0.07)', margin:'0 14px', display:'inline-block' }} />}
-                <span style={{ fontFamily:'var(--font-mono)', fontSize:9, color:'rgba(255,255,255,0.28)', marginRight:6, letterSpacing:'.03em' }}>{tk.l}</span>
-                <span style={{ fontFamily:'var(--font-mono)', fontSize:9, color:'rgba(255,255,255,0.55)', marginRight:5, fontWeight:500 }}>{tk.v}</span>
-                <span style={{ fontFamily:'var(--font-mono)', fontSize:9, color:tk.warn?'#c09020':tk.up?'#3d9e6a':'#b84a4a' }}>{tk.c}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ── CHANGELOG ── */}
+{/* ── CHANGELOG ── */}
         {changelog.length > 0 && (
           <div style={{ borderBottom: '1px solid rgba(255,255,255,0.055)', background: 'var(--s1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '7px 20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#3d9e6a', letterSpacing: '.06em' }}>LATEST UPDATES</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#3d9e6a', background: 'rgba(61,158,106,.1)', border: '1px solid rgba(61,158,106,.18)', borderRadius: 2, padding: '1px 6px' }}>+{changelog.length}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#3d9e6a', letterSpacing: '.06em' }}>LATEST UPDATES</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#3d9e6a', background: 'rgba(61,158,106,.1)', border: '1px solid rgba(61,158,106,.18)', borderRadius: 2, padding: '1px 6px' }}>+{changelog.length}</span>
                 {lastUpdated && !isMobile && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(255,255,255,0.2)' }}>{new Date(lastUpdated).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>}
               </div>
-              <button onClick={() => setShowChangelog(!showChangelog)} style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <button onClick={() => setShowChangelog(!showChangelog)} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer' }}>
                 {showChangelog ? '▲ 닫기' : '▼ 변경 내역'}
               </button>
             </div>
@@ -332,8 +307,8 @@ export default function Home() {
                 {changelog.map((e, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 0', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
                     <span style={{ fontSize: 13 }}>{STATIC.find(c=>c.id===e.countryId)?.flag}</span>
-                    {!isMobile && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(255,255,255,0.2)', minWidth: 70 }}>{new Date(e.date).toLocaleDateString('ko-KR')}</span>}
-                    <span style={{ fontSize: 12, color: 'var(--t1)', flex: 1 }}>{e.policyName}</span>
+                    {!isMobile && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,255,255,0.3)', minWidth: 70 }}>{new Date(e.date).toLocaleDateString('ko-KR')}</span>}
+                    <span style={{ fontSize: 13, color: 'var(--t1)', flex: 1 }}>{e.policyName}</span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: e.status==='active'?'#3d9e6a':'#b8924a', border:'1px solid', borderColor:e.status==='active'?'rgba(61,158,106,.3)':'rgba(184,146,74,.3)', borderRadius:2, padding:'1px 5px' }}>
                       {e.status==='active'?'ACTIVE':'UPCOMING'}
                     </span>
