@@ -382,13 +382,6 @@ export default function Home() {
                 ))}
               </div>
 
-              <div style={{ padding:'14px 16px', borderTop:'1px solid rgba(255,255,255,0.055)' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:5, marginBottom:4 }}>
-                  <span style={{ width:4, height:4, borderRadius:'50%', background:'#3d9e6a', display:'inline-block', animation:'pulse 2.5s infinite' }} />
-                  <span style={{ fontFamily:'var(--font-mono)', fontSize:8, color:'#3d9e6a', letterSpacing:'.06em' }}>AUTO UPDATE</span>
-                </div>
-                <div style={{ fontFamily:'var(--font-mono)', fontSize:8, color:'rgba(255,255,255,0.2)', lineHeight:1.7 }}>매일 오전 7시 자동 업데이트</div>
-              </div>
             </aside>
           )}
 
