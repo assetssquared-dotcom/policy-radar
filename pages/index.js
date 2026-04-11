@@ -4,10 +4,26 @@ import Link from 'next/link';
 import { COUNTRIES as STATIC, MACRO_THEMES, THEMES } from '../data/policies';
 
 const NAV_LINKS = [
-  { label: 'Threads',  href: 'https://www.threads.com/@asset.x2',           color: '#e4e4e4', bg: 'rgba(255,255,255,0.08)', border: 'rgba(255,255,255,0.18)' },
-  { label: 'YouTube',  href: 'https://www.youtube.com/channel/UCpTC-SMFjA3EDRhZIKOcKuQ', color: '#ff4444', bg: 'rgba(255,68,68,0.1)',   border: 'rgba(255,68,68,0.3)' },
-  { label: '프로젝트방', href: 'https://t.me/+2Qw1cAZTm8FjMGNl',           color: '#2aabee', bg: 'rgba(42,171,238,0.1)',  border: 'rgba(42,171,238,0.3)' },
-  { label: '구독자료',  href: 'https://contents.premium.naver.com/assetx2/assetsx2', color: '#03c75a', bg: 'rgba(3,199,90,0.1)',   border: 'rgba(3,199,90,0.3)' },
+  {
+    label: 'Threads', href: 'https://www.threads.com/@asset.x2',
+    color: '#e4e4e4', bg: 'rgba(255,255,255,0.08)', border: 'rgba(255,255,255,0.2)',
+    icon: `<svg width="14" height="14" viewBox="0 0 192 192" fill="currentColor"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-43.246-41.457-43.398h-.34c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.548 21.348-10.548h.229c8.249.053 14.474 2.452 18.503 7.129 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.243-15.224-1.626-23.68-1.14-23.82 1.371-39.134 15.264-38.105 34.568.522 9.792 5.4 18.216 13.735 23.719 6.987 4.676 15.997 6.95 25.379 6.432 12.359-.687 22.081-5.391 28.89-13.975 5.186-6.658 8.446-15.29 9.87-26.147 5.922 3.577 10.302 8.287 12.666 13.952 3.989 9.711 4.222 25.701-8.297 38.21-10.916 10.909-24.04 15.633-43.867 15.766-21.999-.149-38.646-7.215-49.482-21.009C37.458 134.017 32.2 115.61 32 92c.2-23.61 5.458-42.017 15.694-54.744 10.836-13.794 27.483-20.86 49.482-21.009 22.126.15 39.047 7.245 50.34 21.084 5.57 6.858 9.616 15.369 12.068 25.292l16.21-4.324c-2.999-11.607-7.861-21.666-14.578-29.963C147.166 10.246 126.354 1.176 100.086 1L99.803 1C73.587 1.176 52.994 10.274 39.371 26.607 27.366 41.005 21.2 61.565 21 92.001v.999c.2 30.435 6.366 50.996 18.371 65.394 13.623 16.333 34.216 25.431 60.432 25.607h.283c23.102-.149 39.376-6.231 52.676-19.521 17.84-17.828 17.342-40.208 11.501-53.962-4.198-10.217-12.376-18.515-22.726-23.53z"/></svg>`,
+  },
+  {
+    label: 'YouTube', href: 'https://www.youtube.com/channel/UCpTC-SMFjA3EDRhZIKOcKuQ',
+    color: '#ff4444', bg: 'rgba(255,68,68,0.1)', border: 'rgba(255,68,68,0.3)',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+  },
+  {
+    label: '프로젝트방', href: 'https://t.me/+2Qw1cAZTm8FjMGNl',
+    color: '#2aabee', bg: 'rgba(42,171,238,0.1)', border: 'rgba(42,171,238,0.3)',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`,
+  },
+  {
+    label: '구독자료', href: 'https://contents.premium.naver.com/assetx2/assetsx2',
+    color: '#03c75a', bg: 'rgba(3,199,90,0.1)', border: 'rgba(3,199,90,0.3)',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>`,
+  },
 ];
 
 function useIsMobile() {
@@ -57,7 +73,7 @@ function PolicyRow({ policy, color }) {
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap: 1, background: 'rgba(255,255,255,0.055)' }}>
             {/* Beneficiaries */}
             <div style={{ background: 'var(--s1)', padding: '14px 16px' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>수혜 산업 매핑</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>수혜 산업 매핑</div>
               {(policy.beneficiaries || []).map((b, i) => (
                 <div key={i} style={{ marginBottom: 10, paddingBottom: 10, borderBottom: i < (policy.beneficiaries||[]).length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 3 }}>
@@ -74,7 +90,7 @@ function PolicyRow({ policy, color }) {
 
             {/* Budget + Risk */}
             <div style={{ background: 'var(--s1)', padding: '14px 16px' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>규모 · 예산</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>규모 · 예산</div>
               {(policy.budgetData || []).map((b, i) => (
                 <div key={i} style={{ marginBottom: 10 }}>
                   <div style={{ fontSize: 11, color: 'var(--t2)', marginBottom: 4 }}>{b.name}</div>
@@ -94,7 +110,7 @@ function PolicyRow({ policy, color }) {
 
             {/* Timeline */}
             <div style={{ background: 'var(--s1)', padding: '14px 16px' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>타임라인</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.055)' }}>타임라인</div>
               <div style={{ position: 'relative' }}>
                 <div style={{ position: 'absolute', left: 5, top: 6, bottom: 0, width: 1, background: 'rgba(255,255,255,0.055)' }} />
                 {(policy.timeline||[]).map((t, j) => (
@@ -124,7 +140,7 @@ function CountrySection({ country, isMobile }) {
             <span style={{ fontSize: isMobile ? 28 : 34, lineHeight: 1 }}>{country.flag}</span>
             <div>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: isMobile ? 26 : 32, fontWeight: 400, color: country.color, lineHeight: 1 }}>{country.name}</h2>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--t3)', marginTop: 4, letterSpacing: '.03em' }}>{country.tagline}</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--t3)', marginTop: 5, letterSpacing: '.03em' }}>{country.tagline}</div>
             </div>
           </div>
           <p style={{ fontSize: isMobile ? 13 : 14, color: 'var(--t2)', lineHeight: 1.85, maxWidth: 520 }}>{country.summary}</p>
@@ -213,15 +229,17 @@ export default function Home() {
                 <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3d9e6a', display: 'inline-block', animation: 'pulse 2.5s infinite' }} />
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#3d9e6a', letterSpacing: '.06em' }}>LIVE</span>
               </div>
-              {NAV_LINKS.map(({ label, href, color, bg, border }) => (
+              {NAV_LINKS.map(({ label, href, color, bg, border, icon }) => (
                 <a key={label} href={href} target="_blank" rel="noopener" style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
                   fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500,
                   color, background: bg, border: `1px solid ${border}`,
-                  borderRadius: 6, padding: '5px 12px',
+                  borderRadius: 6, padding: '5px 11px',
                   textDecoration: 'none', transition: 'opacity .15s', whiteSpace: 'nowrap',
                 }}
                   onMouseEnter={e => e.currentTarget.style.opacity = '.75'}
                   onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                  <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: icon }} />
                   {label}
                 </a>
               ))}
@@ -254,13 +272,15 @@ export default function Home() {
             padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10,
             animation: 'fadeIn .15s ease',
           }}>
-            {NAV_LINKS.map(({ label, href, color, bg, border }) => (
+            {NAV_LINKS.map(({ label, href, color, bg, border, icon }) => (
               <a key={label} href={href} target="_blank" rel="noopener" style={{
+                display: 'flex', alignItems: 'center', gap: 10,
                 fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500,
                 color, background: bg, border: `1px solid ${border}`,
-                borderRadius: 8, padding: '10px 16px',
-                textDecoration: 'none', display: 'block',
+                borderRadius: 8, padding: '12px 16px',
+                textDecoration: 'none',
               }}>
+                <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: icon }} />
                 {label}
               </a>
             ))}
