@@ -99,8 +99,8 @@ export default function Sidebar({ activeCountry, activeTheme, activePage }) {
       <div style={{ height: 1, background: 'var(--wire)', margin: '4px 0' }} />
       <div style={{ padding: '10px 0' }}>
         <div style={{
-          fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--t3)',
-          letterSpacing: '.1em', padding: '0 14px', marginBottom: 6,
+          fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--amber)',
+          letterSpacing: '.08em', padding: '0 14px', marginBottom: 6,
         }}>분석 도구</div>
         {NAV_SECTIONS.map(item => {
           const isOn = activePage === item.id;
@@ -115,8 +115,8 @@ export default function Sidebar({ activeCountry, activeTheme, activePage }) {
               }}
                 onMouseEnter={e => { if (!isOn) e.currentTarget.style.background = 'var(--s2)'; }}
                 onMouseLeave={e => { if (!isOn) e.currentTarget.style.background = 'transparent'; }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: isOn ? 'var(--amber)' : 'var(--t3)', flexShrink: 0 }}>{item.icon}</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: isOn ? 'var(--t1)' : 'var(--t2)' }}>{item.label}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: isOn ? 'var(--amber)' : 'var(--t2)', flexShrink: 0 }}>{item.icon}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: isOn ? 'var(--t1)' : 'var(--t2)' }}>{item.label}</span>
               </div>
             </Link>
           );
