@@ -347,7 +347,7 @@ export default function Home() {
   const [scImpact, setScImpact] = useState('all');
 
   // 히트맵
-  const [hmHover, setHmHover] = useState(null);
+  const [hmSelected, setHmSelected] = useState(null);
 
   // 연결고리
   const [flowId, setFlowId] = useState('dollar_ai');
@@ -671,40 +671,168 @@ export default function Home() {
             )}
 
             {/* ① 소개 */}
-            <section id="hero" style={{padding:mobile?'32px 0 28px':'52px 0 44px',
-              borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="자산제곱 — 글로벌 정책 분석 레이더 · 2026" />
-              <h1 style={{fontFamily:'var(--font-serif)',fontSize:mobile?30:46,fontWeight:400,
-                color:'var(--t1)',lineHeight:1.08,marginBottom:12}}>
-                정책이 만드는<br />
-                <em style={{color:'var(--amber)',fontStyle:'italic'}}>다음 수혜주</em>
-              </h1>
-              <p style={{fontSize:mobile?13:14,color:'var(--t2)',lineHeight:1.85,
-                maxWidth:480,marginBottom:24}}>
-                미국·중국·유럽·한국·일본 5개국의 핵심 정책을 분석합니다.
-                어떤 산업에 자금이 흐르고, 어떤 종목이 수혜를 받는지 —
-                큰 흐름부터 병목 수혜주까지.
-              </p>
-              <div style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'auto auto auto auto',
-                gap:1,border:'1px solid var(--wire)',borderRadius:4,overflow:'hidden',
-                width:mobile?'100%':'fit-content'}}>
-                {[{n:total,l:'분석 정책'},{n:'5개국',l:'대상 국가'},
-                  {n:MACRO_THEMES.length,l:'매크로 테마'},{n:'매일',l:'AI 자동 업데이트'}
-                ].map(({n,l},i) => (
-                  <div key={l} style={{padding:'12px 18px',textAlign:'center',
-                    borderRight:!mobile&&i<3?'1px solid var(--wire)':'none',
-                    borderBottom:mobile&&i<2?'1px solid var(--wire)':'none',
-                    background:'var(--s1)'}}>
-                    <div style={{fontFamily:'var(--font-serif)',fontSize:22,
-                      color:'var(--amber)',lineHeight:1}}>{n}</div>
-                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                      color:'var(--t3)',marginTop:3}}>{l}</div>
+            <section id="hero" style={{
+              padding: mobile ? '28px 0 0' : '48px 0 0',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
+            }}>
+
+              {/* 상단 타이틀 */}
+              <div style={{marginBottom: mobile ? 28 : 40}}>
+                <Label text="자산제곱 — 글로벌 정책 분석 레이더 · 2026" />
+                <h1 style={{
+                  fontFamily:'var(--font-serif)', fontSize: mobile ? 30 : 48,
+                  fontWeight: 400, color:'var(--t1)', lineHeight: 1.06, marginBottom: 16,
+                }}>
+                  정책이 만드는<br />
+                  <em style={{color:'var(--amber)', fontStyle:'italic'}}>다음 수혜주</em>
+                </h1>
+                <p style={{
+                  fontSize: mobile ? 13 : 14, color:'var(--t2)', lineHeight: 1.9,
+                  maxWidth: 560, marginBottom: 0,
+                }}>
+                  모르고 하는 투자는 도박이다. 미국·중국·유럽·한국·일본 5개국의
+                  핵심 정책 {total}개를 매일 AI가 조사·업데이트합니다.
+                  어떤 산업에 정부 자금이 흐르고, 어떤 종목이 병목을 쥐고 있는지 —
+                  큰 그림부터 실제 매수 후보까지.
+                </p>
+              </div>
+
+              {/* 핵심 지금 시나리오 카드 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr 1fr',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 28 : 40,
+              }}>
+                {[
+                  {
+                    tag: '🔴 최고 경계',
+                    title: '미-중 관세 재결렬',
+                    body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
+                    link: '반도체·K-방산 헤지 필요',
+                    color: '#b84a4a',
+                  },
+                  {
+                    tag: '🟡 5~6월 주시',
+                    title: '재무부 TGA 방출 임박',
+                    body: 'OBBBA 이후 TGA 1조달러 급증. 지금부터 지출 가속 시 수조달러 유동성 시중 방출. 역RRP 소진으로 은행 준비금에 직격 — 나스닥·비트코인 단기 랠리 트리거.',
+                    link: 'FRED WDTGAL 매주 체크',
+                    color: '#b8924a',
+                  },
+                  {
+                    tag: '🟢 구조적 기회',
+                    title: 'HBM 병목 — AI의 급소',
+                    body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
+                    link: '000660 · 005930 · MU',
+                    color: '#3d9e6a',
+                  },
+                ].map(({tag, title, body, link, color}, i) => (
+                  <div key={i} style={{
+                    background: 'var(--s1)', padding: mobile ? '16px' : '20px 22px',
+                    position: 'relative', overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      position: 'absolute', top: 0, left: 0, right: 0,
+                      height: 2, background: color,
+                    }} />
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 9,
+                      color, letterSpacing: '.06em', marginBottom: 8,
+                    }}>{tag}</div>
+                    <div style={{
+                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
+                      color:'var(--t1)', fontWeight: 400, marginBottom: 10, lineHeight: 1.3,
+                    }}>{title}</div>
+                    <p style={{
+                      fontSize: 12, color:'var(--t2)', lineHeight: 1.8, marginBottom: 12,
+                    }}>{body}</p>
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 10,
+                      color, opacity: 0.8,
+                    }}>→ {link}</div>
                   </div>
                 ))}
               </div>
+
+              {/* 이 사이트 활용법 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 32 : 48,
+              }}>
+                {[
+                  { icon:'⊞', label:'국가별 정책', desc:'아코디언으로 펼쳐 수혜주·예산·타임라인 확인' },
+                  { icon:'⬡', label:'연결고리 맵', desc:'달러 패권·HBM 병목·K-방산·TGA 방출 인과관계' },
+                  { icon:'◈', label:'수혜주 스크리너', desc:'전 정책 수혜주를 섹터·국가·수혜도로 필터링' },
+                  { icon:'▦', label:'정책 히트맵', desc:'5개국 × 12개 섹터 정책 집중도 한눈에' },
+                  { icon:'◷', label:'이벤트 캘린더', desc:'2026~2028 정책 발효·표결 일정 정리' },
+                  { icon:'⚠', label:'리스크 레이더', desc:'충격 규모 × 확률 순위와 헤지 전략' },
+                  { icon:'◎', label:'자동 업데이트', desc:'Claude AI가 매일 오전 7시 최신 정책 조사·반영' },
+                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 월닥의 심층 종목 분석' },
+                ].map(({icon, label, desc}, i) => (
+                  <div key={i} style={{
+                    background:'var(--s1)', padding:'14px 16px',
+                  }}>
+                    <div style={{
+                      display:'flex', alignItems:'center', gap: 8, marginBottom: 6,
+                    }}>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 13,
+                        color:'var(--amber)', flexShrink: 0,
+                      }}>{icon}</span>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 11,
+                        color:'var(--t1)', fontWeight: 500,
+                      }}>{label}</span>
+                    </div>
+                    <p style={{
+                      fontSize: 11, color:'var(--t2)', lineHeight: 1.7, margin: 0,
+                    }}>{desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* 2026 핵심 지표 바 */}
+              <div style={{
+                display:'flex', gap: 0, overflowX:'auto',
+                borderTop:'1px solid var(--wire)',
+                borderBottom:'1px solid var(--wire)',
+                marginBottom: 0,
+                scrollbarWidth:'none',
+              }}>
+                {[
+                  { l:'미국 기준금리', v:'4.25~4.50%', sub:'연준 동결 중', c:'#4a7fd4' },
+                  { l:'한국 기준금리', v:'2.75%', sub:'BOK 인하 사이클', c:'#c9a83a' },
+                  { l:'중국 LPR 1년', v:'3.10%', sub:'PBoC 완화 중', c:'#b84a4a' },
+                  { l:'ECB 기준금리', v:'2.50%', sub:'유럽 인하 사이클', c:'#3a9e7a' },
+                  { l:'BOJ 기준금리', v:'0.75~1.00%', sub:'인상 사이클 주시', c:'#b87030' },
+                  { l:'금(Gold)', v:'$3,238', sub:'달러 헤지 강세', c:'#c9a83a' },
+                  { l:'USD/KRW', v:'1,428', sub:'원화 약세 지속', c:'#c9a83a' },
+                ].map(({l, v, sub, c}, i, arr) => (
+                  <div key={i} style={{
+                    flexShrink: 0, padding: mobile ? '12px 14px' : '14px 20px',
+                    borderRight: i < arr.length-1 ? '1px solid var(--wire)' : 'none',
+                  }}>
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 9,
+                      color:'var(--t3)', marginBottom: 4, whiteSpace:'nowrap',
+                    }}>{l}</div>
+                    <div style={{
+                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
+                      color: c, lineHeight: 1, marginBottom: 3,
+                    }}>{v}</div>
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 8,
+                      color:'var(--t3)', whiteSpace:'nowrap',
+                    }}>{sub}</div>
+                  </div>
+                ))}
+              </div>
+
             </section>
 
-            {/* ② 국가별 정책 */}
+{/* ② 국가별 정책 */}
             <section id="policies" style={{paddingTop:mobile?40:56}}>
               <Label text="국가별 정책 분석" />
               <SecTitle>정책 상세 분석</SecTitle>
@@ -929,56 +1057,83 @@ export default function Home() {
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="정책 강도 히트맵" />
               <SecTitle>국가 × 섹터 정책 집중도</SecTitle>
-              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:20}}>
-                어느 국가가 어느 섹터에 정책 화력을 집중하는지. 셀 hover 시 관련 정책 확인.
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
+                어느 국가가 어느 섹터에 정책 화력을 집중하는지. 셀 클릭 시 관련 정책 상세 확인.
               </p>
+
+              {/* 범례 */}
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,flexWrap:'wrap'}}>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)'}}>강도</span>
+                {[0,2,4,6,8,10].map(v => (
+                  <div key={v} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
+                    <div style={{width:26,height:16,background:cellBg(v),border:'1px solid var(--wire)',borderRadius:2}} />
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:8,color:'var(--t3)'}}>{v}</span>
+                  </div>
+                ))}
+                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)',marginLeft:4}}>낮음 → 높음</span>
+              </div>
+
               <div style={{overflowX:'auto'}}>
-                <div style={{display:'grid',
+                <div style={{
+                  display:'grid',
                   gridTemplateColumns:`150px repeat(${countries.length},1fr)`,
-                  gap:1,minWidth:560}}>
+                  gap:1, minWidth:560,
+                }}>
+                  {/* 헤더 */}
                   <div />
-                  {countries.map(c=>(
+                  {countries.map(c => (
                     <div key={c.id} style={{padding:'8px 4px',textAlign:'center'}}>
                       <div style={{fontSize:18,marginBottom:2}}>{c.flag}</div>
-                      <div style={{fontFamily:'var(--font-serif)',fontSize:12,
-                        color:c.color}}>{c.name}</div>
+                      <div style={{fontFamily:'var(--font-serif)',fontSize:12,color:c.color}}>{c.name}</div>
                     </div>
                   ))}
-                  {SECTORS.map(s=>(
+
+                  {/* 데이터 행 */}
+                  {SECTORS.map(s => (
                     <>
-                      <div key={s.id+'_l'} style={{padding:'9px 10px',
-                        display:'flex',alignItems:'center',
-                        borderTop:'1px solid var(--wire)'}}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,
-                          color:'var(--t2)'}}>{s.l}</span>
+                      {/* 섹터 라벨 */}
+                      <div key={s.id+'_l'} style={{
+                        padding:'9px 10px',display:'flex',alignItems:'center',
+                        borderTop:'1px solid var(--wire)',
+                      }}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t2)'}}>{s.l}</span>
                       </div>
-                      {countries.map(c=>{
+
+                      {/* 셀들 */}
+                      {countries.map(c => {
                         const cell = matrix[c.id][s.id];
-                        const isH = hmHover?.c===c.id && hmHover?.s===s.id;
+                        const isSelected = hmSelected?.c===c.id && hmSelected?.s===s.id;
                         return (
-                          <div key={c.id+s.id}
-                            onMouseEnter={()=>setHmHover({c:c.id,s:s.id})}
-                            onMouseLeave={()=>setHmHover(null)}
-                            style={{background:isH?'rgba(255,255,255,0.12)':cellBg(cell.score),
-                              border:isH?`1px solid ${c.color}`:'1px solid rgba(255,255,255,0.04)',
-                              cursor:cell.count>0?'pointer':'default',
-                              display:'flex',flexDirection:'column',alignItems:'center',
-                              justifyContent:'center',padding:'9px 4px',
-                              transition:'all .12s',minHeight:44}}>
-                            {cell.count>0 ? (
+                          <div
+                            key={c.id+s.id}
+                            onClick={() => {
+                              if (cell.count === 0) return;
+                              setHmSelected(isSelected ? null : {c:c.id, s:s.id});
+                            }}
+                            style={{
+                              background: isSelected ? c.color+'33' : cellBg(cell.score),
+                              border: isSelected ? `2px solid ${c.color}` : '1px solid rgba(255,255,255,0.04)',
+                              cursor: cell.count>0 ? 'pointer' : 'default',
+                              display:'flex', flexDirection:'column',
+                              alignItems:'center', justifyContent:'center',
+                              padding:'9px 4px', transition:'all .15s', minHeight:46,
+                              outline: isSelected ? `2px solid ${c.color}` : 'none',
+                            }}
+                          >
+                            {cell.count > 0 ? (
                               <>
-                                <div style={{fontFamily:'var(--font-mono)',fontSize:14,
-                                  fontWeight:500,color:cellTxt(cell.score),lineHeight:1}}>
-                                  {cell.score}
-                                </div>
-                                <div style={{fontFamily:'var(--font-mono)',fontSize:8,
-                                  color:cellTxt(cell.score),opacity:.7,marginTop:2}}>
-                                  {cell.count}개
-                                </div>
+                                <div style={{
+                                  fontFamily:'var(--font-mono)', fontSize:14, fontWeight:600,
+                                  color: isSelected ? c.color : cellTxt(cell.score), lineHeight:1,
+                                }}>{cell.score}</div>
+                                <div style={{
+                                  fontFamily:'var(--font-mono)', fontSize:8,
+                                  color: isSelected ? c.color : cellTxt(cell.score),
+                                  opacity:.7, marginTop:2,
+                                }}>{cell.count}개</div>
                               </>
                             ) : (
-                              <div style={{fontFamily:'var(--font-mono)',fontSize:11,
-                                color:'var(--t3)'}}>—</div>
+                              <div style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>—</div>
                             )}
                           </div>
                         );
@@ -987,34 +1142,154 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              {hmHover && matrix[hmHover.c]?.[hmHover.s]?.count>0 && (
-                <div style={{marginTop:16,padding:'14px 18px',background:'var(--s1)',
-                  border:'1px solid var(--wire2)',borderRadius:4,animation:'fadeIn .15s ease'}}>
-                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,
-                    color:'var(--amber)',marginBottom:10}}>
-                    {countries.find(c=>c.id===hmHover.c)?.flag}{' '}
-                    {countries.find(c=>c.id===hmHover.c)?.name} ·{' '}
-                    {SECTORS.find(s=>s.id===hmHover.s)?.l} · 강도 {matrix[hmHover.c][hmHover.s].score}
-                  </div>
-                  <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                    {matrix[hmHover.c][hmHover.s].policies.map(p=>(
-                      <div key={p.id} style={{display:'flex',alignItems:'center',gap:10}}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                          color:p.status==='active'?'#3d9e6a':'#b8924a',
-                          border:`1px solid ${p.status==='active'?'rgba(61,158,106,.3)':'rgba(184,146,74,.3)'}`,
-                          borderRadius:2,padding:'1px 5px'}}>
-                          {p.status==='active'?'ACTIVE':'UPCOMING'}
-                        </span>
-                        <span style={{fontFamily:'var(--font-serif)',fontSize:14,
-                          color:'var(--t1)'}}>{p.name}</span>
+
+              {/* 선택된 셀 상세 패널 */}
+              {hmSelected && matrix[hmSelected.c]?.[hmSelected.s]?.count > 0 && (() => {
+                const c = countries.find(x => x.id===hmSelected.c);
+                const sec = SECTORS.find(x => x.id===hmSelected.s);
+                const cell = matrix[hmSelected.c][hmSelected.s];
+                return (
+                  <div style={{
+                    marginTop:16, border:`1px solid ${c.color}40`,
+                    borderLeft:`3px solid ${c.color}`,
+                    borderRadius:4, overflow:'hidden',
+                    animation:'fadeIn .15s ease',
+                  }}>
+                    {/* 패널 헤더 */}
+                    <div style={{
+                      display:'flex', alignItems:'center', justifyContent:'space-between',
+                      padding:'12px 18px',
+                      background:`${c.color}0d`,
+                      borderBottom:'1px solid var(--wire)',
+                    }}>
+                      <div style={{display:'flex',alignItems:'center',gap:10}}>
+                        <span style={{fontSize:18}}>{c.flag}</span>
+                        <div>
+                          <span style={{fontFamily:'var(--font-serif)',fontSize:16,color:c.color}}>{c.name}</span>
+                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',margin:'0 8px'}}>×</span>
+                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t2)'}}>{sec.l}</span>
+                        </div>
+                        <span style={{
+                          fontFamily:'var(--font-mono)',fontSize:11,
+                          color:c.color, background:`${c.color}18`,
+                          border:`1px solid ${c.color}40`,
+                          borderRadius:3, padding:'2px 8px',
+                        }}>강도 {cell.score}</span>
                       </div>
-                    ))}
+                      <button
+                        onClick={() => setHmSelected(null)}
+                        style={{
+                          fontFamily:'var(--font-mono)', fontSize:11,
+                          color:'var(--t3)', background:'none', border:'none',
+                          cursor:'pointer', padding:'4px 8px',
+                        }}
+                      >✕ 닫기</button>
+                    </div>
+
+                    {/* 정책 목록 */}
+                    <div style={{background:'var(--s1)'}}>
+                      {cell.policies.map((p, pi) => (
+                        <div key={p.id} style={{
+                          padding:'14px 18px',
+                          borderBottom: pi < cell.policies.length-1 ? '1px solid var(--wire)' : 'none',
+                        }}>
+                          {/* 정책 헤더 */}
+                          <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:8}}>
+                            <span style={{
+                              fontFamily:'var(--font-mono)', fontSize:8,
+                              color: p.status==='active'?'#3d9e6a':'#b8924a',
+                              border:`1px solid ${p.status==='active'?'rgba(61,158,106,.3)':'rgba(184,146,74,.3)'}`,
+                              borderRadius:2, padding:'2px 6px', flexShrink:0, marginTop:3,
+                            }}>{p.status==='active'?'ACTIVE':'UPCOMING'}</span>
+                            <div>
+                              <div style={{fontFamily:'var(--font-serif)',fontSize:16,color:'var(--t1)',marginBottom:3}}>
+                                {p.name}
+                              </div>
+                              <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
+                                {p.budget}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 배경 설명 */}
+                          <p style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,marginBottom:12,
+                            whiteSpace:'pre-wrap'}}>
+                            {p.background}
+                          </p>
+
+                          {/* 수혜주 + 헤지 2컬럼 */}
+                          <div style={{
+                            display:'grid',
+                            gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
+                            gap:1, background:'rgba(255,255,255,0.06)',
+                          }}>
+                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
+                              <div style={{
+                                fontFamily:'var(--font-mono)',fontSize:8,color:'#3d9e6a',
+                                letterSpacing:'.07em',marginBottom:8,
+                              }}>수혜 산업</div>
+                              {(p.beneficiaries||[]).filter(b=>b.pos).slice(0,4).map((b,bi) => (
+                                <div key={bi} style={{marginBottom:8}}>
+                                  <div style={{display:'flex',justifyContent:'space-between',gap:8,marginBottom:2}}>
+                                    <span style={{fontSize:12,color:'var(--t1)',fontWeight:500}}>{b.sector}</span>
+                                    <div style={{display:'flex',gap:2,flexShrink:0}}>
+                                      {[1,2,3,4,5].map(i=>(
+                                        <div key={i} style={{
+                                          width:6,height:6,borderRadius:1,
+                                          background:i<=b.impact?'#3d9e6a':'rgba(255,255,255,0.07)',
+                                        }}/>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
+                                    {(b.stocks||[]).slice(0,3).join(' · ')}
+                                    {(b.etfs||[]).length>0 && (
+                                      <span style={{color:'var(--t3)',marginLeft:6}}>
+                                        ETF {b.etfs.slice(0,2).join(' ')}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
+                              <div style={{
+                                fontFamily:'var(--font-mono)',fontSize:8,color:'#b84a4a',
+                                letterSpacing:'.07em',marginBottom:8,
+                              }}>리스크 · 타임라인</div>
+                              {p.risks && (
+                                <div style={{
+                                  fontSize:11,color:'var(--t2)',lineHeight:1.7,marginBottom:10,
+                                  padding:'8px 10px',
+                                  background:'rgba(184,74,74,0.06)',
+                                  border:'1px solid rgba(184,74,74,0.12)',
+                                  borderRadius:3,
+                                }}>
+                                  ⚠ {p.risks}
+                                </div>
+                              )}
+                              {(p.timeline||[]).slice(-4).map((t,ti) => (
+                                <div key={ti} style={{
+                                  display:'flex',gap:8,marginBottom:6,
+                                  paddingLeft:8, borderLeft:'1px solid var(--wire2)',
+                                }}>
+                                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                                    color:c.color,flexShrink:0,minWidth:60}}>{t.date}</div>
+                                  <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.5}}>{t.event}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
+
             </section>
 
-            {/* ⑥ 이벤트 캘린더 */}
+{/* ⑥ 이벤트 캘린더 */}
             <section id="calendar" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="정책 이벤트 캘린더" />
