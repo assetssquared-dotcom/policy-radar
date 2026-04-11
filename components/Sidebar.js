@@ -123,17 +123,7 @@ export default function Sidebar({ activeCountry, activeTheme, activePage }) {
         })}
       </div>
 
-      {/* Update info */}
-      <div style={{ padding: '12px 14px', marginTop: 'auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--green)', display: 'inline-block', animation: 'pulse 2.5s infinite' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--green)' }}>AUTO UPDATE</span>
-        </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--t3)', lineHeight: 1.7 }}>
-          Claude AI가 매일 07:00 KST<br />
-          글로벌 정책 뉴스를 스캔합니다
-        </div>
-      </div>
-    </aside>
+      
+      </aside>
   );
 }
