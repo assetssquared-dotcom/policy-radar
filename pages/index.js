@@ -793,42 +793,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* 2026 핵심 지표 바 */}
-              <div style={{
-                display:'flex', gap: 0, overflowX:'auto',
-                borderTop:'1px solid var(--wire)',
-                borderBottom:'1px solid var(--wire)',
-                marginBottom: 0,
-                scrollbarWidth:'none',
-              }}>
-                {[
-                  { l:'미국 기준금리', v:'4.25~4.50%', sub:'연준 동결 중', c:'#4a7fd4' },
-                  { l:'한국 기준금리', v:'2.75%', sub:'BOK 인하 사이클', c:'#c9a83a' },
-                  { l:'중국 LPR 1년', v:'3.10%', sub:'PBoC 완화 중', c:'#b84a4a' },
-                  { l:'ECB 기준금리', v:'2.50%', sub:'유럽 인하 사이클', c:'#3a9e7a' },
-                  { l:'BOJ 기준금리', v:'0.75~1.00%', sub:'인상 사이클 주시', c:'#b87030' },
-                  { l:'금(Gold)', v:'$3,238', sub:'달러 헤지 강세', c:'#c9a83a' },
-                  { l:'USD/KRW', v:'1,428', sub:'원화 약세 지속', c:'#c9a83a' },
-                ].map(({l, v, sub, c}, i, arr) => (
-                  <div key={i} style={{
-                    flexShrink: 0, padding: mobile ? '12px 14px' : '14px 20px',
-                    borderRight: i < arr.length-1 ? '1px solid var(--wire)' : 'none',
-                  }}>
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 9,
-                      color:'var(--t3)', marginBottom: 4, whiteSpace:'nowrap',
-                    }}>{l}</div>
-                    <div style={{
-                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
-                      color: c, lineHeight: 1, marginBottom: 3,
-                    }}>{v}</div>
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 8,
-                      color:'var(--t3)', whiteSpace:'nowrap',
-                    }}>{sub}</div>
-                  </div>
-                ))}
-              </div>
 
             </section>
 
