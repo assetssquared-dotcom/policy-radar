@@ -452,6 +452,7 @@ export default function Home() {
     color:active?'var(--ink)':'var(--t2)',
     border:`1px solid ${active?'var(--amber)':'var(--wire2)'}`,
     borderRadius:3, padding:'5px 11px', cursor:'pointer', transition:'all .12s',
+    whiteSpace:'nowrap', flexShrink:0,
   });
 
   return (
@@ -508,12 +509,16 @@ export default function Home() {
               <span style={{width:5,height:5,borderRadius:'50%',background:'#3d9e6a',
                 display:'inline-block',animation:'pulse 2.5s infinite'}} />
               <button onClick={()=>setMenuOpen(!menuOpen)}
-                style={{background:'none',border:'none',cursor:'pointer',
-                  display:'flex',flexDirection:'column',gap:4,padding:4}}>
+                style={{background:menuOpen?'rgba(255,255,255,0.08)':'none',
+                  border:'1px solid rgba(255,255,255,0.15)',cursor:'pointer',
+                  display:'flex',alignItems:'center',gap:6,
+                  padding:'5px 10px',borderRadius:6}}>
                 {[0,1,2].map(i=>(
-                  <span key={i} style={{width:20,height:1.5,background:'rgba(255,255,255,0.6)',
+                  <span key={i} style={{width:16,height:1.5,background:'rgba(255,255,255,0.7)',
                     display:'block',borderRadius:1}} />
                 ))}
+                <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                  color:'rgba(255,255,255,0.6)',letterSpacing:'.04em'}}>채널</span>
               </button>
             </div>
           )}
@@ -523,7 +528,8 @@ export default function Home() {
         {mobile && menuOpen && (
           <div style={{position:'fixed',top:52,left:0,right:0,zIndex:299,
             background:'var(--s1)',borderBottom:'1px solid var(--wire)',
-            padding:'16px',display:'flex',flexDirection:'column',gap:8,animation:'fadeIn .15s ease'}}>
+            padding:'16px',display:'flex',flexDirection:'column',gap:8,
+            animation:'fadeIn .15s ease',maxHeight:'calc(100vh - 52px)',overflowY:'auto'}}>
             {NAV.map(({label,href,color,bg,border,icon}) => (
               <a key={label} href={href} target="_blank" rel="noopener"
                 style={{display:'flex',alignItems:'center',gap:10,fontFamily:'var(--font-sans)',
@@ -546,24 +552,7 @@ export default function Home() {
               borderRight:'1px solid var(--wire)',background:'var(--s1)',
               display:'flex',flexDirection:'column'}}>
 
-              {/* 통계 */}
-              <div style={{padding:'14px',borderBottom:'1px solid var(--wire)'}}>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:1,
-                  background:'rgba(255,255,255,0.06)'}}>
-                  {[{n:total,l:'분석 정책'},{n:'5',l:'대상 국가'},
-                    {n:MACRO_THEMES.length,l:'매크로 테마'},{n:'매일',l:'AI 업데이트'}
-                  ].map(({n,l}) => (
-                    <div key={l} style={{background:'var(--s1)',padding:'10px'}}>
-                      <div style={{fontFamily:'var(--font-serif)',fontSize:18,
-                        color:'var(--amber)',lineHeight:1}}>{n}</div>
-                      <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                        color:'rgba(255,255,255,0.3)',marginTop:3}}>{l}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 섹션 네비 (국가 필터 통합) */}
+                            {/* 섹션 네비 (국가 필터 통합) */}
               <div style={{padding:'10px 0'}}>
                 {SECS.map(s => {
                   const on = activeSection===s.id;
@@ -646,7 +635,7 @@ export default function Home() {
           )}
 
           {/* ── 메인 콘텐츠 ── */}
-          <main style={{flex:1,padding:mobile?'0 16px':'0 44px',minWidth:0,
+          <main style={{flex:1,padding:mobile?'0 14px':'0 44px',minWidth:0,
             width:mobile?'100%':`calc(100% - ${SB}px)`}}>
 
             {/* 모바일 퀵네비 */}
@@ -659,10 +648,10 @@ export default function Home() {
                   const on = activeSection===s.id;
                   return (
                     <button key={s.id} onClick={()=>goTo(s.id)}
-                      style={{flexShrink:0,fontFamily:'var(--font-mono)',fontSize:10,
+                      style={{flexShrink:0,fontFamily:'var(--font-mono)',fontSize:9,
                         color:on?'var(--t1)':'var(--t3)',background:'none',border:'none',
                         borderBottom:on?'2px solid var(--amber)':'2px solid transparent',
-                        padding:'11px 11px',cursor:'pointer',whiteSpace:'nowrap'}}>
+                        padding:'10px 9px',cursor:'pointer',whiteSpace:'nowrap'}}>
                       {s.label}
                     </button>
                   );
@@ -680,7 +669,7 @@ export default function Home() {
               <div style={{marginBottom: mobile ? 28 : 40}}>
                 <Label text="자산제곱 — 글로벌 정책 분석 레이더 · 2026" />
                 <h1 style={{
-                  fontFamily:'var(--font-serif)', fontSize: mobile ? 30 : 48,
+                  fontFamily:'var(--font-serif)', fontSize: mobile ? 28 : 48,
                   fontWeight: 400, color:'var(--t1)', lineHeight: 1.06, marginBottom: 16,
                 }}>
                   정책이 만드는<br />
@@ -700,9 +689,9 @@ export default function Home() {
               {/* 핵심 지금 시나리오 카드 */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr 1fr',
+                gridTemplateColumns: '1fr',
                 gap: 1, background: 'rgba(255,255,255,0.06)',
-                marginBottom: mobile ? 28 : 40,
+                marginBottom: mobile ? 24 : 40,
               }}>
                 {[
                   {
@@ -757,7 +746,7 @@ export default function Home() {
               {/* 이 사이트 활용법 */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: mobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+                gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)',
                 gap: 1, background: 'rgba(255,255,255,0.06)',
                 marginBottom: mobile ? 32 : 48,
               }}>
@@ -803,7 +792,7 @@ export default function Home() {
               {/* 모바일 국가 필터 */}
               {mobile && (
                 <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:20,
-                  paddingBottom:4,scrollbarWidth:'none'}}>
+                  paddingBottom:4,scrollbarWidth:'none',flexWrap:'nowrap'}}>
                   <button onClick={()=>setFilterCountry(null)}
                     style={btn(!filterCountry)}>전체</button>
                   {countries.map(c => (
@@ -829,8 +818,8 @@ export default function Home() {
                         <span style={{fontSize:mobile?26:30,lineHeight:1}}>{c.flag}</span>
                         <div>
                           <h3 style={{fontFamily:'var(--font-serif)',
-                            fontSize:mobile?22:28,fontWeight:400,
-                            color:c.color,lineHeight:1}}>{c.name}</h3>
+                            fontSize:mobile?20:28,fontWeight:400,
+                            color:c.color,lineHeight:1.1}}>{c.name}</h3>
                           <div style={{fontFamily:'var(--font-mono)',fontSize:11,
                             color:'var(--t3)',marginTop:4}}>{c.tagline}</div>
                         </div>
@@ -898,7 +887,7 @@ export default function Home() {
                             color:TC[step.t],letterSpacing:'.07em',marginBottom:4}}>
                             {TL[step.t]}
                           </div>
-                          <div style={{fontSize:mobile?11:12,color:'var(--t1)',
+                          <div style={{fontSize:mobile?10:12,color:'var(--t1)',
                             fontWeight:500,lineHeight:1.3,marginBottom:3}}>{step.l}</div>
                           <div style={{fontFamily:'var(--font-mono)',fontSize:9,
                             color:'var(--t2)',lineHeight:1.4}}>{step.s}</div>
@@ -970,9 +959,9 @@ export default function Home() {
               <div style={{border:'1px solid var(--wire)',borderRadius:4,overflow:'hidden',
                 overflowX:'auto'}}>
                 <div style={{display:'grid',minWidth:500,
-                  gridTemplateColumns:'2fr 1.5fr 70px 1.5fr 1fr',
+                  gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
                   background:'var(--s2)',padding:'8px 16px',borderBottom:'1px solid var(--wire)'}}>
-                  {['종목','섹터','수혜도','ETF','국가'].map(h=>(
+                  {(mobile?['종목','섹터','수혜도']:['종목','섹터','수혜도','ETF','국가']).map(h=>(
                     <div key={h} style={{fontFamily:'var(--font-mono)',fontSize:9,
                       color:'var(--t3)',letterSpacing:'.08em'}}>{h}</div>
                   ))}
@@ -980,7 +969,7 @@ export default function Home() {
                 {scRows.slice(0,60).map((r,i) => (
                   <div key={i}
                     style={{display:'grid',minWidth:500,
-                      gridTemplateColumns:'2fr 1.5fr 70px 1.5fr 1fr',
+                      gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
                       padding:'9px 16px',
                       borderBottom:i<scRows.length-1?'1px solid var(--wire)':'none',
                       background:i%2===0?'var(--s1)':'var(--ink)',transition:'background .1s'}}
@@ -990,6 +979,7 @@ export default function Home() {
                       color:'var(--t1)',fontWeight:500,alignSelf:'center'}}>{r.stock}</div>
                     <div style={{fontSize:11,color:'var(--t2)',alignSelf:'center'}}>{r.sector}</div>
                     <div style={{alignSelf:'center'}}><Dots v={r.impact} pos={r.pos} /></div>
+                    {!mobile && (
                     <div style={{alignSelf:'center'}}>
                       {r.etfs.slice(0,3).map(e=>(
                         <span key={e} style={{fontFamily:'var(--font-mono)',fontSize:9,
@@ -1000,11 +990,12 @@ export default function Home() {
                         </span>
                       ))}
                     </div>
-                    <div style={{display:'flex',alignItems:'center',gap:5,alignSelf:'center'}}>
+                    )}
+                    {!mobile && <div style={{display:'flex',alignItems:'center',gap:5,alignSelf:'center'}}>
                       <span style={{fontSize:13}}>{r.country.flag}</span>
                       <span style={{fontFamily:'var(--font-mono)',fontSize:9,
                         color:r.country.color}}>{r.country.name}</span>
-                    </div>
+                    </div>}
                   </div>
                 ))}
               </div>
@@ -1375,7 +1366,7 @@ export default function Home() {
                                 background:i<=r.lvl?r.color:'rgba(255,255,255,0.07)'}} />
                             ))}
                           </div>
-                          <h3 style={{fontFamily:'var(--font-serif)',fontSize:mobile?15:17,
+                          <h3 style={{fontFamily:'var(--font-serif)',fontSize:mobile?14:17,
                             fontWeight:400,color:'var(--t1)',lineHeight:1.2}}>
                             {r.title}
                           </h3>
