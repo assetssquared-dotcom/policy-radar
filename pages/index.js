@@ -1,3 +1,5 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Head from 'next/head';
 import { COUNTRIES as STATIC, MACRO_THEMES, THEMES } from '../data/policies';
 
 // ── 채널 링크 ──────────────────────────────────
@@ -696,7 +698,6 @@ export default function Home() {
                   fontSize: mobile ? 13 : 14, color:'var(--t2)', lineHeight: 1.9,
                   maxWidth: 560, marginBottom: 0,
                 }}>
-                  모르고 하는 투자는 도박이다. 미국·중국·유럽·한국·일본 5개국의
                   미국·중국·유럽·한국·일본 5개국의 핵심 정책 {total}개를 분석합니다.
                   정책과 겹치는 산업·종목을 빠르게 탐색하는 리서치 참고 도구입니다.
                   이 사이트의 내용은 투자 권유가 아닙니다.
