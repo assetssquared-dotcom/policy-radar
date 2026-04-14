@@ -21,7 +21,7 @@ const SECS = [
   { id:'hero',     label:'소개',            icon:'◎' },
   { id:'policies', label:'국가별 정책',     icon:'⊞' },
   { id:'flow',     label:'연결고리 맵',     icon:'⬡' },
-  { id:'screener', label:'수혜주 스크리너', icon:'◈' },
+  { id:'screener', label:'정책 관련주', icon:'◈' },
   { id:'heatmap',  label:'정책 히트맵',     icon:'▦' },
   { id:'calendar', label:'이벤트 캘린더',   icon:'◷' },
   { id:'risk',     label:'리스크 레이더',   icon:'⚠' },
@@ -102,7 +102,7 @@ const RISK_DATA = [
   { id:'tga_risk', lvl:4, title:'재무부 TGA 관리 → 유동성 양방향 리스크', cat:'유동성', prob:'높음', impact:'대', time:'2026 지속',
     desc:'2025년 OBBBA로 부채한도 5조 달러 증액 후 TGA가 1조 달러까지 급증하며 가을 유동성 급격 흡수(은행 준비금 2% 감소). 이후 정부 지출로 다시 방출. 2026년에도 동일 사이클 반복 예상. TGA 증가=유동성 흡수, TGA 감소=유동성 방출. 역RRP 잔고 소진으로 완충재 없어 충격 직접 전달.',
     affected:['나스닥 성장주','비트코인·암호화폐','신흥국 ETF','금'],
-    hedge:['현금 비중 유지 후 방출 시 매수','역RRP 잔고 주시'], color:'#3d9e6a' },
+    hedge:['현금 비중 유지 후 방출 구간 확인','FRED WDTGAL 주시'], color:'#3d9e6a' },
   { id:'boj', lvl:4, title:'BOJ 추가 금리 인상 → 엔 캐리 청산', cat:'통화', prob:'높음', impact:'대', time:'2026 상반기',
     desc:'2026년 현재 BOJ 기준금리 0.75~1.0%. 추가 인상 시 전 세계 엔 캐리(잔존 50조 엔 이상) 추가 청산. 2024년 8월 쇼크의 약화된 버전이지만 코스피·나스닥 5~10% 단기 조정 가능. 트럼프 관세와 동시 충격 시 복합 리스크.',
     affected:['일본 수출주(토요타·혼다)','코스피','나스닥 성장주'],
@@ -476,7 +476,7 @@ export default function Home() {
     <>
       <Head>
         <title>Policy Radar — 자산제곱 글로벌 정책 분석</title>
-        <meta name="description" content="2026년 글로벌 정책 분석 · 수혜 산업 매핑 · 자산제곱 인텔리전스" />
+        <meta name="description" content="글로벌 정책과 겹치는 주식·섹터를 시각화하는 리서치 참고 도구. 투자 권유 아님." />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
@@ -689,8 +689,8 @@ export default function Home() {
                   fontFamily:'var(--font-serif)', fontSize: mobile ? 28 : 48,
                   fontWeight: 400, color:'var(--t1)', lineHeight: 1.06, marginBottom: 16,
                 }}>
-                  정책이 만드는<br />
-                  <em style={{color:'var(--amber)', fontStyle:'italic'}}>다음 수혜주</em>
+                  정책과 겹치는<br />
+                  <em style={{color:'var(--amber)', fontStyle:'italic'}}>주식·섹터 지도</em>
                 </h1>
                 <p style={{
                   fontSize: mobile ? 13 : 14, color:'var(--t2)', lineHeight: 1.9,
@@ -698,8 +698,8 @@ export default function Home() {
                 }}>
                   모르고 하는 투자는 도박이다. 미국·중국·유럽·한국·일본 5개국의
                   핵심 정책 {total}개를 매일 자체 조사·업데이트합니다.
-                  어떤 산업에 정부 자금이 흐르고, 어떤 종목이 병목을 쥐고 있는지 —
-                  큰 그림부터 실제 매수 후보까지.
+                  정책과 맞닿는 산업·종목을 한눈에 필터링해 리서치 출발점으로 활용하세요.
+                  투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
                 </p>
               </div>
 
@@ -715,28 +715,28 @@ export default function Home() {
                     tag: '🚨 현재 진행 중',
                     title: '미-이란 전쟁 · 호르무즈 봉쇄',
                     body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
-                    link: 'XLE·FRO·셰니어(LNG)·GLD 주목',
+                    link: 'XLE·FRO·셰니어(LNG)·GLD — 정책 연관 섹터',
                     color: '#c00000',
                   },
                   {
                     tag: '🔴 최고 경계',
                     title: '미-중 관세 재결렬',
                     body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
-                    link: '반도체·K-방산 헤지 필요',
+                    link: '반도체·K-방산 — 정책 직접 연관',
                     color: '#b84a4a',
                   },
                   {
                     tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
                     title: '재무부 TGA 사이클 — 지금은 흡수 구간',
                     body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
-                    link: 'FRED WDTGAL 매주 수요일 확인',
+                    link: 'FRED WDTGAL 매주 수요일 — TGA 방향 확인',
                     color: '#b8924a',
                   },
                   {
                     tag: '🟢 구조적 기회',
                     title: 'HBM 병목 — AI의 급소',
                     body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
-                    link: '000660 · 005930 · MU',
+                    link: '정책 연관: SK하이닉스·삼성·마이크론',
                     color: '#3d9e6a',
                   },
                 ].map(({tag, title, body, link, color}, i) => (
@@ -777,12 +777,12 @@ export default function Home() {
                 {[
                   { icon:'⊞', label:'국가별 정책', desc:'아코디언으로 펼쳐 수혜주·예산·타임라인 확인' },
                   { icon:'⬡', label:'연결고리 맵', desc:'달러 패권·HBM 병목·K-방산·TGA 방출 인과관계' },
-                  { icon:'◈', label:'수혜주 스크리너', desc:'전 정책 수혜주를 섹터·국가·수혜도로 필터링' },
+                  { icon:'◈', label:'정책 관련주', desc:'전 정책과 겹치는 종목을 섹터·국가·연관도로 필터링' },
                   { icon:'▦', label:'정책 히트맵', desc:'5개국 × 12개 섹터 정책 집중도 한눈에' },
                   { icon:'◷', label:'이벤트 캘린더', desc:'2026~2028 정책 발효·표결 일정 정리' },
                   { icon:'⚠', label:'리스크 레이더', desc:'충격 규모 × 확률 순위와 헤지 전략' },
                   { icon:'◎', label:'매일 업데이트', desc:'매일 오전 7시 최신 정책을 자체 조사해 반영합니다' },
-                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 자산제곱의 심층 종목 분석' },
+                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 자산제곱의 심층 정책·산업 분석' },
                 ].map(({icon, label, desc}, i) => (
                   <div key={i} style={{
                     background:'var(--s1)', padding:'14px 16px',
@@ -957,7 +957,7 @@ export default function Home() {
             <section id="screener" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="수혜주 스크리너" />
-              <SecTitle>정책 수혜주 전체 조회</SecTitle>
+              <SecTitle>정책 관련주 조회</SecTitle>
               <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
                 {scRows.length}개 종목 · 국가·수혜도별 필터링
               </p>
@@ -1037,7 +1037,7 @@ export default function Home() {
               <Label text="정책 강도 히트맵" />
               <SecTitle>국가 × 섹터 정책 집중도</SecTitle>
               <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
-                어느 국가가 어느 섹터에 정책 화력을 집중하는지. 셀 클릭 시 관련 정책 상세 확인.
+                어느 국가가 어느 섹터에 정책 화력을 집중하는지 보여줍니다. 셀 클릭 시 관련 정책과 겹치는 종목 확인.
               </p>
 
               {/* 범례 */}
@@ -1451,7 +1451,7 @@ export default function Home() {
               flexWrap:'wrap',gap:8}}>
               <span style={{fontFamily:'var(--font-mono)',fontSize:11,
                 color:'rgba(255,255,255,0.28)'}}>
-                © 자산제곱 — POLICY RADAR 2026 · 투자 교육은 선택이 아닌 필수
+                © 자산제곱 — POLICY RADAR 2026 · 이 사이트의 모든 내용은 투자 권유가 아닌 리서치 참고용입니다
               </span>
               <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
                 {NAV.map(({label,href})=>(
