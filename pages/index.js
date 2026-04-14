@@ -26,6 +26,8 @@ const SECS = [
   { id:'screener', label:'정책 관련주', icon:'◈' },
   { id:'heatmap',  label:'정책 히트맵',     icon:'▦' },
   { id:'calendar', label:'이벤트 캘린더',   icon:'◷' },
+  { id:'conflict',  label:'정책 충돌 지도',   icon:'⚡' },
+  { id:'rotation',   label:'섹터 로테이션',    icon:'↻' },
   { id:'risk',     label:'리스크 레이더',   icon:'⚠' },
 ];
 
@@ -133,6 +135,115 @@ const RISK_DATA = [
     desc:'DOGE 감축 효과 연간 1,500억 달러 수준으로 미미. 감세법안 통과로 재정적자 GDP 7~8% 고착화. 미국채 10년물 4.5~5.5% 박스권. 고금리 장기화는 성장주·부동산 리츠 밸류에이션 압박. 다만 TGA 방출로 일시 완화 구간 존재.',
     affected:['미국 장기채(TLT)','성장주 밸류에이션','신흥국 자금 이탈'],
     hedge:['미국 단기채(SHY·BIL)','인플레이션 연동채(TIPS)'], color:'#c4a1e8' },
+];
+
+
+// ── 정책 충돌 지도 데이터 ─────────────────────────
+const CONFLICT_DATA = [
+  {
+    id: 'tariff_vs_ira',
+    title: '트럼프 관세 vs IRA 리쇼어링',
+    tension: 5,
+    a: { label: '트럼프 상호관세', color: '#b84a4a',
+         desc: '수입품에 145% 관세 → 원자재·부품 비용 급등' },
+    b: { label: 'IRA 리쇼어링', color: '#4a7fd4',
+         desc: '미국 내 제조 보조금 → 관세로 공급비용 상승해 효과 상쇄' },
+    result: '미국 내 제조 투자는 늘지만 원가 부담으로 수익성 압박. 관세 혜택 기업과 비용 피해 기업이 동시 존재.',
+    winners: ['US스틸(X)', '뉴코(NUE)'],
+    losers: ['테슬라(TSLA)', '애플(AAPL)'],
+  },
+  {
+    id: 'fed_vs_tga',
+    title: '연준 QT vs 재무부 TGA 방출',
+    tension: 4,
+    a: { label: '연준 QT (긴축)', color: '#b87030',
+         desc: '자산 축소로 은행 준비금 감소 → 유동성 흡수' },
+    b: { label: 'TGA 방출 (완화)', color: '#3d9e6a',
+         desc: '정부 지출로 시중 달러 증가 → 유동성 공급' },
+    result: '두 힘이 상쇄. TGA 방출 구간엔 QT 효과 무력화. 4월은 TGA 증가(흡수), 5~7월은 TGA 감소(방출).',
+    winners: ['QQQ(나스닥)', 'IBIT(비트코인)'],
+    losers: ['SHY(단기채)', 'BIL'],
+  },
+  {
+    id: 'ai_vs_energy',
+    title: 'AI 데이터센터 vs 에너지·탄소 목표',
+    tension: 4,
+    a: { label: 'Stargate AI 인프라', color: '#4a7fd4',
+         desc: '데이터센터 전력 수요 2030년까지 2배 이상 급증' },
+    b: { label: 'EU CBAM·탄소중립', color: '#3a9e7a',
+         desc: '탄소 배출 규제 강화 → 전력 확장에 제동' },
+    result: '청정 에너지(원전·재생)가 유일한 해법. 원전 르네상스 가속. 전력망 병목이 AI 성장의 새 제약.',
+    winners: ['콘스텔레이션(CEG)', '버티브(VRT)', '두산에너빌리티(034020)'],
+    losers: ['석탄발전', '고탄소 데이터센터 운영사'],
+  },
+  {
+    id: 'china_decoupling_vs_supply',
+    title: '미-중 디커플링 vs 글로벌 공급망',
+    tension: 5,
+    a: { label: '미국 대중 수출통제·관세', color: '#b84a4a',
+         desc: '반도체·희귀광물 중국 접근 차단' },
+    b: { label: '중국 희귀광물 보복 통제', color: '#c9a83a',
+         desc: '갈륨·게르마늄·희토류 서방 수출 제한' },
+    result: '양측 모두 공급망 파괴. 대체 공급망 구축이 10년 과제. 단기 충격 → 장기 재편 수혜주 분리.',
+    winners: ['MP머티리얼즈(MP)', 'TSMC(TSM)', 'SK하이닉스(000660)'],
+    losers: ['애플 공급망', '유럽 자동차 배터리 소재'],
+  },
+  {
+    id: 'dollar_vs_brics',
+    title: '달러 패권 vs BRICS mBridge',
+    tension: 3,
+    a: { label: 'GENIUS Act 스테이블코인', color: '#4a7fd4',
+         desc: '달러 기반 USDC·USDT 국제결제 강화' },
+    b: { label: '위안화 국제화·mBridge', color: '#b84a4a',
+         desc: 'BRICS 자체 결제망으로 달러 의존 탈피 시도' },
+    result: '단기는 달러 우세. 중장기 에너지·원자재 결제에서 균열 가능. 금이 중립 자산으로 부상.',
+    winners: ['써클(CRCL)', '코인베이스(COIN)', '금(GLD)'],
+    losers: ['달러 독점 수혜 금융 인프라'],
+  },
+];
+
+// ── 섹터 로테이션 데이터 ─────────────────────────
+const ROTATION_DATA = [
+  {
+    period: '지금 (2026 Q2)',
+    theme: '에너지·방산 슈퍼사이클',
+    color: '#b84a4a',
+    reason: '이란 전쟁·호르무즈 봉쇄 진행 중. 원유 $92. 러-우 전쟁 지속.',
+    sectors: ['에너지(XLE)', '방산(ITA)', '탱커(FRO)', 'LNG(셰니어)'],
+    avoid: ['항공(JETS)', '한국 정유', '운송'],
+  },
+  {
+    period: '2026 Q3 (3개월 후)',
+    theme: '유동성 방출 → 위험자산',
+    color: '#3d9e6a',
+    reason: 'TGA 방출 피크(5~7월). 전쟁 휴전 시 유가 조정, 나스닥 반등.',
+    sectors: ['나스닥(QQQ)', '비트코인(IBIT)', '신흥국(EEM)', '반도체(SOXX)'],
+    avoid: ['단기채(SHY)', '에너지 과매수 구간'],
+  },
+  {
+    period: '2026 Q4 (6개월 후)',
+    theme: '반도체·AI 인프라 병목',
+    color: '#c9a83a',
+    reason: '엔비디아 루빈 GPU 양산. HBM4 본격 공급. Stargate 1단계 가동.',
+    sectors: ['HBM(SK하이닉스)', '패키징(한미반도체)', '전력망(버티브)', '구리(FCX)'],
+    avoid: ['AI 버블 우려 고평가 성장주'],
+  },
+  {
+    period: '2027 상반기',
+    theme: 'K-방산 2차 수주·원전 르네상스',
+    color: '#6e8fa8',
+    reason: 'EU ReArm 2차 조달. 폴란드 K2PL 현지생산. SMR 상용화 근접.',
+    sectors: ['한화에어로(012450)', '두산에너빌리티(034020)', 'LS전선(006260)', 'K-조선'],
+    avoid: ['러-우 종전 시 유럽 방산 조정 가능성'],
+  },
+  {
+    period: '2027 하반기',
+    theme: 'HBF·AI 추론 인프라',
+    color: '#7a7ad4',
+    reason: 'HBF 상용화 시작. AI 추론 서버 급증. 엣지 AI 본격화.',
+    sectors: ['SK하이닉스(000660)', '샌디스크(SNDK)', '퀄컴(QCOM)', '냉각(VRT)'],
+    avoid: ['AI 훈련 중심 GPU 독점 구도 약화'],
+  },
 ];
 
 const PROB_C = {'높음':'#b84a4a', '중간':'#b8924a', '낮음':'#3d9e6a'};
@@ -363,6 +474,8 @@ export default function Home() {
   // 스크리너
   const [scSearch, setScSearch] = useState('');
   const [scCountry, setScCountry] = useState('all');
+  const [scKorea, setScKorea] = useState(false);
+  const [policySearch, setPolicySearch] = useState('');
   const [scImpact, setScImpact] = useState('all');
 
   // 히트맵
@@ -431,6 +544,7 @@ export default function Home() {
     if(seenSet.has(k))return false; seenSet.add(k); return true;
   });
   if(scCountry!=='all') scRows=scRows.filter(r=>r.country.id===scCountry);
+  if(scKorea) scRows=scRows.filter(r=>r.stock.includes('(0'));
   if(scImpact==='pos') scRows=scRows.filter(r=>r.pos&&r.impact>=3);
   if(scImpact==='neg') scRows=scRows.filter(r=>!r.pos);
   if(scSearch) scRows=scRows.filter(r=>
@@ -461,7 +575,18 @@ export default function Home() {
   const riskCats = ['all', ...[...new Set(RISK_DATA.map(r=>r.cat))]];
 
   const flow = FLOW_DATA.find(f=>f.id===flowId);
-  const displayedCountries = filterCountry ? countries.filter(c=>c.id===filterCountry) : countries;
+  const displayedCountries = (filterCountry ? countries.filter(c=>c.id===filterCountry) : countries)
+    .map(c => policySearch ? {
+      ...c,
+      policies: (c.policies||[]).filter(p =>
+        p.name?.toLowerCase().includes(policySearch.toLowerCase()) ||
+        (p.beneficiaries||[]).some(b =>
+          b.sector?.toLowerCase().includes(policySearch.toLowerCase()) ||
+          (b.stocks||[]).some(s => s.toLowerCase().includes(policySearch.toLowerCase()))
+        )
+      )
+    } : c)
+    .filter(c => !policySearch || c.policies.length > 0);
   const SB = 186;
 
   // 공통 버튼 스타일
@@ -807,6 +932,42 @@ export default function Home() {
                 ))}
               </div>
 
+              {/* 자산제곱 최신 리포트 */}
+              <div style={{marginBottom:0}}>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:10}}>
+                  자산제곱 — 최신 분석
+                </div>
+                <div style={{display:'grid',
+                  gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:1,
+                  background:'rgba(255,255,255,0.06)'}}>
+                  {[
+                    { tag:'심층분석', title:'이란 전쟁과 에너지 시장 — 지금 무엇을 봐야 하나', date:'2026.04' },
+                    { tag:'섹터분석', title:'HBM4·CoWoS 병목 — AI 공급망의 핵심 구간', date:'2026.04' },
+                    { tag:'매크로', title:'TGA 사이클 완전 정리 — 4월 흡수, 5~7월 방출', date:'2026.04' },
+                    { tag:'구독자료', title:'전체 분석 아카이브 →', date:'' },
+                  ].map(({tag,title,date},i)=>(
+                    <a key={i}
+                      href="https://contents.premium.naver.com/assetx2/assetsx2"
+                      target="_blank" rel="noopener"
+                      style={{display:'block',background:'var(--s1)',padding:'14px 16px',
+                        textDecoration:'none',transition:'background .12s'}}
+                      onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
+                      onMouseLeave={e=>e.currentTarget.style.background='var(--s1)'}>
+                      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:8,
+                          color:'var(--amber)',background:'rgba(184,146,74,0.12)',
+                          border:'1px solid rgba(184,146,74,0.25)',
+                          borderRadius:2,padding:'1px 6px'}}>{tag}</span>
+                        {date && <span style={{fontFamily:'var(--font-mono)',fontSize:8,
+                          color:'var(--t3)'}}>{date}</span>}
+                      </div>
+                      <div style={{fontFamily:'var(--font-sans)',fontSize:13,
+                        color:'var(--t1)',lineHeight:1.5}}>{title}</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
 
             </section>
 
@@ -814,6 +975,25 @@ export default function Home() {
             <section id="policies" style={{paddingTop:mobile?40:56}}>
               <Label text="국가별 정책 분석" />
               <SecTitle>정책 상세 분석</SecTitle>
+              {/* 정책 검색 */}
+              <div style={{position:'relative',marginBottom:20,maxWidth:360}}>
+                <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',
+                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>⌕</span>
+                <input
+                  value={policySearch} onChange={e=>setPolicySearch(e.target.value)}
+                  placeholder="정책명, 키워드, 종목 검색..."
+                  style={{width:'100%',fontFamily:'var(--font-mono)',fontSize:12,
+                    background:'var(--s2)',border:'1px solid var(--wire2)',
+                    borderRadius:4,padding:'9px 12px 9px 32px',
+                    color:'var(--t1)',outline:'none',boxSizing:'border-box'}}
+                />
+                {policySearch && (
+                  <button onClick={()=>setPolicySearch('')}
+                    style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',
+                      background:'none',border:'none',cursor:'pointer',
+                      fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>✕</button>
+                )}
+              </div>
               {/* 모바일 국가 필터 */}
               {mobile && (
                 <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:20,
@@ -829,6 +1009,12 @@ export default function Home() {
                       {c.flag} {c.name}
                     </button>
                   ))}
+                </div>
+              )}
+              {policySearch && displayedCountries.length === 0 && (
+                <div style={{padding:'40px 0',textAlign:'center',
+                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>
+                  '{policySearch}'에 해당하는 정책이 없습니다
                 </div>
               )}
               {displayedCountries.map(c => (
@@ -960,7 +1146,7 @@ export default function Home() {
               <Label text="정책 관련주 스크리너" />
               <SecTitle>정책 관련주 조회</SecTitle>
               <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
-                {scRows.length}개 종목 · 국가·수혜도별 필터링
+                {scRows.length}개 종목 · 국가·섹터·코스피 필터링
               </p>
               <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
                 <input value={scSearch} onChange={e=>setScSearch(e.target.value)}
@@ -975,6 +1161,11 @@ export default function Home() {
                   <option value="all">전체 국가</option>
                   {countries.map(c=><option key={c.id} value={c.id}>{c.flag} {c.name}</option>)}
                 </select>
+                <button onClick={()=>setScKorea(!scKorea)} style={{
+                    ...btn(scKorea),
+                    borderColor: scKorea ? '#c9a83a' : undefined,
+                    color: scKorea ? '#c9a83a' : undefined,
+                  }}>🇰🇷 코스피</button>
                 {[{v:'all',l:'전체'},{v:'pos',l:'관련주'},{v:'neg',l:'리스크'}].map(f=>(
                   <button key={f.v} onClick={()=>setScImpact(f.v)} style={btn(scImpact===f.v)}>
                     {f.l}
@@ -1362,7 +1553,123 @@ export default function Home() {
               </div>
             </section>
 
-            {/* ⑦ 리스크 레이더 */}
+            
+            {/* ⑦-a 정책 충돌 지도 */}
+            <section id="conflict" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="정책 충돌 지도" />
+              <SecTitle>정책 간 긴장·충돌 관계</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:28}}>
+                서로 방향이 다른 정책들이 어떻게 충돌하는지. 충돌 구간에서 투자 판단이 갈린다.
+              </p>
+              <div style={{display:'flex',flexDirection:'column',gap:1,background:'rgba(255,255,255,0.06)'}}>
+                {CONFLICT_DATA.map(c => (
+                  <div key={c.id} style={{background:'var(--s1)',padding:mobile?'16px':'20px 24px'}}>
+                    {/* 헤더 */}
+                    <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
+                      <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                        {[1,2,3,4,5].map(i=>(
+                          <div key={i} style={{width:8,height:8,borderRadius:'50%',
+                            background:i<=c.tension?'#b84a4a':'rgba(255,255,255,0.1)'}}/>
+                        ))}
+                      </div>
+                      <span style={{fontFamily:'var(--font-serif)',fontSize:mobile?15:18,
+                        color:'var(--t1)',fontWeight:400}}>{c.title}</span>
+                    </div>
+                    {/* 충돌 구조 */}
+                    <div style={{display:'grid',
+                      gridTemplateColumns:mobile?'1fr':'1fr 40px 1fr',
+                      gap:mobile?8:0,marginBottom:14,alignItems:'center'}}>
+                      <div style={{background:`${c.a.color}12`,border:`1px solid ${c.a.color}40`,
+                        borderRadius:3,padding:'10px 14px'}}>
+                        <div style={{fontFamily:'var(--font-mono)',fontSize:10,
+                          color:c.a.color,marginBottom:5}}>{c.a.label}</div>
+                        <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.6}}>{c.a.desc}</div>
+                      </div>
+                      <div style={{textAlign:'center',fontFamily:'var(--font-mono)',
+                        fontSize:16,color:'#b84a4a'}}>⚡</div>
+                      <div style={{background:`${c.b.color}12`,border:`1px solid ${c.b.color}40`,
+                        borderRadius:3,padding:'10px 14px'}}>
+                        <div style={{fontFamily:'var(--font-mono)',fontSize:10,
+                          color:c.b.color,marginBottom:5}}>{c.b.label}</div>
+                        <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.6}}>{c.b.desc}</div>
+                      </div>
+                    </div>
+                    {/* 결과 분석 */}
+                    <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,
+                      padding:'10px 14px',background:'rgba(255,255,255,0.03)',
+                      borderLeft:'2px solid var(--amber)',marginBottom:12}}>
+                      {c.result}
+                    </div>
+                    {/* 수혜/피해 */}
+                    <div style={{display:'flex',gap:mobile?8:16,flexWrap:'wrap'}}>
+                      <div>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                          color:'#3d9e6a',marginRight:6}}>▲ 수혜 가능</span>
+                        {c.winners.map(w=>(
+                          <span key={w} style={{fontFamily:'var(--font-mono)',fontSize:10,
+                            color:'var(--amber)',background:'rgba(184,146,74,0.1)',
+                            border:'1px solid rgba(184,146,74,0.2)',
+                            borderRadius:2,padding:'1px 6px',marginRight:4}}>{w}</span>
+                        ))}
+                      </div>
+                      <div>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                          color:'#b84a4a',marginRight:6}}>▼ 압박 가능</span>
+                        {c.losers.map(l=>(
+                          <span key={l} style={{fontFamily:'var(--font-mono)',fontSize:10,
+                            color:'var(--t3)',background:'rgba(184,74,74,0.08)',
+                            border:'1px solid rgba(184,74,74,0.15)',
+                            borderRadius:2,padding:'1px 6px',marginRight:4}}>{l}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ⑦-b 섹터 로테이션 타임라인 */}
+            <section id="rotation" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="섹터 로테이션" />
+              <SecTitle>정책 사이클 기반 섹터 순서</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:28}}>
+                정책 흐름에 따라 어떤 섹터가 언제 부각되는지. 리서치 참고용입니다.
+              </p>
+              <div style={{display:'flex',flexDirection:mobile?'column':'row',
+                gap:1,background:'rgba(255,255,255,0.06)',overflowX:mobile?'visible':'auto'}}>
+                {ROTATION_DATA.map((r,i) => (
+                  <div key={i} style={{flex:1,minWidth:mobile?'auto':200,
+                    background:'var(--s1)',padding:'18px 16px',
+                    position:'relative',overflow:'hidden'}}>
+                    <div style={{position:'absolute',top:0,left:0,right:0,
+                      height:3,background:r.color}}/>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:r.color,marginBottom:6,letterSpacing:'.05em'}}>{r.period}</div>
+                    <div style={{fontFamily:'var(--font-serif)',fontSize:14,
+                      color:'var(--t1)',marginBottom:10,lineHeight:1.3}}>{r.theme}</div>
+                    <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.7,
+                      marginBottom:12}}>{r.reason}</div>
+                    <div style={{marginBottom:10}}>
+                      <div style={{fontFamily:'var(--font-mono)',fontSize:8,
+                        color:'#3d9e6a',marginBottom:5}}>주목 섹터</div>
+                      {r.sectors.map(s=>(
+                        <div key={s} style={{fontFamily:'var(--font-mono)',fontSize:10,
+                          color:'var(--amber)',marginBottom:3}}>→ {s}</div>
+                      ))}
+                    </div>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'var(--t3)',lineHeight:1.6,
+                      borderTop:'1px solid var(--wire)',paddingTop:8}}>
+                      주의: {r.avoid[0]}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+{/* ⑦ 리스크 레이더 */}
             <section id="risk" style={{padding:mobile?'40px 0 56px':'60px 0 80px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="리스크 레이더 — 2026년 4월 기준" />
@@ -1483,3 +1790,44 @@ export default function Home() {
     </>
   );
 }
+
+              {/* 자산제곱 최신 리포트 */}
+              <div style={{marginBottom: mobile ? 24 : 36}}>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',
+                  marginBottom:10}}>자산제곱 — 최신 분석</div>
+                <div style={{display:'grid',
+                  gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:1,
+                  background:'rgba(255,255,255,0.06)'}}>
+                  {[
+                    { tag:'심층분석', title:'이란 전쟁과 에너지 시장 — 지금 무엇을 봐야 하나', date:'2026.04',
+                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
+                    { tag:'섹터분석', title:'HBM4·CoWoS 병목 — AI 공급망의 진짜 수혜 구간', date:'2026.04',
+                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
+                    { tag:'매크로', title:'TGA 사이클 완전 정리 — 4월 흡수, 5~7월 방출', date:'2026.04',
+                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
+                    { tag:'구독자료', title:'전체 분석 아카이브 보기', date:'',
+                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
+                  ].map(({tag,title,date,href},i)=>(
+                    <a key={i} href={href} target="_blank" rel="noopener"
+                      style={{display:'block',background:'var(--s1)',
+                        padding:'14px 16px',textDecoration:'none',
+                        transition:'background .12s'}}
+                      onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
+                      onMouseLeave={e=>e.currentTarget.style.background='var(--s1)'}>
+                      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:8,
+                          color:'var(--amber)',background:'rgba(184,146,74,0.12)',
+                          border:'1px solid rgba(184,146,74,0.25)',
+                          borderRadius:2,padding:'1px 6px'}}>{tag}</span>
+                        {date && <span style={{fontFamily:'var(--font-mono)',fontSize:8,
+                          color:'var(--t3)'}}>{date}</span>}
+                      </div>
+                      <div style={{fontFamily:'var(--font-sans)',fontSize:13,
+                        color:'var(--t1)',lineHeight:1.5}}>{title}</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+
