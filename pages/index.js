@@ -697,9 +697,9 @@ export default function Home() {
                   maxWidth: 560, marginBottom: 0,
                 }}>
                   모르고 하는 투자는 도박이다. 미국·중국·유럽·한국·일본 5개국의
-                  핵심 정책 {total}개를 매일 자체 조사·업데이트합니다.
-                  정책과 맞닿는 산업·종목을 한눈에 필터링해 리서치 출발점으로 활용하세요.
-                  투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
+                  미국·중국·유럽·한국·일본 5개국의 핵심 정책 {total}개를 분석합니다.
+                  정책과 겹치는 산업·종목을 빠르게 탐색하는 리서치 참고 도구입니다.
+                  이 사이트의 내용은 투자 권유가 아닙니다.
                 </p>
               </div>
 
@@ -775,13 +775,13 @@ export default function Home() {
                 marginBottom: mobile ? 32 : 48,
               }}>
                 {[
-                  { icon:'⊞', label:'국가별 정책', desc:'아코디언으로 펼쳐 수혜주·예산·타임라인 확인' },
+                  { icon:'⊞', label:'국가별 정책', desc:'아코디언으로 펼쳐 관련 종목·예산·타임라인 확인' },
                   { icon:'⬡', label:'연결고리 맵', desc:'달러 패권·HBM 병목·K-방산·TGA 방출 인과관계' },
                   { icon:'◈', label:'정책 관련주', desc:'전 정책과 겹치는 종목을 섹터·국가·연관도로 필터링' },
                   { icon:'▦', label:'정책 히트맵', desc:'5개국 × 12개 섹터 정책 집중도 한눈에' },
                   { icon:'◷', label:'이벤트 캘린더', desc:'2026~2028 정책 발효·표결 일정 정리' },
                   { icon:'⚠', label:'리스크 레이더', desc:'충격 규모 × 확률 순위와 헤지 전략' },
-                  { icon:'◎', label:'매일 업데이트', desc:'매일 오전 7시 최신 정책을 자체 조사해 반영합니다' },
+                  { icon:'◎', label:'매일 업데이트', desc:'매일 오전 7시 최신 내용을 점검해 업데이트합니다' },
                   { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 자산제곱의 심층 정책·산업 분석' },
                 ].map(({icon, label, desc}, i) => (
                   <div key={i} style={{
@@ -932,7 +932,7 @@ export default function Home() {
                     <div style={{background:'var(--s1)',border:'1px solid var(--wire)',
                       borderLeft:'2px solid #3d9e6a',borderRadius:4,padding:'14px 16px'}}>
                       <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'#3d9e6a',
-                        letterSpacing:'.08em',marginBottom:10}}>이 흐름의 수혜주</div>
+                        letterSpacing:'.08em',marginBottom:10}}>정책 연관 종목</div>
                       {flow.bens.map((b,i) => (
                         <div key={i} style={{fontFamily:'var(--font-mono)',fontSize:11,
                           color:'var(--amber)',lineHeight:1.9}}>→ {b}</div>
@@ -953,10 +953,10 @@ export default function Home() {
               )}
             </section>
 
-            {/* ④ 수혜주 스크리너 */}
+            {/* ④ 정책 관련주 스크리너 */}
             <section id="screener" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="수혜주 스크리너" />
+              <Label text="정책 관련주 스크리너" />
               <SecTitle>정책 관련주 조회</SecTitle>
               <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
                 {scRows.length}개 종목 · 국가·수혜도별 필터링
@@ -974,7 +974,7 @@ export default function Home() {
                   <option value="all">전체 국가</option>
                   {countries.map(c=><option key={c.id} value={c.id}>{c.flag} {c.name}</option>)}
                 </select>
-                {[{v:'all',l:'전체'},{v:'pos',l:'수혜주'},{v:'neg',l:'리스크'}].map(f=>(
+                {[{v:'all',l:'전체'},{v:'pos',l:'관련주'},{v:'neg',l:'리스크'}].map(f=>(
                   <button key={f.v} onClick={()=>setScImpact(f.v)} style={btn(scImpact===f.v)}>
                     {f.l}
                   </button>
@@ -1196,7 +1196,7 @@ export default function Home() {
                             {p.background}
                           </p>
 
-                          {/* 수혜주 + 헤지 2컬럼 */}
+                          {/* 관련주 + 리스크 2컬럼 */}
                           <div style={{
                             display:'grid',
                             gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
