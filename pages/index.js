@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { COUNTRIES as STATIC, MACRO_THEMES, THEMES } from '../data/policies';
 
 // ── 채널 링크 ──────────────────────────────────
@@ -44,7 +42,7 @@ const FLOW_DATA = [
     risks:['e-CNY 국경간 결제 확산','EU MiCA 디지털유로 경쟁'] },
   { id:'hbm', title:'HBM 병목 — AI의 급소', color:'#c9a83a',
     steps:[
-      {l:'AI 모델 경쟁 심화', s:'GPT-5·Claude 4·Gemini 3', t:'trigger'},
+      {l:'AI 모델 경쟁 심화', s:'GPT-5·Gemini 3·Grok 3', t:'trigger'},
       {l:'추론 수요 폭증', s:'데이터센터 24시간 풀가동', t:'effect'},
       {l:'SK하이닉스 HBM4', s:'2026년 B300 독점 공급', t:'chokepoint'},
       {l:'삼성 HBM3E 추격', s:'엔비디아 인증 완료', t:'effect'},
@@ -64,17 +62,28 @@ const FLOW_DATA = [
     ],
     bens:['한화에어로(012450)','LIG넥스원(079550)','KAI(047810)','한화오션(042660)'],
     risks:['유럽 자국 방산 육성(라인메탈 확장)','원화 강세 시 수익성 압박'] },
-  { id:'tga', title:'재무부 TGA 방출 → 유동성 서프라이즈', color:'#3d9e6a',
+  { id:'tga', title:'재무부 TGA 사이클 — 유동성의 새 지배자', color:'#3d9e6a',
     steps:[
-      {l:'OBBBA 부채한도 +5조$', s:'2025년 7월 서명·5조 달러 증액', t:'policy'},
-      {l:'TGA 잔고 1조$ 급증', s:'2025년 가을 급격한 유동성 흡수', t:'effect'},
-      {l:'TGA 지출 → 유동성 방출', s:'정부 지출로 시중 달러 증가', t:'effect'},
-      {l:'은행 준비금 증가', s:'역RRP 바닥난 상황이 관건', t:'effect'},
-      {l:'위험자산 급등', s:'나스닥·BTC·신흥국', t:'outcome'},
-      {l:'연준 대응 관찰', s:'추가 긴축 가능성 여부', t:'outcome'},
+      {l:'4월 세금납부 마감', s:'TGA 급증 → 유동성 흡수↑', t:'trigger'},
+      {l:'TGA 피크 ~8,500억$', s:'은행 준비금 감소·위험자산 압박', t:'effect'},
+      {l:'5~7월 정부 지출 가속', s:'TGA 감소 → 시중 달러 방출↑', t:'policy'},
+      {l:'역RRP 완충재 소진', s:'TGA 변동이 준비금 직격', t:'chokepoint'},
+      {l:'나스닥·BTC 랠리', s:'유동성 방출 피크 구간', t:'outcome'},
+      {l:'하반기 T-bill 재발행', s:'TGA 재충전 → 다시 유동성 흡수', t:'outcome'},
     ],
     bens:['QQQ(나스닥)','비트코인(IBIT)','뱅크오브뉴욕멜론(BK)','신흥국(EEM)'],
-    risks:['TGA 리필로 반대로 유동성 흡수(2025년 가을 패턴)','연준 QT 동시 진행 시 상쇄'] },
+    risks:['TGA 증가 구간(4월·가을) = 위험자산 조정 주의','연준 QT와 TGA 리필 동시 = 이중 유동성 흡수'] },
+  { id:'iran_hormuz', title:'이란 전쟁 → 에너지·공급망 충격', color:'#b84a4a',
+    steps:[
+      {l:'Operation Epic Fury', s:'2026.02.28 미-이스라엘 공습', t:'trigger'},
+      {l:'호르무즈 완전 봉쇄', s:'원유 20%·LNG 20% 차단', t:'chokepoint'},
+      {l:'브렌트 $120 터치', s:'IEA 비축유 긴급 방출', t:'effect'},
+      {l:'카타르 LNG 포스마쥬르', s:'글로벌 LNG 20% 공급 중단', t:'effect'},
+      {l:'비료·식량 위기', s:'우레아 30%·황 45% 차단', t:'effect'},
+      {l:'스태그플레이션 리스크', s:'$150~$200 봉쇄 지속 시', t:'outcome'},
+    ],
+    bens:['XLE·IEO(에너지)','FRO·DHT(탱커)','셰니어(LNG)','GLD(금)'],
+    risks:['임시 휴전 시 유가 급락','중국·인도 제3국 루트 개척으로 봉쇄 무력화'] }
 ];
 
 const TC = { trigger:'#b84a4a', threat:'#b84a4a', base:'#555', policy:'#4a7fd4', chokepoint:'#c9a83a', effect:'#3d9e6a', outcome:'#b8924a' };
@@ -82,6 +91,10 @@ const TL = { trigger:'TRIGGER', threat:'THREAT', base:'BASE', policy:'POLICY', c
 
 // ── 리스크 데이터 (2026년 4월 기준) ──────────────
 const RISK_DATA = [
+  { id:'iran_war', lvl:5, title:'미-이란 전쟁 — 호르무즈 봉쇄 진행 중', cat:'지정학', prob:'현재 진행', impact:'극대', time:'2026.02.28~ 진행 중',
+    desc:'2026년 2월 28일 Operation Epic Fury로 미-이스라엘이 이란 공습, 하메네이 사망. 이란이 호르무즈 해협 봉쇄(3월 4일). 전 세계 원유 20%·LNG 20%·비료 30% 차질. IEA "역사상 최대 에너지 안보 위기". 4월 7일 임시 휴전 후 협상 결렬, 4월 13일 미국 해상 봉쇄 발효. WTI $104 돌파. 유럽 가스 2배 급등. 봉쇄 장기화 시 $120+ → 글로벌 스태그플레이션.',
+    affected:['원유·가스 가격($104+)','한국·일본 에너지 수급','글로벌 비료·식량','항공·해운'],
+    hedge:['에너지 ETF(XLE·IEO)','탱커주(FRO·DHT)','금(GLD)','K-방산(012450)'], color:'#b84a4a' },
   { id:'tariff', lvl:5, title:'미-중 관세 협상 재결렬 리스크', cat:'지정학', prob:'중간', impact:'극대', time:'2026 Q2~Q3',
     desc:'2025년 10월 임시 합의로 관세율 하향 조정됐으나, 2026년 중간선거를 앞두고 트럼프의 강경 재선회 가능성. 중국의 대만 군사압박과 맞물리면 관세 전쟁 2라운드 돌입. 중국은 희귀광물 카드, 미국은 금융제재 카드를 동시에 보유.',
     affected:['반도체 공급망','한국 수출 기업','위안화·원화 동반 약세'],
@@ -106,6 +119,10 @@ const RISK_DATA = [
     desc:'2025년 부양책(10조 위안)이 소비 부진으로 효과 제한. 부동산 안정화는 됐지만 반등은 없음. 위안화 6.9~7.2 박스권. 중국발 디플레이션 수출이 글로벌 제조업 마진 압박. 한국 화학·철강·배터리 타격 지속.',
     affected:['한국 화학·철강','중국 소비 관련주','원자재 가격'],
     hedge:['중국 제외 신흥국(EEM-MCHI)','인도(INDA)·베트남(VNM)'], color:'#b84a4a' },
+  { id:'china_iran', lvl:4, title:'중국·러시아 이란 지원 — 봉쇄 무력화 리스크', cat:'지정학', prob:'중간', impact:'극대', time:'2026 Q2',
+    desc:'트럼프가 이란 통과 선박에 추가 50% 관세 위협으로 중국 직접 겨냥. 중국은 이란 최대 원유 구매국이며 계속 수입 중. 러시아도 이란 무기 지원 가능성. 중국이 이란 지원을 강행할 경우 미-중 갈등 2중화 — 관세+군사 동시 충돌. 트럼프 중국 방문(다음달 예정)이 변수.',
+    affected:['미-중 관계 급격 악화','위안화·원화 동반 약세','희귀광물 추가 통제'],
+    hedge:['금(GLD)','달러 강세 헤지','에너지 비중 유지'], color:'#b84a4a' },
   { id:'rare', lvl:3, title:'희귀광물 공급망 불안 장기화', cat:'공급망', prob:'높음', impact:'중간', time:'2026 지속',
     desc:'중국의 갈륨·게르마늄·희토류 수출 제한이 2년째 지속. 서방 대안(MP머티리얼즈·라이너스)은 아직 공급 부족. 방산·반도체·EV 배터리 원가 상승 요인으로 구조화. 2026년 텅스텐·리튬 추가 통제 가능성.',
     affected:['반도체 장비','방산 소재','EV 배터리 원가'],
@@ -459,7 +476,7 @@ export default function Home() {
     <>
       <Head>
         <title>Policy Radar — 자산제곱 글로벌 정책 분석</title>
-        <meta name="description" content="2026년 글로벌 정책 분석 · 수혜 산업 매핑 · 매일 AI 자동 업데이트" />
+        <meta name="description" content="2026년 글로벌 정책 분석 · 수혜 산업 매핑 · 자산제곱 인텔리전스" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
@@ -680,7 +697,7 @@ export default function Home() {
                   maxWidth: 560, marginBottom: 0,
                 }}>
                   모르고 하는 투자는 도박이다. 미국·중국·유럽·한국·일본 5개국의
-                  핵심 정책 {total}개를 매일 AI가 조사·업데이트합니다.
+                  핵심 정책 {total}개를 매일 자체 조사·업데이트합니다.
                   어떤 산업에 정부 자금이 흐르고, 어떤 종목이 병목을 쥐고 있는지 —
                   큰 그림부터 실제 매수 후보까지.
                 </p>
@@ -689,11 +706,18 @@ export default function Home() {
               {/* 핵심 지금 시나리오 카드 */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr',
+                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
                 gap: 1, background: 'rgba(255,255,255,0.06)',
                 marginBottom: mobile ? 24 : 40,
               }}>
                 {[
+                  {
+                    tag: '🚨 현재 진행 중',
+                    title: '미-이란 전쟁 · 호르무즈 봉쇄',
+                    body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
+                    link: 'XLE·FRO·셰니어(LNG)·GLD 주목',
+                    color: '#c00000',
+                  },
                   {
                     tag: '🔴 최고 경계',
                     title: '미-중 관세 재결렬',
@@ -702,10 +726,10 @@ export default function Home() {
                     color: '#b84a4a',
                   },
                   {
-                    tag: '🟡 5~6월 주시',
-                    title: '재무부 TGA 방출 임박',
-                    body: 'OBBBA 이후 TGA 1조달러 급증. 지금부터 지출 가속 시 수조달러 유동성 시중 방출. 역RRP 소진으로 은행 준비금에 직격 — 나스닥·비트코인 단기 랠리 트리거.',
-                    link: 'FRED WDTGAL 매주 체크',
+                    tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
+                    title: '재무부 TGA 사이클 — 지금은 흡수 구간',
+                    body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
+                    link: 'FRED WDTGAL 매주 수요일 확인',
                     color: '#b8924a',
                   },
                   {
@@ -757,8 +781,8 @@ export default function Home() {
                   { icon:'▦', label:'정책 히트맵', desc:'5개국 × 12개 섹터 정책 집중도 한눈에' },
                   { icon:'◷', label:'이벤트 캘린더', desc:'2026~2028 정책 발효·표결 일정 정리' },
                   { icon:'⚠', label:'리스크 레이더', desc:'충격 규모 × 확률 순위와 헤지 전략' },
-                  { icon:'◎', label:'자동 업데이트', desc:'Claude AI가 매일 오전 7시 최신 정책 조사·반영' },
-                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 월닥의 심층 종목 분석' },
+                  { icon:'◎', label:'매일 업데이트', desc:'매일 오전 7시 최신 정책을 자체 조사해 반영합니다' },
+                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 자산제곱의 심층 종목 분석' },
                 ].map(({icon, label, desc}, i) => (
                   <div key={i} style={{
                     background:'var(--s1)', padding:'14px 16px',
