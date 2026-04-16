@@ -605,7 +605,9 @@ export default function Home() {
         <title>자산제곱 정책 탐지 레이더</title>
         <meta name="description" content="자산제곱 정책 탐지 레이더 — 글로벌 정책과 겹치는 주식·섹터 리서치 참고 도구" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <meta name="theme-color" content="#050608" />
       </Head>
 
       <div style={{minHeight:'100vh',background:'var(--ink)'}}>
@@ -615,10 +617,16 @@ export default function Home() {
           padding:'0 20px',borderBottom:'1px solid var(--wire)',background:'var(--ink)',
           position:'fixed',top:0,left:0,right:0,zIndex:300}}>
           <div style={{display:'flex',alignItems:'center',gap:0}}>
-            <img src="/logo.png" alt="자산제곱" style={{width:30,height:30,borderRadius:6,flexShrink:0,objectFit:'cover'}}/>
-            <div>
-              <div style={{fontFamily:'var(--font-sans)',fontSize:13,fontWeight:700,color:'var(--t1)',lineHeight:1.2}}>자산제곱</div>
-              <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--amber)',letterSpacing:'.1em',lineHeight:1.2}}>정책 탐지 레이더</div>
+            <img src="/logo.png" alt="자산제곱" style={{
+              width:32,height:32,borderRadius:7,flexShrink:0,
+              objectFit:'cover',border:'1px solid rgba(255,255,255,0.1)'
+            }}/>
+            <div style={{marginLeft:2}}>
+              <div style={{fontFamily:'var(--font-sans)',fontSize:14,fontWeight:700,
+                color:'var(--t1)',lineHeight:1.25,letterSpacing:'-.01em'}}>자산제곱</div>
+              <div style={{fontFamily:'var(--font-mono)',fontSize:8,
+                color:'var(--amber)',letterSpacing:'.12em',lineHeight:1.25,
+                opacity:0.85}}>정책 탐지 레이더</div>
             </div>
           </div>
           {!mobile ? (
@@ -1745,34 +1753,46 @@ export default function Home() {
             </section>
 
             {/* 푸터 */}
-            <div style={{borderTop:'1px solid var(--wire)',padding:'18px 0 32px',
-              display:'flex',alignItems:'center',justifyContent:'space-between',
-              flexWrap:'wrap',gap:8}}>
-              <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                color:'rgba(255,255,255,0.28)'}}>
-                © 자산제곱 — 정책 탐지 레이더 2026
-              </span>
+            <div style={{borderTop:'1px solid var(--wire)',marginTop:8,
+              padding:mobile?'24px 0 40px':'28px 0 40px'}}>
+              {/* 면책 조항 */}
               <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                color:'rgba(255,255,255,0.18)',maxWidth:640,lineHeight:1.8,
-                textAlign:'center',marginTop:8}}>
+                color:'rgba(255,255,255,0.2)',lineHeight:1.9,
+                textAlign:'center',marginBottom:20,
+                padding:'12px 16px',
+                background:'rgba(255,255,255,0.02)',
+                border:'1px solid rgba(255,255,255,0.05)',
+                borderRadius:4}}>
                 제공되는 모든 정보는 공개된 정책 데이터를 기반으로 한 참고 자료이며,
                 특정 금융상품의 매수·매도를 권유하지 않습니다.
                 투자 결정으로 인한 손익은 전적으로 투자자 본인에게 귀속됩니다.
               </div>
-              <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
-                {NAV.map(({label,href})=>(
-                  <a key={label} href={href} target="_blank" rel="noopener"
-                    style={{fontFamily:'var(--font-mono)',fontSize:11,
-                      color:'rgba(255,255,255,0.28)',textDecoration:'none',
-                      transition:'color .12s'}}
-                    onMouseEnter={e=>e.target.style.color='rgba(255,255,255,0.6)'}
-                    onMouseLeave={e=>e.target.style.color='rgba(255,255,255,0.28)'}>
-                    {label}
-                  </a>
-                ))}
+              {/* 링크 + 카피라이트 */}
+              <div style={{display:'flex',alignItems:'center',
+                justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:10,
+                  color:'rgba(255,255,255,0.25)'}}>
+                  © 자산제곱 — 정책 탐지 레이더 2026
+                </span>
+                <div style={{display:'flex',gap:mobile?12:20,flexWrap:'wrap'}}>
+                  {[
+                    {l:'Threads', h:'https://www.threads.com/@asset.x2'},
+                    {l:'YouTube', h:'https://www.youtube.com/channel/UCpTC-SMFjA3EDRhZIKOcKuQ'},
+                    {l:'프로젝트방', h:'https://t.me/+2Qw1cAZTm8FjMGNl'},
+                    {l:'구독자료', h:'https://contents.premium.naver.com/assetx2/assetsx2'},
+                  ].map(({l,h})=>(
+                    <a key={l} href={h} target="_blank" rel="noopener"
+                      style={{fontFamily:'var(--font-mono)',fontSize:10,
+                        color:'rgba(255,255,255,0.3)',textDecoration:'none',
+                        transition:'color .12s'}}
+                      onMouseEnter={e=>e.currentTarget.style.color='var(--amber)'}
+                      onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.3)'}>
+                      {l}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
-
           </main>
         </div>
       </div>
