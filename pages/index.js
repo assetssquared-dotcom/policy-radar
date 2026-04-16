@@ -933,13 +933,13 @@ export default function Home() {
               </div>
 
               {/* 자산제곱 최신 리포트 */}
-              <div style={{marginBottom:0}}>
+              <div style={{marginBottom:24}}>
                 <div style={{fontFamily:'var(--font-mono)',fontSize:9,
                   color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:10}}>
                   자산제곱 — 최신 분석
                 </div>
                 <div style={{display:'grid',
-                  gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:1,
+                  gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:1,
                   background:'rgba(255,255,255,0.06)'}}>
                   {[
                     { tag:'심층분석', title:'이란 전쟁과 에너지 시장 — 지금 무엇을 봐야 하나', date:'2026.04' },
@@ -1791,43 +1791,5 @@ export default function Home() {
   );
 }
 
-              {/* 자산제곱 최신 리포트 */}
-              <div style={{marginBottom: mobile ? 24 : 36}}>
-                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',
-                  marginBottom:10}}>자산제곱 — 최신 분석</div>
-                <div style={{display:'grid',
-                  gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:1,
-                  background:'rgba(255,255,255,0.06)'}}>
-                  {[
-                    { tag:'심층분석', title:'이란 전쟁과 에너지 시장 — 지금 무엇을 봐야 하나', date:'2026.04',
-                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
-                    { tag:'섹터분석', title:'HBM4·CoWoS 병목 — AI 공급망의 진짜 수혜 구간', date:'2026.04',
-                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
-                    { tag:'매크로', title:'TGA 사이클 완전 정리 — 4월 흡수, 5~7월 방출', date:'2026.04',
-                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
-                    { tag:'구독자료', title:'전체 분석 아카이브 보기', date:'',
-                      href:'https://contents.premium.naver.com/assetx2/assetsx2' },
-                  ].map(({tag,title,date,href},i)=>(
-                    <a key={i} href={href} target="_blank" rel="noopener"
-                      style={{display:'block',background:'var(--s1)',
-                        padding:'14px 16px',textDecoration:'none',
-                        transition:'background .12s'}}
-                      onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
-                      onMouseLeave={e=>e.currentTarget.style.background='var(--s1)'}>
-                      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                          color:'var(--amber)',background:'rgba(184,146,74,0.12)',
-                          border:'1px solid rgba(184,146,74,0.25)',
-                          borderRadius:2,padding:'1px 6px'}}>{tag}</span>
-                        {date && <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                          color:'var(--t3)'}}>{date}</span>}
-                      </div>
-                      <div style={{fontFamily:'var(--font-sans)',fontSize:13,
-                        color:'var(--t1)',lineHeight:1.5}}>{title}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
 
 
