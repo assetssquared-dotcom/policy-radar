@@ -1137,7 +1137,7 @@ export default function Home() {
               <Label text="정책 관련주 스크리너" />
               <SecTitle>정책 관련주 조회</SecTitle>
               <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
-                {scRows.length}개 종목 · 국가·섹터·코스피 필터링
+                {scRows.length}개 종목 · 정책과 연관된 종목을 탐색하는 도구입니다. 종목 언급은 투자 권유가 아닙니다.
               </p>
               <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
                 <input value={scSearch} onChange={e=>setScSearch(e.target.value)}
@@ -1168,7 +1168,7 @@ export default function Home() {
                 <div style={{display:'grid',minWidth:500,
                   gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
                   background:'var(--s2)',padding:'8px 16px',borderBottom:'1px solid var(--wire)'}}>
-                  {(mobile?['종목','섹터','수혜도']:['종목','섹터','수혜도','ETF','국가']).map(h=>(
+                  {(mobile?['종목','섹터','연관도']:['종목','섹터','연관도','ETF','국가']).map(h=>(
                     <div key={h} style={{fontFamily:'var(--font-mono)',fontSize:9,
                       color:'var(--t3)',letterSpacing:'.08em'}}>{h}</div>
                   ))}
@@ -1750,8 +1750,15 @@ export default function Home() {
               flexWrap:'wrap',gap:8}}>
               <span style={{fontFamily:'var(--font-mono)',fontSize:11,
                 color:'rgba(255,255,255,0.28)'}}>
-                © 자산제곱 — 정책 탐지 레이더 2026 · 이 사이트의 모든 내용은 투자 권유가 아닌 리서치 참고용입니다
+                © 자산제곱 — 정책 탐지 레이더 2026
               </span>
+              <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                color:'rgba(255,255,255,0.18)',maxWidth:640,lineHeight:1.8,
+                textAlign:'center',marginTop:8}}>
+                제공되는 모든 정보는 공개된 정책 데이터를 기반으로 한 참고 자료이며,
+                특정 금융상품의 매수·매도를 권유하지 않습니다.
+                투자 결정으로 인한 손익은 전적으로 투자자 본인에게 귀속됩니다.
+              </div>
               <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
                 {NAV.map(({label,href})=>(
                   <a key={label} href={href} target="_blank" rel="noopener"
