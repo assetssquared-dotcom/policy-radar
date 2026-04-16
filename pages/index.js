@@ -614,7 +614,7 @@ export default function Home() {
       <div style={{minHeight:'100vh',background:'var(--ink)'}}>
 
         {/* ── NAV ── */}
-        <nav style={{height:52,display:'flex',alignItems:'center',justifyContent:'space-between',
+        <nav style={{height:64,display:'flex',alignItems:'center',justifyContent:'space-between',
           padding:'0 20px',borderBottom:'1px solid var(--wire)',background:'var(--ink)',
           position:'fixed',top:0,left:0,right:0,zIndex:300}}>
           <div style={{display:'flex',alignItems:'center',gap:0}}>
@@ -624,9 +624,9 @@ export default function Home() {
             }}/>
             <div style={{marginLeft:4}}>
               <div style={{fontFamily:'var(--font-sans)',fontSize:14,fontWeight:700,
-                color:'var(--t1)',lineHeight:1.25,letterSpacing:'-.01em'}}>자산제곱</div>
+                color:'var(--t1)',lineHeight:1.4,letterSpacing:'-.01em'}}>자산제곱</div>
               <div style={{fontFamily:'var(--font-mono)',fontSize:8,
-                color:'var(--amber)',letterSpacing:'.12em',lineHeight:1.25,
+                color:'var(--amber)',letterSpacing:'.12em',lineHeight:1.4,
                 opacity:0.85}}>정책 탐지 레이더</div>
             </div>
           </div>
@@ -670,7 +670,7 @@ export default function Home() {
 
         {/* 모바일 드로어 */}
         {mobile && menuOpen && (
-          <div style={{position:'fixed',top:52,left:0,right:0,zIndex:299,
+          <div style={{position:'fixed',top:64,left:0,right:0,zIndex:299,
             background:'var(--s1)',borderBottom:'1px solid var(--wire)',
             padding:'16px',display:'flex',flexDirection:'column',gap:8,
             animation:'fadeIn .15s ease',maxHeight:'calc(100vh - 52px)',overflowY:'auto'}}>
@@ -687,12 +687,12 @@ export default function Home() {
         )}
 
         {/* ── 본문 레이아웃 ── */}
-        <div style={{paddingTop:52,display:'flex',alignItems:'flex-start'}}>
+        <div style={{paddingTop:64,display:'flex',alignItems:'flex-start'}}>
 
           {/* 사이드바 (데스크탑) */}
           {!mobile && (
-            <aside style={{width:SB,flexShrink:0,position:'sticky',top:52,
-              height:'calc(100vh - 52px)',overflowY:'auto',
+            <aside style={{width:SB,flexShrink:0,position:'sticky',top:64,
+              height:'calc(100vh - 64px)',overflowY:'auto',
               borderRight:'1px solid var(--wire)',background:'var(--s1)',
               display:'flex',flexDirection:'column'}}>
 
@@ -784,7 +784,7 @@ export default function Home() {
 
             {/* 모바일 퀵네비 */}
             {mobile && (
-              <div style={{position:'sticky',top:52,zIndex:100,background:'var(--s1)',
+              <div style={{position:'sticky',top:64,zIndex:100,background:'var(--s1)',
                 borderBottom:'1px solid var(--wire)',marginLeft:-16,marginRight:-16,
                 paddingLeft:16,overflowX:'auto',display:'flex',gap:0,
                 scrollbarWidth:'none',WebkitOverflowScrolling:'touch'}}>
