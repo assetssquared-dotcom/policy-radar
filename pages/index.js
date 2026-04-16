@@ -605,8 +605,9 @@ export default function Home() {
         <title>자산제곱 정책 탐지 레이더</title>
         <meta name="description" content="자산제곱 정책 탐지 레이더 — 글로벌 정책과 겹치는 주식·섹터 리서치 참고 도구" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="/logo.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="icon" href="/logo.png?v=2" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/logo.png?v=2" />
+        <link rel="apple-touch-icon" href="/logo.png?v=2" />
         <meta name="theme-color" content="#050608" />
       </Head>
 
@@ -621,7 +622,7 @@ export default function Home() {
               width:32,height:32,borderRadius:7,flexShrink:0,
               objectFit:'cover',border:'1px solid rgba(255,255,255,0.1)'
             }}/>
-            <div style={{marginLeft:2}}>
+            <div style={{marginLeft:4}}>
               <div style={{fontFamily:'var(--font-sans)',fontSize:14,fontWeight:700,
                 color:'var(--t1)',lineHeight:1.25,letterSpacing:'-.01em'}}>자산제곱</div>
               <div style={{fontFamily:'var(--font-mono)',fontSize:8,
@@ -1332,7 +1333,7 @@ export default function Home() {
                       background:`${c.color}0d`,
                       borderBottom:'1px solid var(--wire)',
                     }}>
-                      <div style={{display:'flex',alignItems:'center',gap:10}}>
+                      <div style={{display:'flex',alignItems:'center',gap:12,padding:'0 4px'}}>
                         <span style={{fontSize:18}}>{c.flag}</span>
                         <div>
                           <span style={{fontFamily:'var(--font-serif)',fontSize:16,color:c.color}}>{c.name}</span>
@@ -1690,7 +1691,7 @@ export default function Home() {
                     <div style={{padding:'14px 18px 12px',borderBottom:'1px solid var(--wire)'}}>
                       <div style={{display:'flex',alignItems:'flex-start',
                         justifyContent:'space-between',gap:14,marginBottom:8}}>
-                        <div style={{display:'flex',alignItems:'center',gap:10}}>
+                        <div style={{display:'flex',alignItems:'center',gap:12,padding:'0 4px'}}>
                           <div style={{display:'flex',gap:3}}>
                             {[1,2,3,4,5].map(i=>(
                               <div key={i} style={{width:8,height:8,borderRadius:'50%',
