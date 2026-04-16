@@ -602,10 +602,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Policy Radar — 자산제곱 글로벌 정책 분석</title>
-        <meta name="description" content="글로벌 정책과 겹치는 주식·섹터를 시각화하는 리서치 참고 도구. 투자 권유 아님." />
+        <title>자산제곱 정책 탐지 레이더</title>
+        <meta name="description" content="자산제곱 정책 탐지 레이더 — 글로벌 정책과 겹치는 주식·섹터 리서치 참고 도구" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/logo.png" />
       </Head>
 
       <div style={{minHeight:'100vh',background:'var(--ink)'}}>
@@ -615,20 +615,11 @@ export default function Home() {
           padding:'0 20px',borderBottom:'1px solid var(--wire)',background:'var(--ink)',
           position:'fixed',top:0,left:0,right:0,zIndex:300}}>
           <div style={{display:'flex',alignItems:'center',gap:0}}>
-            <span style={{fontFamily:'var(--font-mono)',fontSize:12,fontWeight:500,
-              color:'var(--amber)',letterSpacing:'.1em'}}>
-              POLICY RADAR
-            </span>
-            {!mobile && (
-              <>
-                <span style={{width:1,height:14,background:'rgba(255,255,255,0.1)',
-                  margin:'0 12px',display:'inline-block'}} />
-                <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                  color:'rgba(255,255,255,0.2)',letterSpacing:'.06em'}}>
-                  자산제곱 INTELLIGENCE
-                </span>
-              </>
-            )}
+            <img src="/logo.png" alt="자산제곱" style={{width:30,height:30,borderRadius:6,flexShrink:0,objectFit:'cover'}}/>
+            <div>
+              <div style={{fontFamily:'var(--font-sans)',fontSize:13,fontWeight:700,color:'var(--t1)',lineHeight:1.2}}>자산제곱</div>
+              <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--amber)',letterSpacing:'.1em',lineHeight:1.2}}>정책 탐지 레이더</div>
+            </div>
           </div>
           {!mobile ? (
             <div style={{display:'flex',alignItems:'center',gap:8}}>
@@ -811,7 +802,7 @@ export default function Home() {
 
               {/* 상단 타이틀 */}
               <div style={{marginBottom: mobile ? 28 : 40}}>
-                <Label text="자산제곱 — 글로벌 정책 분석 레이더 · 2026" />
+                <Label text="자산제곱 — 정책 탐지 레이더 · 2026" />
                 <h1 style={{
                   fontFamily:'var(--font-serif)', fontSize: mobile ? 28 : 48,
                   fontWeight: 400, color:'var(--t1)', lineHeight: 1.06, marginBottom: 16,
@@ -1759,7 +1750,7 @@ export default function Home() {
               flexWrap:'wrap',gap:8}}>
               <span style={{fontFamily:'var(--font-mono)',fontSize:11,
                 color:'rgba(255,255,255,0.28)'}}>
-                © 자산제곱 — POLICY RADAR 2026 · 이 사이트의 모든 내용은 투자 권유가 아닌 리서치 참고용입니다
+                © 자산제곱 — 정책 탐지 레이더 2026 · 이 사이트의 모든 내용은 투자 권유가 아닌 리서치 참고용입니다
               </span>
               <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
                 {NAV.map(({label,href})=>(
@@ -1790,5 +1781,6 @@ export default function Home() {
     </>
   );
 }
+
 
 
