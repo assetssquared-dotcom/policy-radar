@@ -4,26 +4,29 @@ import { COUNTRIES, THEMES, MACRO_THEMES } from '../../data/policies';
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
-  try {
-    // Redis에서 최신 데이터 시도
-    const stored = await redis.get(KEYS.POLICIES);
-    const lastRun = await redis.get(KEYS.LAST_RUN);
+  // ?refresh=true 또는 x-admin-secret 헤더로 Redis 캐시 무시
+  const forceStatic = req.query.refresh === 'true'
+    && req.headers['x-admin-secret'] === process.env.ADMIN_SECRET;
 
-    if (stored) {
-      return res.status(200).json({
-        countries: stored,
-        themes: THEMES,
-        macroThemes: MACRO_THEMES,
-        lastUpdated: lastRun?.timestamp || null,
-        source: 'redis',
-      });
+  if (!forceStatic) {
+    try {
+      const stored = await redis.get(KEYS.POLICIES);
+      const lastRun = await redis.get(KEYS.LAST_RUN);
+
+      if (stored) {
+        return res.status(200).json({
+          countries: stored,
+          themes: THEMES,
+          macroThemes: MACRO_THEMES,
+          lastUpdated: lastRun?.timestamp || null,
+          source: 'redis',
+        });
+      }
+    } catch (e) {
+      console.log('Redis fallback:', e.message);
     }
-  } catch (e) {
-    // Redis 없으면 static fallback
-    console.log('Redis fallback:', e.message);
   }
 
-  // Static fallback
   return res.status(200).json({
     countries: COUNTRIES,
     themes: THEMES,
