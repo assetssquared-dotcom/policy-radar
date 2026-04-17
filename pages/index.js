@@ -716,6 +716,7 @@ export default function Home() {
     <>
       <Head>
         <title>자산제곱 정책 탐지 레이더</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
         <meta name="description" content="자산제곱 정책 탐지 레이더 — 글로벌 정책과 겹치는 주식·섹터 리서치 참고 도구" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/logo.png?v=2" type="image/png" sizes="32x32" />
@@ -730,7 +731,8 @@ export default function Home() {
         <nav style={{height:64,display:'flex',alignItems:'center',justifyContent:'space-between',
           padding:'0 20px',borderBottom:'1px solid var(--wire)',
           background:'var(--ink)',
-          position:'fixed',top:0,left:0,right:0,zIndex:1000}}>
+          position:'fixed',top:0,left:0,right:0,zIndex:1000,
+          paddingTop:'env(safe-area-inset-top,0px)'}}>
           <div style={{display:'flex',alignItems:'center',gap:0}}>
             <img src="/logo.png" alt="자산제곱" style={{
               width:32,height:32,borderRadius:7,flexShrink:0,
@@ -754,11 +756,15 @@ export default function Home() {
               </div>
               {NAV.map(({label,href,color,bg,border,icon}) => (
                 <a key={label} href={href} target="_blank" rel="noopener"
-                  style={{display:'flex',alignItems:'center',gap:6,fontFamily:'var(--font-sans)',
-                    fontSize:11,fontWeight:500,color,background:bg,border:`1px solid ${border}`,
-                    borderRadius:6,padding:'5px 11px',textDecoration:'none',transition:'opacity .15s'}}>
-                  <span dangerouslySetInnerHTML={{__html:icon}} />
-                  {label}
+                  title={label}
+                  style={{display:'flex',alignItems:'center',justifyContent:'center',
+                    color,background:bg,border:`1px solid ${border}`,
+                    borderRadius:6,padding:'6px 8px',textDecoration:'none',
+                    transition:'opacity .15s',flexShrink:0}}
+                  onMouseEnter={e=>e.currentTarget.style.opacity='.75'}
+                  onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
+                  <span dangerouslySetInnerHTML={{__html:icon}}
+                    style={{display:'flex',alignItems:'center',lineHeight:0}}/>
                 </a>
               ))}
             </div>
@@ -784,7 +790,7 @@ export default function Home() {
 
         {/* 모바일 드로어 */}
         {mobile && menuOpen && (
-          <div style={{position:'fixed',top:64,left:0,right:0,zIndex:299,
+          <div style={{position:'fixed',top:'calc(64px + env(safe-area-inset-top,0px))',left:0,right:0,zIndex:299,
             background:'var(--s1)',borderBottom:'1px solid var(--wire)',
             padding:'16px',display:'flex',flexDirection:'column',gap:8,
             animation:'fadeIn .15s ease',maxHeight:'calc(100vh - 52px)',overflowY:'auto'}}>
@@ -801,7 +807,7 @@ export default function Home() {
         )}
 
         {/* ── 본문 레이아웃 ── */}
-        <div style={{paddingTop:mobile?108:64,display:'flex',alignItems:'flex-start'}}>
+        <div style={{paddingTop:mobile?`calc(108px + env(safe-area-inset-top,0px))`:'64px',display:'flex',alignItems:'flex-start'}}>
 
           {/* 사이드바 (데스크탑) */}
           {!mobile && (
@@ -898,7 +904,7 @@ export default function Home() {
 
             {/* 모바일 퀵네비 */}
             {mobile && (
-              <div style={{position:'fixed',top:64,left:0,right:0,zIndex:200,background:'var(--ink)',
+              <div style={{position:'fixed',top:`calc(64px + env(safe-area-inset-top,0px))`,left:0,right:0,zIndex:200,background:'var(--ink)',
                 borderBottom:'1px solid var(--wire)',
                 paddingLeft:16,overflowX:'auto',display:'flex',gap:0,
                 scrollbarWidth:'none',WebkitOverflowScrolling:'touch'}}>
