@@ -2,47 +2,35 @@ import { redis, KEYS } from '../../lib/redis';
 import { COUNTRIES, THEMES, MACRO_THEMES } from '../../data/policies';
 
 // Redis 데이터의 AI 업데이트 내용은 유지하되,
-// data/policies.js의 핵심 필드(name/budget/date/background/timeline/beneficiaries)는 항상 최신으로 덮어씀
+// data/policies.js의 핵심 필드는 항상 최신으로 덮어씀
 function mergeWithStatic(redisCountries, staticCountries) {
-  // static을 기준으로 맵 생성
-  const staticMap = {};
+  const staticPolicyMap = {};
   for (const country of staticCountries) {
-    staticMap[country.id] = country;
-    if (country.policies) {
-      for (const policy of country.policies) {
-        staticMap[`policy_${policy.id}`] = policy;
-      }
+    for (const policy of (country.policies || [])) {
+      staticPolicyMap[policy.id] = policy;
     }
   }
 
-  return redisCountries.map(country => {
-    const staticCountry = staticMap[country.id];
-    if (!staticCountry) return country;
-
-    return {
-      ...country,
-      // 국가 레벨: summary, updated는 Redis(AI 업데이트) 유지
-      policies: (country.policies || []).map(policy => {
-        const staticPolicy = staticMap[`policy_${policy.id}`];
-        if (!staticPolicy) return policy;
-
-        // 핵심 편집 필드는 static으로 덮어씀
-        return {
-          ...policy,
-          name: staticPolicy.name ?? policy.name,
-          budget: staticPolicy.budget ?? policy.budget,
-          date: staticPolicy.date ?? policy.date,
-          status: staticPolicy.status ?? policy.status,
-          themes: staticPolicy.themes ?? policy.themes,
-          background: staticPolicy.background ?? policy.background,
-          timeline: staticPolicy.timeline ?? policy.timeline,
-          beneficiaries: staticPolicy.beneficiaries ?? policy.beneficiaries,
-          risks: staticPolicy.risks ?? policy.risks,
-          budgetData: staticPolicy.budgetData ?? policy.budgetData,
-        };
-      }),
-    };
-  });
+  return redisCountries.map(country => ({
+    ...country,
+    policies: (country.policies || []).map(policy => {
+      const sp = staticPolicyMap[policy.id];
+      if (!sp) return policy;
+      return {
+        ...policy,
+        name:          sp.name          ?? policy.name,
+        budget:        sp.budget        ?? policy.budget,
+        date:          sp.date          ?? policy.date,
+        status:        sp.status        ?? policy.status,
+        themes:        sp.themes        ?? policy.themes,
+        background:    sp.background    ?? policy.background,
+        timeline:      sp.timeline      ?? policy.timeline,
+        beneficiaries: sp.beneficiaries ?? policy.beneficiaries,
+        risks:         sp.risks         ?? policy.risks,
+        budgetData:    sp.budgetData    ?? policy.budgetData,
+      };
+    }),
+  }));
 }
 
 export default async function handler(req, res) {
@@ -57,15 +45,20 @@ export default async function handler(req, res) {
       const lastRun = await redis.get(KEYS.LAST_RUN);
 
       if (stored) {
-        // Redis 데이터에 static 핵심 필드 덮어쓰기
-        const merged = mergeWithStatic(stored, COUNTRIES);
-        return res.status(200).json({
-          countries: merged,
-          themes: THEMES,
-          macroThemes: MACRO_THEMES,
-          lastUpdated: lastRun?.timestamp || null,
-          source: 'redis+static',
-        });
+        // stored = { countries: [...], lastUpdated: '...' } 구조
+        const parsed = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        const redisCountries = parsed?.countries ?? parsed;
+
+        if (Array.isArray(redisCountries) && redisCountries.length > 0) {
+          const merged = mergeWithStatic(redisCountries, COUNTRIES);
+          return res.status(200).json({
+            countries: merged,
+            themes: THEMES,
+            macroThemes: MACRO_THEMES,
+            lastUpdated: parsed?.lastUpdated || lastRun?.timestamp || null,
+            source: 'redis+static',
+          });
+        }
       }
     } catch (e) {
       console.log('Redis fallback:', e.message);
