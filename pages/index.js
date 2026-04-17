@@ -836,6 +836,117 @@ export default function Home() {
 
               
 
+
+              {/* 핵심 지금 시나리오 카드 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 24 : 40,
+              }}>
+                {[
+                  {
+                    tag: '🚨 현재 진행 중',
+                    title: '미-이란 전쟁 · 호르무즈 봉쇄',
+                    body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
+                    link: 'XLE·FRO·셰니어(LNG)·GLD — 정책 연관 섹터',
+                    color: '#c00000',
+                  },
+                  {
+                    tag: '🔴 최고 경계',
+                    title: '미-중 관세 재결렬',
+                    body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
+                    link: '반도체·K-방산 — 정책 직접 연관',
+                    color: '#b84a4a',
+                  },
+                  {
+                    tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
+                    title: '재무부 TGA 사이클 — 지금은 흡수 구간',
+                    body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
+                    link: 'FRED WDTGAL 매주 수요일 — TGA 방향 확인',
+                    color: '#b8924a',
+                  },
+                  {
+                    tag: '🟢 구조적 기회',
+                    title: 'HBM 병목 — AI의 급소',
+                    body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
+                    link: '정책 연관: SK하이닉스·삼성·마이크론',
+                    color: '#3d9e6a',
+                  },
+                ].map(({tag, title, body, link, color}, i) => (
+                  <div key={i} style={{
+                    background: 'var(--s1)', padding: mobile ? '16px' : '20px 22px',
+                    position: 'relative', overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      position: 'absolute', top: 0, left: 0, right: 0,
+                      height: 2, background: color,
+                    }} />
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 9,
+                      color, letterSpacing: '.06em', marginBottom: 8,
+                    }}>{tag}</div>
+                    <div style={{
+                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
+                      color:'var(--t1)', fontWeight: 400, marginBottom: 10, lineHeight: 1.3,
+                    }}>{title}</div>
+                    <p style={{
+                      fontSize: 12, color:'var(--t2)', lineHeight: 1.8, marginBottom: 12,
+                    }}>{body}</p>
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 10,
+                      color, opacity: 0.8,
+                    }}>→ {link}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 이 사이트 활용법 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 32 : 48,
+              }}>
+                {[
+                  { icon:'⊞', label:'국가별 정책 분석',
+                    desc:'정부가 어디에 돈을 쓰고 어떤 산업을 밀어주는지 확인합니다. 대부분의 개인 투자자는 뉴스 헤드라인만 보지만, 실제 예산 규모·수혜 산업·타임라인까지 한번에 볼 수 있는 곳은 극히 드뭅니다.' },
+                  { icon:'⬡', label:'연결고리 맵',
+                    desc:'정책 하나가 어떤 흐름으로 어떤 종목까지 영향을 미치는지 인과관계로 시각화했습니다. 예를 들어 "미국 부채한도 해결 → TGA 방출 → 시중 유동성 증가 → 위험자산 상승"처럼, 눈에 안 보이는 돈의 흐름을 추적합니다.' },
+                  { icon:'◈', label:'정책 관련주 탐색',
+                    desc:'특정 정책의 수혜를 받을 수 있는 종목을 국가·섹터·연관도별로 필터링합니다. 어떤 종목이 어떤 정책과 연결돼 있는지 빠르게 확인하는 출발점으로 활용하세요. 종목 언급은 투자 권유가 아닙니다.' },
+                  { icon:'▦', label:'정책 히트맵',
+                    desc:'5개국 × 12개 섹터를 격자로 보여줍니다. 미국이 반도체에 집중하는 동안 유럽은 방산에, 한국은 원전에 화력을 쏟고 있다는 사실을 한눈에 파악할 수 있습니다. 어디에 정책 자금이 몰리는지가 보입니다.' },
+                  { icon:'⚡', label:'정책 충돌 지도',
+                    desc:'서로 반대 방향을 가리키는 정책들을 정리했습니다. 예컨대 "트럼프 관세"는 리쇼어링을 돕지만 동시에 원자재 비용을 올려 제조업을 압박합니다. 이런 충돌 구간에서 투자 판단이 엇갈립니다.' },
+                  { icon:'↻', label:'섹터 로테이션 타임라인',
+                    desc:'정책 흐름에 따라 지금부터 2년 후까지 어떤 섹터가 언제 주목받을 가능성이 높은지 정리했습니다. 지금은 에너지·방산, 3개월 후는 유동성·나스닥, 6개월 후는 반도체·AI 인프라 순입니다. 참고용 시나리오입니다.' },
+                  { icon:'◷', label:'이벤트 캘린더',
+                    desc:'법 발효일, 정책 표결, 협상 데드라인을 날짜별로 정리했습니다. 예를 들어 "7월 8일 관세 유예 만료"처럼 시장에 충격을 줄 수 있는 일정을 미리 알고 있는 것만으로도 대부분의 개인 투자자보다 한발 앞설 수 있습니다.' },
+                  { icon:'⚠', label:'리스크 레이더',
+                    desc:'현재 진행 중이거나 임박한 리스크를 충격 규모 × 발생 가능성 순으로 정리했습니다. 이란 전쟁·미-중 관세·BOJ 금리 인상처럼 포트폴리오에 직접 영향을 줄 수 있는 위험 요소와 대응 방향을 확인하세요.' },
+                ].map(({icon, label, desc}, i) => (
+                  <div key={i} style={{
+                    background:'var(--s1)', padding:'14px 16px',
+                  }}>
+                    <div style={{
+                      display:'flex', alignItems:'center', gap: 8, marginBottom: 6,
+                    }}>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 13,
+                        color:'var(--amber)', flexShrink: 0,
+                      }}>{icon}</span>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 11,
+                        color:'var(--t1)', fontWeight: 500,
+                      }}>{label}</span>
+                    </div>
+                    <p style={{
+                      fontSize: 11, color:'var(--t2)', lineHeight: 1.7, margin: 0,
+                    }}>{desc}</p>
+                  </div>
+                ))}
+              </div>
             </section>
 
 {/* ⑥ 이벤트 캘린더 */}
@@ -1732,116 +1843,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 핵심 지금 시나리오 카드 */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
-                gap: 1, background: 'rgba(255,255,255,0.06)',
-                marginBottom: mobile ? 24 : 40,
-              }}>
-                {[
-                  {
-                    tag: '🚨 현재 진행 중',
-                    title: '미-이란 전쟁 · 호르무즈 봉쇄',
-                    body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
-                    link: 'XLE·FRO·셰니어(LNG)·GLD — 정책 연관 섹터',
-                    color: '#c00000',
-                  },
-                  {
-                    tag: '🔴 최고 경계',
-                    title: '미-중 관세 재결렬',
-                    body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
-                    link: '반도체·K-방산 — 정책 직접 연관',
-                    color: '#b84a4a',
-                  },
-                  {
-                    tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
-                    title: '재무부 TGA 사이클 — 지금은 흡수 구간',
-                    body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
-                    link: 'FRED WDTGAL 매주 수요일 — TGA 방향 확인',
-                    color: '#b8924a',
-                  },
-                  {
-                    tag: '🟢 구조적 기회',
-                    title: 'HBM 병목 — AI의 급소',
-                    body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
-                    link: '정책 연관: SK하이닉스·삼성·마이크론',
-                    color: '#3d9e6a',
-                  },
-                ].map(({tag, title, body, link, color}, i) => (
-                  <div key={i} style={{
-                    background: 'var(--s1)', padding: mobile ? '16px' : '20px 22px',
-                    position: 'relative', overflow: 'hidden',
-                  }}>
-                    <div style={{
-                      position: 'absolute', top: 0, left: 0, right: 0,
-                      height: 2, background: color,
-                    }} />
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 9,
-                      color, letterSpacing: '.06em', marginBottom: 8,
-                    }}>{tag}</div>
-                    <div style={{
-                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
-                      color:'var(--t1)', fontWeight: 400, marginBottom: 10, lineHeight: 1.3,
-                    }}>{title}</div>
-                    <p style={{
-                      fontSize: 12, color:'var(--t2)', lineHeight: 1.8, marginBottom: 12,
-                    }}>{body}</p>
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 10,
-                      color, opacity: 0.8,
-                    }}>→ {link}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* 이 사이트 활용법 */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)',
-                gap: 1, background: 'rgba(255,255,255,0.06)',
-                marginBottom: mobile ? 32 : 48,
-              }}>
-                {[
-                  { icon:'⊞', label:'국가별 정책 분석',
-                    desc:'정부가 어디에 돈을 쓰고 어떤 산업을 밀어주는지 확인합니다. 대부분의 개인 투자자는 뉴스 헤드라인만 보지만, 실제 예산 규모·수혜 산업·타임라인까지 한번에 볼 수 있는 곳은 극히 드뭅니다.' },
-                  { icon:'⬡', label:'연결고리 맵',
-                    desc:'정책 하나가 어떤 흐름으로 어떤 종목까지 영향을 미치는지 인과관계로 시각화했습니다. 예를 들어 "미국 부채한도 해결 → TGA 방출 → 시중 유동성 증가 → 위험자산 상승"처럼, 눈에 안 보이는 돈의 흐름을 추적합니다.' },
-                  { icon:'◈', label:'정책 관련주 탐색',
-                    desc:'특정 정책의 수혜를 받을 수 있는 종목을 국가·섹터·연관도별로 필터링합니다. 어떤 종목이 어떤 정책과 연결돼 있는지 빠르게 확인하는 출발점으로 활용하세요. 종목 언급은 투자 권유가 아닙니다.' },
-                  { icon:'▦', label:'정책 히트맵',
-                    desc:'5개국 × 12개 섹터를 격자로 보여줍니다. 미국이 반도체에 집중하는 동안 유럽은 방산에, 한국은 원전에 화력을 쏟고 있다는 사실을 한눈에 파악할 수 있습니다. 어디에 정책 자금이 몰리는지가 보입니다.' },
-                  { icon:'⚡', label:'정책 충돌 지도',
-                    desc:'서로 반대 방향을 가리키는 정책들을 정리했습니다. 예컨대 "트럼프 관세"는 리쇼어링을 돕지만 동시에 원자재 비용을 올려 제조업을 압박합니다. 이런 충돌 구간에서 투자 판단이 엇갈립니다.' },
-                  { icon:'↻', label:'섹터 로테이션 타임라인',
-                    desc:'정책 흐름에 따라 지금부터 2년 후까지 어떤 섹터가 언제 주목받을 가능성이 높은지 정리했습니다. 지금은 에너지·방산, 3개월 후는 유동성·나스닥, 6개월 후는 반도체·AI 인프라 순입니다. 참고용 시나리오입니다.' },
-                  { icon:'◷', label:'이벤트 캘린더',
-                    desc:'법 발효일, 정책 표결, 협상 데드라인을 날짜별로 정리했습니다. 예를 들어 "7월 8일 관세 유예 만료"처럼 시장에 충격을 줄 수 있는 일정을 미리 알고 있는 것만으로도 대부분의 개인 투자자보다 한발 앞설 수 있습니다.' },
-                  { icon:'⚠', label:'리스크 레이더',
-                    desc:'현재 진행 중이거나 임박한 리스크를 충격 규모 × 발생 가능성 순으로 정리했습니다. 이란 전쟁·미-중 관세·BOJ 금리 인상처럼 포트폴리오에 직접 영향을 줄 수 있는 위험 요소와 대응 방향을 확인하세요.' },
-                ].map(({icon, label, desc}, i) => (
-                  <div key={i} style={{
-                    background:'var(--s1)', padding:'14px 16px',
-                  }}>
-                    <div style={{
-                      display:'flex', alignItems:'center', gap: 8, marginBottom: 6,
-                    }}>
-                      <span style={{
-                        fontFamily:'var(--font-mono)', fontSize: 13,
-                        color:'var(--amber)', flexShrink: 0,
-                      }}>{icon}</span>
-                      <span style={{
-                        fontFamily:'var(--font-mono)', fontSize: 11,
-                        color:'var(--t1)', fontWeight: 500,
-                      }}>{label}</span>
-                    </div>
-                    <p style={{
-                      fontSize: 11, color:'var(--t2)', lineHeight: 1.7, margin: 0,
-                    }}>{desc}</p>
-                  </div>
-                ))}
-              </div>
             </section>
 
 {/* ② 국가별 정책 */}
