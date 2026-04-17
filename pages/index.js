@@ -729,9 +729,8 @@ export default function Home() {
         {/* ── NAV ── */}
         <nav style={{height:64,display:'flex',alignItems:'center',justifyContent:'space-between',
           padding:'0 20px',borderBottom:'1px solid var(--wire)',
-          background:'var(--color-background-primary)',
-          position:'fixed',top:0,left:0,right:0,zIndex:1000,
-          backdropFilter:'blur(0px)'}}>
+          background:'var(--ink)',
+          position:'fixed',top:0,left:0,right:0,zIndex:1000}}>
           <div style={{display:'flex',alignItems:'center',gap:0}}>
             <img src="/logo.png" alt="자산제곱" style={{
               width:32,height:32,borderRadius:7,flexShrink:0,
