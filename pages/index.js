@@ -717,7 +717,7 @@ export default function Home() {
       <Head>
         <title>자산제곱 정책 탐지 레이더</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-        <meta name="description" content="자산제곱 정책 탐지 레이더 — 글로벌 정책과 겹치는 주식·섹터 리서치 참고 도구" />
+        <meta name="description" content="자산제곱 정책 탐지 레이더 — 정책이 만드는 투자 지형도. 주식·부동산·섹터 리서치 참고 도구" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/logo.png?v=2" type="image/png" sizes="32x32" />
         <link rel="shortcut icon" href="/logo.png?v=2" />
@@ -936,8 +936,8 @@ export default function Home() {
                   fontFamily:'var(--font-serif)', fontSize: mobile ? 28 : 48,
                   fontWeight: 400, color:'var(--t1)', lineHeight: 1.06, marginBottom: 16,
                 }}>
-                  정책과 겹치는<br />
-                  <em style={{color:'var(--amber)', fontStyle:'italic'}}>주식·섹터 지도</em>
+                  정책이 만드는<br />
+                  <em style={{color:'var(--amber)', fontStyle:'italic'}}>투자 지형도</em>
                 </h1>
                 <p style={{
                   fontSize: mobile ? 13 : 14, color:'var(--t2)', lineHeight: 1.9,
