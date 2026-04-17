@@ -823,9 +823,11 @@ export default function Home() {
                   fontSize: mobile ? 13 : 14, color:'var(--t2)', lineHeight: 1.9,
                   maxWidth: 560, marginBottom: 0,
                 }}>
+                  주식시장을 움직이는 가장 큰 힘은 기업 실적보다 정책입니다.
+                  정부가 어디에 돈을 쏟고, 어떤 산업을 키우려 하는지를 먼저 파악하는 것이
+                  개인 투자자가 가질 수 있는 가장 현실적인 정보 우위입니다.
                   미국·중국·유럽·한국·일본 5개국의 핵심 정책 {total}개를 분석합니다.
-                  정책과 겹치는 산업·종목을 빠르게 탐색하는 리서치 참고 도구입니다.
-                  이 사이트의 내용은 투자 권유가 아닙니다.
+                  이 사이트의 모든 내용은 리서치 참고용이며 투자 권유가 아닙니다.
                 </p>
               </div>
 
@@ -901,14 +903,22 @@ export default function Home() {
                 marginBottom: mobile ? 32 : 48,
               }}>
                 {[
-                  { icon:'⊞', label:'국가별 정책', desc:'아코디언으로 펼쳐 관련 종목·예산·타임라인 확인' },
-                  { icon:'⬡', label:'연결고리 맵', desc:'달러 패권·HBM 병목·K-방산·TGA 방출 인과관계' },
-                  { icon:'◈', label:'정책 관련주', desc:'전 정책과 겹치는 종목을 섹터·국가·연관도로 필터링' },
-                  { icon:'▦', label:'정책 히트맵', desc:'5개국 × 12개 섹터 정책 집중도 한눈에' },
-                  { icon:'◷', label:'이벤트 캘린더', desc:'2026~2028 정책 발효·표결 일정 정리' },
-                  { icon:'⚠', label:'리스크 레이더', desc:'충격 규모 × 확률 순위와 헤지 전략' },
-                  { icon:'◎', label:'매일 업데이트', desc:'매일 오전 7시 최신 내용을 점검해 업데이트합니다' },
-                  { icon:'↗', label:'구독자료', desc:'네이버 프리미엄에서 자산제곱의 심층 정책·산업 분석' },
+                  { icon:'⊞', label:'국가별 정책 분석',
+                    desc:'정부가 어디에 돈을 쓰고 어떤 산업을 밀어주는지 확인합니다. 대부분의 개인 투자자는 뉴스 헤드라인만 보지만, 실제 예산 규모·수혜 산업·타임라인까지 한번에 볼 수 있는 곳은 극히 드뭅니다.' },
+                  { icon:'⬡', label:'연결고리 맵',
+                    desc:'정책 하나가 어떤 흐름으로 어떤 종목까지 영향을 미치는지 인과관계로 시각화했습니다. 예를 들어 "미국 부채한도 해결 → TGA 방출 → 시중 유동성 증가 → 위험자산 상승"처럼, 눈에 안 보이는 돈의 흐름을 추적합니다.' },
+                  { icon:'◈', label:'정책 관련주 탐색',
+                    desc:'특정 정책의 수혜를 받을 수 있는 종목을 국가·섹터·연관도별로 필터링합니다. 어떤 종목이 어떤 정책과 연결돼 있는지 빠르게 확인하는 출발점으로 활용하세요. 종목 언급은 투자 권유가 아닙니다.' },
+                  { icon:'▦', label:'정책 히트맵',
+                    desc:'5개국 × 12개 섹터를 격자로 보여줍니다. 미국이 반도체에 집중하는 동안 유럽은 방산에, 한국은 원전에 화력을 쏟고 있다는 사실을 한눈에 파악할 수 있습니다. 어디에 정책 자금이 몰리는지가 보입니다.' },
+                  { icon:'⚡', label:'정책 충돌 지도',
+                    desc:'서로 반대 방향을 가리키는 정책들을 정리했습니다. 예컨대 "트럼프 관세"는 리쇼어링을 돕지만 동시에 원자재 비용을 올려 제조업을 압박합니다. 이런 충돌 구간에서 투자 판단이 엇갈립니다.' },
+                  { icon:'↻', label:'섹터 로테이션 타임라인',
+                    desc:'정책 흐름에 따라 지금부터 2년 후까지 어떤 섹터가 언제 주목받을 가능성이 높은지 정리했습니다. 지금은 에너지·방산, 3개월 후는 유동성·나스닥, 6개월 후는 반도체·AI 인프라 순입니다. 참고용 시나리오입니다.' },
+                  { icon:'◷', label:'이벤트 캘린더',
+                    desc:'법 발효일, 정책 표결, 협상 데드라인을 날짜별로 정리했습니다. 예를 들어 "7월 8일 관세 유예 만료"처럼 시장에 충격을 줄 수 있는 일정을 미리 알고 있는 것만으로도 대부분의 개인 투자자보다 한발 앞설 수 있습니다.' },
+                  { icon:'⚠', label:'리스크 레이더',
+                    desc:'현재 진행 중이거나 임박한 리스크를 충격 규모 × 발생 가능성 순으로 정리했습니다. 이란 전쟁·미-중 관세·BOJ 금리 인상처럼 포트폴리오에 직접 영향을 줄 수 있는 위험 요소와 대응 방향을 확인하세요.' },
                 ].map(({icon, label, desc}, i) => (
                   <div key={i} style={{
                     background:'var(--s1)', padding:'14px 16px',
@@ -932,43 +942,70 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* 자산제곱 최신 리포트 */}
+              {/* 자산제곱 리포트 */}
               <div style={{marginBottom:24}}>
                 <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:10}}>
-                  자산제곱 — 최신 분석
+                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:12}}>
+                  자산제곱 — 구독자료
                 </div>
-                <div style={{display:'grid',
-                  gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:1,
-                  background:'rgba(255,255,255,0.06)'}}>
-                  {[
-                    { tag:'심층분석', title:'이란 전쟁과 에너지 시장 — 지금 무엇을 봐야 하나', date:'2026.04' },
-                    { tag:'섹터분석', title:'HBM4·CoWoS 병목 — AI 공급망의 핵심 구간', date:'2026.04' },
-                    { tag:'매크로', title:'TGA 사이클 완전 정리 — 4월 흡수, 5~7월 방출', date:'2026.04' },
-                    { tag:'구독자료', title:'전체 분석 아카이브 →', date:'' },
-                  ].map(({tag,title,date},i)=>(
-                    <a key={i}
-                      href="https://contents.premium.naver.com/assetx2/assetsx2"
-                      target="_blank" rel="noopener"
-                      style={{display:'block',background:'var(--s1)',padding:'14px 16px',
-                        textDecoration:'none',transition:'background .12s'}}
-                      onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
-                      onMouseLeave={e=>e.currentTarget.style.background='var(--s1)'}>
-                      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                          color:'var(--amber)',background:'rgba(184,146,74,0.12)',
-                          border:'1px solid rgba(184,146,74,0.25)',
-                          borderRadius:2,padding:'1px 6px'}}>{tag}</span>
-                        {date && <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                          color:'var(--t3)'}}>{date}</span>}
-                      </div>
-                      <div style={{fontFamily:'var(--font-sans)',fontSize:13,
-                        color:'var(--t1)',lineHeight:1.5}}>{title}</div>
-                    </a>
-                  ))}
+                {/* 메인 구독 카드 */}
+                <a href="https://contents.premium.naver.com/assetx2/assetsx2"
+                  target="_blank" rel="noopener"
+                  style={{display:'block',textDecoration:'none',
+                    background:'rgba(29,80,50,0.25)',
+                    border:'1px solid rgba(29,180,100,0.2)',
+                    borderRadius:4,padding:'18px 20px',marginBottom:8,
+                    transition:'background .15s'}}
+                  onMouseEnter={e=>e.currentTarget.style.background='rgba(29,80,50,0.4)'}
+                  onMouseLeave={e=>e.currentTarget.style.background='rgba(29,80,50,0.25)'}>
+                  {/* 상단 배지 */}
+                  <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'#3dc47e',background:'rgba(29,180,100,0.15)',
+                      border:'1px solid rgba(29,180,100,0.3)',
+                      borderRadius:2,padding:'2px 8px',letterSpacing:'.08em'}}>
+                      N NAVER PREMIUM
+                    </span>
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'rgba(255,255,255,0.35)'}}>
+                      주 3회 발행 · 187편+
+                    </span>
+                    <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
+                      fontSize:9,color:'#3dc47e'}}>구독하기 →</span>
+                  </div>
+                  {/* 제목·설명 */}
+                  <div style={{fontFamily:'var(--font-sans)',fontSize:15,fontWeight:700,
+                    color:'var(--t1)',marginBottom:8}}>자산제곱 구독자료</div>
+                  <div style={{fontFamily:'var(--font-sans)',fontSize:12,
+                    color:'rgba(255,255,255,0.45)',marginBottom:14,lineHeight:1.6}}>
+                    핵심 전략으로 귀하게 대접하겠습니다.
+                  </div>
+                  {/* 태그 */}
+                  <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                    {['투자 전략','시나리오','시장 리포트','기술적 분석'].map(t=>(
+                      <span key={t} style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        border:'1px solid rgba(255,255,255,0.15)',
+                        borderRadius:2,padding:'3px 8px',
+                        color:'rgba(255,255,255,0.5)'}}>{t}</span>
+                    ))}
+                  </div>
+                </a>
+                {/* 미래에셋 VIP+ 배지 */}
+                <div style={{display:'flex',alignItems:'center',gap:12,
+                  background:'rgba(184,146,74,0.08)',
+                  border:'1px solid rgba(184,146,74,0.15)',
+                  borderRadius:4,padding:'12px 16px'}}>
+                  <span style={{fontSize:18}}>🏆</span>
+                  <div>
+                    <div style={{fontFamily:'var(--font-sans)',fontSize:12,
+                      fontWeight:700,color:'var(--amber)',marginBottom:2}}>
+                      미래에셋 VIP+ 서비스 제공 콘텐츠
+                    </div>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'rgba(255,255,255,0.3)'}}>실력으로 검증된 프리미엄 리서치</div>
+                  </div>
                 </div>
               </div>
-
             </section>
 
 {/* ② 국가별 정책 */}
