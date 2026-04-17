@@ -29,6 +29,7 @@ const SECS = [
   { id:'conflict',  label:'정책 충돌 지도',   icon:'⚡' },
   { id:'rotation',   label:'섹터 로테이션',    icon:'↻' },
   { id:'risk',     label:'리스크 레이더',   icon:'⚠' },
+  { id:'realestate', label:'부동산 투자',      icon:'⌂' },
   { id:'subscribe',  label:'구독자료',        icon:'↗' },
 ];
 
@@ -136,6 +137,93 @@ const RISK_DATA = [
     desc:'DOGE 감축 효과 연간 1,500억 달러 수준으로 미미. 감세법안 통과로 재정적자 GDP 7~8% 고착화. 미국채 10년물 4.5~5.5% 박스권. 고금리 장기화는 성장주·부동산 리츠 밸류에이션 압박. 다만 TGA 방출로 일시 완화 구간 존재.',
     affected:['미국 장기채(TLT)','성장주 밸류에이션','신흥국 자금 이탈'],
     hedge:['미국 단기채(SHY·BIL)','인플레이션 연동채(TIPS)'], color:'#c4a1e8' },
+];
+
+
+// ── 부동산 투자 섹션 데이터 ─────────────────────
+const RE_POLICIES = [
+  {
+    id: 'policy_realestate',
+    tag: '규제', color: '#b84a4a',
+    title: '이재명 정부 3중 규제',
+    status: '진행 중',
+    impact: '매수 억제',
+    desc: '수도권 주담대 6억 한도·갭투자 봉쇄·서울 전역 토지거래허가구역',
+    keyDate: '2026.05.09',
+    keyDateLabel: '양도세 유예 종료',
+    watch: '매물 출회 여부',
+  },
+  {
+    id: 'policy_jeonse',
+    tag: '시장', color: '#b87030',
+    title: '공급 절벽·전세 품귀',
+    status: '심화 중',
+    impact: '전월세 상승',
+    desc: '수도권 2026년 입주 27% 감소. 서울 전셋값 4.7% 상승 전망. 월세화 가속',
+    keyDate: '2027~2028',
+    keyDateLabel: '정비사업 입주 시작',
+    watch: '주간 전세수급지수',
+  },
+  {
+    id: 'policy_pf',
+    tag: '리스크', color: '#7a4ab8',
+    title: 'PF 부실·건설사 위기',
+    status: '구조조정 중',
+    impact: '공급 지연',
+    desc: '135조원 PF 중 브릿지론 집중 부실. 착공 예년 대비 40% 수준',
+    keyDate: '2026',
+    keyDateLabel: 'NPL 펀드 본격 조성',
+    watch: '건설업 부도 건수',
+  },
+  {
+    id: 'policy_reconstruction',
+    tag: '기회', color: '#3d9e6a',
+    title: '재건축·재개발 물꼬',
+    status: '진행 중',
+    impact: '공급 기대',
+    desc: '신통기획·보정계수로 57곳 물꼬. 그러나 이주비 규제·공사비로 착공 지연',
+    keyDate: '2027',
+    keyDateLabel: '신통기획 1세대 착공',
+    watch: '사업성 보정 적용 사업장 수',
+  },
+  {
+    id: 'policy_polarization',
+    tag: '트렌드', color: '#4a7fd4',
+    title: '초양극화 — 강남 vs 지방',
+    status: '심화 중',
+    impact: '지역별 차별화',
+    desc: '서울 6.6% vs 지방 0.3% 상승. 강남·한강벨트 신고가. 지방 미분양 7만+',
+    keyDate: '2026',
+    keyDateLabel: '갭 메우기 상승 예상',
+    watch: '수도권 외곽 거래량',
+  },
+];
+
+const RE_CHECKLIST = [
+  { category: '매수 타이밍', items: [
+    { label: '다주택자 양도세 유예 종료(5.9) 후 급매물 출회 확인', priority: '高' },
+    { label: '전세수급지수 100 이하 시 전세→매수 전환 구간', priority: '中' },
+    { label: '재건축 보정계수 적용 단지 착공 일정 확인', priority: '中' },
+  ]},
+  { category: '위험 체크', items: [
+    { label: 'PF 부실 건설사 분양 단지 청약 전 시공사 재무 확인', priority: '高' },
+    { label: '지방 미분양 7만+ 지역 투자 시 수요 기반 재확인', priority: '高' },
+    { label: '토지거래허가구역 내 전세 레버리지 불가 확인', priority: '高' },
+  ]},
+  { category: '모니터링 지표', items: [
+    { label: 'KB부동산 주간 아파트 가격 동향 (매주 월요일)', priority: '정기' },
+    { label: '서울 아파트 전세수급지수 (한국부동산원)', priority: '정기' },
+    { label: '건설업 부도 건수·PF 연체율 (금융위 월간)', priority: '정기' },
+  ]},
+];
+
+const RE_CALENDAR = [
+  { date: '2026.05.09', event: '다주택자 양도세 중과 유예 종료', type: 'critical', impact: '매물 출회 여부 — 시장 분수령' },
+  { date: '2026.06', event: '지방선거 이후 세제 개편 논의', type: 'watch', impact: '보유세·거래세 조정 가능성' },
+  { date: '2026.하반기', event: '3기 신도시 기본주택 입주자 모집', type: 'supply', impact: '무주택 실수요자 청약 기회' },
+  { date: '2026.하반기', event: 'LH 공급대책 후속 착공 시작', type: 'supply', impact: '수도권 공급 지연 해소 여부' },
+  { date: '2027', event: '신통기획 1세대 사업지 착공', type: 'supply', impact: '강남·한강벨트 재건축 공급 가시화' },
+  { date: '2027~2028', event: '착공 급감 여파 입주 부족 지속', type: 'risk', impact: '전세·월세 상승 압력 지속' },
 ];
 
 
@@ -257,6 +345,7 @@ const SECTORS = [
   {id:'stablecoin', l:'스테이블코인'},    {id:'reshoring', l:'리쇼어링·관세'},
   {id:'yuan_intl', l:'위안화 국제화'},    {id:'critical_minerals', l:'희귀광물'},
   {id:'supply_chain', l:'공급망 재편'},   {id:'debt_fiscal', l:'재정·부채'},
+  {id:'real_estate', l:'부동산'},
 ];
 
 const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
@@ -1446,47 +1535,7 @@ export default function Home() {
               })()}
             </section>
 
-            <div style={{borderTop:'1px solid var(--wire)',marginTop:8,
-              padding:mobile?'24px 0 40px':'28px 0 40px'}}>
-              {/* 면책 조항 */}
-              <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                color:'rgba(255,255,255,0.2)',lineHeight:1.9,
-                textAlign:'center',marginBottom:20,
-                padding:'12px 16px',
-                background:'rgba(255,255,255,0.02)',
-                border:'1px solid rgba(255,255,255,0.05)',
-                borderRadius:4}}>
-                제공되는 모든 정보는 공개된 정책 데이터를 기반으로 한 참고 자료이며,
-                특정 금융상품의 매수·매도를 권유하지 않습니다.
-                투자 결정으로 인한 손익은 전적으로 투자자 본인에게 귀속됩니다.
-              </div>
-              {/* 링크 + 카피라이트 */}
-              <div style={{display:'flex',alignItems:'center',
-                justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
-                <span style={{fontFamily:'var(--font-mono)',fontSize:10,
-                  color:'rgba(255,255,255,0.25)'}}>
-                  © 자산제곱 — 정책 탐지 레이더 2026
-                </span>
-                <div style={{display:'flex',gap:mobile?12:20,flexWrap:'wrap'}}>
-                  {[
-                    {l:'Threads', h:'https://www.threads.com/@asset.x2'},
-                    {l:'YouTube', h:'https://www.youtube.com/channel/UCpTC-SMFjA3EDRhZIKOcKuQ'},
-                    {l:'프로젝트방', h:'https://t.me/+2Qw1cAZTm8FjMGNl'},
-                    {l:'구독자료', h:'https://contents.premium.naver.com/assetx2/assetsx2'},
-                  ].map(({l,h})=>(
-                    <a key={l} href={h} target="_blank" rel="noopener"
-                      style={{fontFamily:'var(--font-mono)',fontSize:10,
-                        color:'rgba(255,255,255,0.3)',textDecoration:'none',
-                        transition:'color .12s'}}
-                      onMouseEnter={e=>e.currentTarget.style.color='var(--amber)'}
-                      onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.3)'}>
-                      {l}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          <section id="calendar" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+            <section id="calendar" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="정책 이벤트 캘린더" />
               <SecTitle>주시해야 할 정책 일정</SecTitle>
@@ -1781,6 +1830,132 @@ export default function Home() {
             {/* 푸터 */}
             
             {/* 자산제곱 구독자료 섹션 */}
+            
+            {/* 부동산 투자 섹션 */}
+            <section id="realestate" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="부동산 투자" />
+              <SecTitle>부동산 정책과 시장 흐름</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:28}}>
+                정책·규제·공급 흐름을 한눈에 정리했습니다. 투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
+              </p>
+
+              {/* 정책 카드 5개 */}
+              <div style={{display:'grid',
+                gridTemplateColumns:mobile?'1fr':'1fr 1fr',
+                gap:1,background:'rgba(255,255,255,0.06)',marginBottom:24}}>
+                {RE_POLICIES.map(p=>(
+                  <div key={p.id} style={{background:'var(--s1)',padding:'18px 20px',
+                    position:'relative',overflow:'hidden'}}>
+                    <div style={{position:'absolute',top:0,left:0,right:0,height:3,background:p.color}}/>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:8,
+                        color:p.color,background:`${p.color}18`,
+                        border:`1px solid ${p.color}40`,
+                        borderRadius:2,padding:'1px 7px'}}>{p.tag}</span>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        color:'var(--t3)'}}>{p.status}</span>
+                      <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
+                        fontSize:9,color:'var(--t2)',
+                        background:'rgba(255,255,255,0.04)',
+                        border:'1px solid var(--wire)',
+                        borderRadius:2,padding:'1px 6px'}}>{p.impact}</span>
+                    </div>
+                    <div style={{fontFamily:'var(--font-serif)',fontSize:mobile?14:16,
+                      color:'var(--t1)',marginBottom:8,fontWeight:400}}>{p.title}</div>
+                    <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.7,
+                      marginBottom:12}}>{p.desc}</div>
+                    <div style={{display:'flex',gap:8,alignItems:'center',
+                      paddingTop:10,borderTop:'1px solid var(--wire)'}}>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        color:p.color}}>{p.keyDate}</span>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        color:'var(--t2)'}}>{p.keyDateLabel}</span>
+                      <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
+                        fontSize:8,color:'var(--t3)'}}>주시: {p.watch}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 체크리스트 + 캘린더 2컬럼 */}
+              <div style={{display:'grid',
+                gridTemplateColumns:mobile?'1fr':'1fr 1fr',
+                gap:16,marginBottom:0}}>
+
+                {/* 투자자 체크리스트 */}
+                <div>
+                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                    color:'var(--amber)',letterSpacing:'.1em',marginBottom:12}}>
+                    투자자 체크리스트
+                  </div>
+                  {RE_CHECKLIST.map((cat,ci)=>(
+                    <div key={ci} style={{marginBottom:16}}>
+                      <div style={{fontFamily:'var(--font-mono)',fontSize:10,
+                        color:'var(--t2)',marginBottom:8,
+                        paddingBottom:6,borderBottom:'1px solid var(--wire)'}}>
+                        {cat.category}
+                      </div>
+                      {cat.items.map((item,ii)=>(
+                        <div key={ii} style={{display:'flex',gap:8,
+                          marginBottom:6,alignItems:'flex-start'}}>
+                          <span style={{
+                            fontFamily:'var(--font-mono)',fontSize:8,
+                            padding:'1px 5px',borderRadius:2,flexShrink:0,marginTop:1,
+                            background: item.priority==='高'?'rgba(184,74,74,0.15)':
+                              item.priority==='中'?'rgba(184,146,74,0.15)':
+                              'rgba(255,255,255,0.05)',
+                            color: item.priority==='高'?'#b84a4a':
+                              item.priority==='中'?'var(--amber)':
+                              'var(--t3)',
+                            border: `1px solid ${item.priority==='高'?'rgba(184,74,74,0.3)':
+                              item.priority==='中'?'rgba(184,146,74,0.3)':
+                              'var(--wire)'}`,
+                          }}>{item.priority}</span>
+                          <span style={{fontSize:11,color:'var(--t2)',
+                            lineHeight:1.6}}>{item.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
+                {/* 주요 일정 */}
+                <div>
+                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                    color:'var(--amber)',letterSpacing:'.1em',marginBottom:12}}>
+                    주요 일정 & 모니터링
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:1,
+                    background:'rgba(255,255,255,0.04)'}}>
+                    {RE_CALENDAR.map((ev,i)=>{
+                      const typeColor = ev.type==='critical'?'#b84a4a':
+                        ev.type==='risk'?'#b87030':
+                        ev.type==='supply'?'#3d9e6a':'#4a7fd4';
+                      return (
+                        <div key={i} style={{padding:'10px 14px',
+                          background:'var(--s1)',
+                          borderLeft:`3px solid ${typeColor}`}}>
+                          <div style={{display:'flex',gap:10,
+                            alignItems:'center',marginBottom:4}}>
+                            <span style={{fontFamily:'var(--font-mono)',
+                              fontSize:10,color:typeColor,
+                              flexShrink:0}}>{ev.date}</span>
+                            <span style={{fontFamily:'var(--font-sans)',
+                              fontSize:12,color:'var(--t1)',
+                              fontWeight:500}}>{ev.event}</span>
+                          </div>
+                          <div style={{fontFamily:'var(--font-mono)',
+                            fontSize:9,color:'var(--t3)',
+                            paddingLeft:0}}>{ev.impact}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </section>
+
             <section id="subscribe" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="자산제곱 구독자료" />
@@ -1853,7 +2028,49 @@ export default function Home() {
             </section>
 
 {/* ② 국가별 정책 */}
-            </main>
+            
+            <div style={{borderTop:'1px solid var(--wire)',marginTop:8,
+              padding:mobile?'24px 0 40px':'28px 0 40px'}}>
+              {/* 면책 조항 */}
+              <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                color:'rgba(255,255,255,0.2)',lineHeight:1.9,
+                textAlign:'center',marginBottom:20,
+                padding:'12px 16px',
+                background:'rgba(255,255,255,0.02)',
+                border:'1px solid rgba(255,255,255,0.05)',
+                borderRadius:4}}>
+                제공되는 모든 정보는 공개된 정책 데이터를 기반으로 한 참고 자료이며,
+                특정 금융상품의 매수·매도를 권유하지 않습니다.
+                투자 결정으로 인한 손익은 전적으로 투자자 본인에게 귀속됩니다.
+              </div>
+              {/* 링크 + 카피라이트 */}
+              <div style={{display:'flex',alignItems:'center',
+                justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:10,
+                  color:'rgba(255,255,255,0.25)'}}>
+                  © 자산제곱 — 정책 탐지 레이더 2026
+                </span>
+                <div style={{display:'flex',gap:mobile?12:20,flexWrap:'wrap'}}>
+                  {[
+                    {l:'Threads', h:'https://www.threads.com/@asset.x2'},
+                    {l:'YouTube', h:'https://www.youtube.com/channel/UCpTC-SMFjA3EDRhZIKOcKuQ'},
+                    {l:'프로젝트방', h:'https://t.me/+2Qw1cAZTm8FjMGNl'},
+                    {l:'구독자료', h:'https://contents.premium.naver.com/assetx2/assetsx2'},
+                  ].map(({l,h})=>(
+                    <a key={l} href={h} target="_blank" rel="noopener"
+                      style={{fontFamily:'var(--font-mono)',fontSize:10,
+                        color:'rgba(255,255,255,0.3)',textDecoration:'none',
+                        transition:'color .12s'}}
+                      onMouseEnter={e=>e.currentTarget.style.color='var(--amber)'}
+                      onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.3)'}>
+                      {l}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          
+          </main>
         </div>
       </div>
 
