@@ -29,6 +29,7 @@ const SECS = [
   { id:'conflict',  label:'정책 충돌 지도',   icon:'⚡' },
   { id:'rotation',   label:'섹터 로테이션',    icon:'↻' },
   { id:'risk',     label:'리스크 레이더',   icon:'⚠' },
+  { id:'subscribe',  label:'구독자료',        icon:'↗' },
 ];
 
 // ── 연결고리 맵 데이터 ─────────────────────────
@@ -544,7 +545,7 @@ export default function Home() {
     if(seenSet.has(k))return false; seenSet.add(k); return true;
   });
   if(scCountry!=='all') scRows=scRows.filter(r=>r.country.id===scCountry);
-  if(scKorea) scRows=scRows.filter(r=>r.stock.includes('(0'));
+  if(scKorea) scRows=scRows.filter(r=>r.country&&r.country.id==='kr');
   if(scImpact==='pos') scRows=scRows.filter(r=>r.pos&&r.impact>=3);
   if(scImpact==='neg') scRows=scRows.filter(r=>!r.pos);
   if(scSearch) scRows=scRows.filter(r=>
@@ -831,669 +832,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* 핵심 지금 시나리오 카드 */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
-                gap: 1, background: 'rgba(255,255,255,0.06)',
-                marginBottom: mobile ? 24 : 40,
-              }}>
-                {[
-                  {
-                    tag: '🚨 현재 진행 중',
-                    title: '미-이란 전쟁 · 호르무즈 봉쇄',
-                    body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
-                    link: 'XLE·FRO·셰니어(LNG)·GLD — 정책 연관 섹터',
-                    color: '#c00000',
-                  },
-                  {
-                    tag: '🔴 최고 경계',
-                    title: '미-중 관세 재결렬',
-                    body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
-                    link: '반도체·K-방산 — 정책 직접 연관',
-                    color: '#b84a4a',
-                  },
-                  {
-                    tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
-                    title: '재무부 TGA 사이클 — 지금은 흡수 구간',
-                    body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
-                    link: 'FRED WDTGAL 매주 수요일 — TGA 방향 확인',
-                    color: '#b8924a',
-                  },
-                  {
-                    tag: '🟢 구조적 기회',
-                    title: 'HBM 병목 — AI의 급소',
-                    body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
-                    link: '정책 연관: SK하이닉스·삼성·마이크론',
-                    color: '#3d9e6a',
-                  },
-                ].map(({tag, title, body, link, color}, i) => (
-                  <div key={i} style={{
-                    background: 'var(--s1)', padding: mobile ? '16px' : '20px 22px',
-                    position: 'relative', overflow: 'hidden',
-                  }}>
-                    <div style={{
-                      position: 'absolute', top: 0, left: 0, right: 0,
-                      height: 2, background: color,
-                    }} />
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 9,
-                      color, letterSpacing: '.06em', marginBottom: 8,
-                    }}>{tag}</div>
-                    <div style={{
-                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
-                      color:'var(--t1)', fontWeight: 400, marginBottom: 10, lineHeight: 1.3,
-                    }}>{title}</div>
-                    <p style={{
-                      fontSize: 12, color:'var(--t2)', lineHeight: 1.8, marginBottom: 12,
-                    }}>{body}</p>
-                    <div style={{
-                      fontFamily:'var(--font-mono)', fontSize: 10,
-                      color, opacity: 0.8,
-                    }}>→ {link}</div>
-                  </div>
-                ))}
-              </div>
 
-              {/* 이 사이트 활용법 */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)',
-                gap: 1, background: 'rgba(255,255,255,0.06)',
-                marginBottom: mobile ? 32 : 48,
-              }}>
-                {[
-                  { icon:'⊞', label:'국가별 정책 분석',
-                    desc:'정부가 어디에 돈을 쓰고 어떤 산업을 밀어주는지 확인합니다. 대부분의 개인 투자자는 뉴스 헤드라인만 보지만, 실제 예산 규모·수혜 산업·타임라인까지 한번에 볼 수 있는 곳은 극히 드뭅니다.' },
-                  { icon:'⬡', label:'연결고리 맵',
-                    desc:'정책 하나가 어떤 흐름으로 어떤 종목까지 영향을 미치는지 인과관계로 시각화했습니다. 예를 들어 "미국 부채한도 해결 → TGA 방출 → 시중 유동성 증가 → 위험자산 상승"처럼, 눈에 안 보이는 돈의 흐름을 추적합니다.' },
-                  { icon:'◈', label:'정책 관련주 탐색',
-                    desc:'특정 정책의 수혜를 받을 수 있는 종목을 국가·섹터·연관도별로 필터링합니다. 어떤 종목이 어떤 정책과 연결돼 있는지 빠르게 확인하는 출발점으로 활용하세요. 종목 언급은 투자 권유가 아닙니다.' },
-                  { icon:'▦', label:'정책 히트맵',
-                    desc:'5개국 × 12개 섹터를 격자로 보여줍니다. 미국이 반도체에 집중하는 동안 유럽은 방산에, 한국은 원전에 화력을 쏟고 있다는 사실을 한눈에 파악할 수 있습니다. 어디에 정책 자금이 몰리는지가 보입니다.' },
-                  { icon:'⚡', label:'정책 충돌 지도',
-                    desc:'서로 반대 방향을 가리키는 정책들을 정리했습니다. 예컨대 "트럼프 관세"는 리쇼어링을 돕지만 동시에 원자재 비용을 올려 제조업을 압박합니다. 이런 충돌 구간에서 투자 판단이 엇갈립니다.' },
-                  { icon:'↻', label:'섹터 로테이션 타임라인',
-                    desc:'정책 흐름에 따라 지금부터 2년 후까지 어떤 섹터가 언제 주목받을 가능성이 높은지 정리했습니다. 지금은 에너지·방산, 3개월 후는 유동성·나스닥, 6개월 후는 반도체·AI 인프라 순입니다. 참고용 시나리오입니다.' },
-                  { icon:'◷', label:'이벤트 캘린더',
-                    desc:'법 발효일, 정책 표결, 협상 데드라인을 날짜별로 정리했습니다. 예를 들어 "7월 8일 관세 유예 만료"처럼 시장에 충격을 줄 수 있는 일정을 미리 알고 있는 것만으로도 대부분의 개인 투자자보다 한발 앞설 수 있습니다.' },
-                  { icon:'⚠', label:'리스크 레이더',
-                    desc:'현재 진행 중이거나 임박한 리스크를 충격 규모 × 발생 가능성 순으로 정리했습니다. 이란 전쟁·미-중 관세·BOJ 금리 인상처럼 포트폴리오에 직접 영향을 줄 수 있는 위험 요소와 대응 방향을 확인하세요.' },
-                ].map(({icon, label, desc}, i) => (
-                  <div key={i} style={{
-                    background:'var(--s1)', padding:'14px 16px',
-                  }}>
-                    <div style={{
-                      display:'flex', alignItems:'center', gap: 8, marginBottom: 6,
-                    }}>
-                      <span style={{
-                        fontFamily:'var(--font-mono)', fontSize: 13,
-                        color:'var(--amber)', flexShrink: 0,
-                      }}>{icon}</span>
-                      <span style={{
-                        fontFamily:'var(--font-mono)', fontSize: 11,
-                        color:'var(--t1)', fontWeight: 500,
-                      }}>{label}</span>
-                    </div>
-                    <p style={{
-                      fontSize: 11, color:'var(--t2)', lineHeight: 1.7, margin: 0,
-                    }}>{desc}</p>
-                  </div>
-                ))}
-              </div>
 
-              {/* 자산제곱 리포트 */}
-              <div style={{marginBottom:24}}>
-                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:12}}>
-                  자산제곱 — 구독자료
-                </div>
-                {/* 메인 구독 카드 */}
-                <a href="https://contents.premium.naver.com/assetx2/assetsx2"
-                  target="_blank" rel="noopener"
-                  style={{display:'block',textDecoration:'none',
-                    background:'rgba(29,80,50,0.25)',
-                    border:'1px solid rgba(29,180,100,0.2)',
-                    borderRadius:4,padding:'18px 20px',marginBottom:8,
-                    transition:'background .15s'}}
-                  onMouseEnter={e=>e.currentTarget.style.background='rgba(29,80,50,0.4)'}
-                  onMouseLeave={e=>e.currentTarget.style.background='rgba(29,80,50,0.25)'}>
-                  {/* 상단 배지 */}
-                  <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
-                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
-                      color:'#3dc47e',background:'rgba(29,180,100,0.15)',
-                      border:'1px solid rgba(29,180,100,0.3)',
-                      borderRadius:2,padding:'2px 8px',letterSpacing:'.08em'}}>
-                      N NAVER PREMIUM
-                    </span>
-                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
-                      color:'rgba(255,255,255,0.35)'}}>
-                      주 3회 발행 · 187편+
-                    </span>
-                    <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
-                      fontSize:9,color:'#3dc47e'}}>구독하기 →</span>
-                  </div>
-                  {/* 제목·설명 */}
-                  <div style={{fontFamily:'var(--font-sans)',fontSize:15,fontWeight:700,
-                    color:'var(--t1)',marginBottom:8}}>자산제곱 구독자료</div>
-                  <div style={{fontFamily:'var(--font-sans)',fontSize:12,
-                    color:'rgba(255,255,255,0.45)',marginBottom:14,lineHeight:1.6}}>
-                    핵심 전략으로 귀하게 대접하겠습니다.
-                  </div>
-                  {/* 태그 */}
-                  <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
-                    {['투자 전략','시나리오','시장 리포트','기술적 분석'].map(t=>(
-                      <span key={t} style={{fontFamily:'var(--font-mono)',fontSize:9,
-                        border:'1px solid rgba(255,255,255,0.15)',
-                        borderRadius:2,padding:'3px 8px',
-                        color:'rgba(255,255,255,0.5)'}}>{t}</span>
-                    ))}
-                  </div>
-                </a>
-                {/* 미래에셋 VIP+ 배지 */}
-                <div style={{display:'flex',alignItems:'center',gap:12,
-                  background:'rgba(184,146,74,0.08)',
-                  border:'1px solid rgba(184,146,74,0.15)',
-                  borderRadius:4,padding:'12px 16px'}}>
-                  <span style={{fontSize:18}}>🏆</span>
-                  <div>
-                    <div style={{fontFamily:'var(--font-sans)',fontSize:12,
-                      fontWeight:700,color:'var(--amber)',marginBottom:2}}>
-                      미래에셋 VIP+ 서비스 제공 콘텐츠
-                    </div>
-                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                      color:'rgba(255,255,255,0.3)'}}>실력으로 검증된 프리미엄 리서치</div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-{/* ② 국가별 정책 */}
-            <section id="policies" style={{paddingTop:mobile?40:56}}>
-              <Label text="국가별 정책 분석" />
-              <SecTitle>정책 상세 분석</SecTitle>
-              {/* 정책 검색 */}
-              <div style={{position:'relative',marginBottom:20,maxWidth:360}}>
-                <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',
-                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>⌕</span>
-                <input
-                  value={policySearch} onChange={e=>setPolicySearch(e.target.value)}
-                  placeholder="정책명, 키워드, 종목 검색..."
-                  style={{width:'100%',fontFamily:'var(--font-mono)',fontSize:12,
-                    background:'var(--s2)',border:'1px solid var(--wire2)',
-                    borderRadius:4,padding:'9px 12px 9px 32px',
-                    color:'var(--t1)',outline:'none',boxSizing:'border-box'}}
-                />
-                {policySearch && (
-                  <button onClick={()=>setPolicySearch('')}
-                    style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',
-                      background:'none',border:'none',cursor:'pointer',
-                      fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>✕</button>
-                )}
-              </div>
-              {/* 모바일 국가 필터 */}
-              {mobile && (
-                <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:20,
-                  paddingBottom:4,scrollbarWidth:'none',flexWrap:'nowrap'}}>
-                  <button onClick={()=>setFilterCountry(null)}
-                    style={btn(!filterCountry)}>전체</button>
-                  {countries.map(c => (
-                    <button key={c.id} onClick={()=>setFilterCountry(filterCountry===c.id?null:c.id)}
-                      style={{...btn(filterCountry===c.id),
-                        color:filterCountry===c.id?'var(--ink)':c.color,
-                        background:filterCountry===c.id?c.color:'transparent',
-                        border:`1px solid ${filterCountry===c.id?c.color:c.color+'40'}`}}>
-                      {c.flag} {c.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-              {policySearch && displayedCountries.length === 0 && (
-                <div style={{padding:'40px 0',textAlign:'center',
-                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>
-                  '{policySearch}'에 해당하는 정책이 없습니다
-                </div>
-              )}
-              {displayedCountries.map(c => (
-                <div key={c.id} style={{padding:mobile?'24px 0':'36px 0',
-                  borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
-                  <div style={{display:'grid',
-                    gridTemplateColumns:mobile?'1fr':'1fr 200px',
-                    gap:mobile?16:28,marginBottom:18,paddingBottom:16,
-                    borderBottom:`1px solid ${c.color}25`}}>
-                    <div>
-                      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:10}}>
-                        <span style={{fontSize:mobile?26:30,lineHeight:1}}>{c.flag}</span>
-                        <div>
-                          <h3 style={{fontFamily:'var(--font-serif)',
-                            fontSize:mobile?20:28,fontWeight:400,
-                            color:c.color,lineHeight:1.1}}>{c.name}</h3>
-                          <div style={{fontFamily:'var(--font-mono)',fontSize:11,
-                            color:'var(--t3)',marginTop:4}}>{c.tagline}</div>
-                        </div>
-                      </div>
-                      <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.85,maxWidth:500}}>
-                        {c.summary}
-                      </p>
-                    </div>
-                    {!mobile && (
-                      <div style={{display:'flex',flexDirection:'column',gap:1}}>
-                        {[{l:'분석 정책',v:c.policies.length},
-                          {l:'최근 업데이트',v:c.updated},
-                          {l:'핵심 테마',v:[...new Set(c.policies.flatMap(p=>p.themes||[]))].length+'개'}
-                        ].map(({l,v}) => (
-                          <div key={l} style={{display:'flex',justifyContent:'space-between',
-                            alignItems:'center',padding:'8px 12px',background:'var(--s1)',
-                            borderLeft:`2px solid ${c.color}40`}}>
-                            <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                              color:'var(--t2)'}}>{l}</span>
-                            <span style={{fontFamily:'var(--font-serif)',fontSize:15,
-                              color:c.color}}>{v}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  {c.policies.map(p => (
-                    <PolicyRow key={p.id} policy={p} color={c.color} mobile={mobile} />
-                  ))}
-                </div>
-              ))}
-            </section>
-
-            {/* ③ 연결고리 맵 */}
-            <section id="flow" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
-              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="정책 연결고리 맵" />
-              <SecTitle>정책은 어떻게 연결되는가</SecTitle>
-              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
-                개별 정책을 넘어 큰 흐름의 인과관계를 추적합니다. 2026년 현재 기준.
-              </p>
-              <div style={{display:'flex',gap:8,marginBottom:24,flexWrap:'wrap'}}>
-                {FLOW_DATA.map(f => (
-                  <button key={f.id} onClick={()=>setFlowId(f.id)}
-                    style={{fontFamily:'var(--font-sans)',fontSize:12,
-                      background:flowId===f.id?f.color+'22':'transparent',
-                      color:flowId===f.id?'var(--t1)':'var(--t2)',
-                      border:`1px solid ${flowId===f.id?f.color:'var(--wire2)'}`,
-                      borderRadius:4,padding:'7px 13px',cursor:'pointer',transition:'all .15s'}}>
-                    {f.title}
-                  </button>
-                ))}
-              </div>
-              {flow && (
-                <div style={{animation:'fadeIn .2s ease'}}>
-                  <div style={{display:'flex',alignItems:'center',
-                    overflowX:'auto',paddingBottom:8,marginBottom:20,gap:0}}>
-                    {flow.steps.map((step,i) => (
-                      <div key={i} style={{display:'flex',alignItems:'center',flexShrink:0}}>
-                        <div style={{width:mobile?108:140,padding:mobile?'10px 10px':'12px 14px',
-                          background:'var(--s2)',borderRadius:4,
-                          border:`1px solid ${TC[step.t]}50`,
-                          borderTop:`2px solid ${TC[step.t]}`}}>
-                          <div style={{fontFamily:'var(--font-mono)',fontSize:8,
-                            color:TC[step.t],letterSpacing:'.07em',marginBottom:4}}>
-                            {TL[step.t]}
-                          </div>
-                          <div style={{fontSize:mobile?10:12,color:'var(--t1)',
-                            fontWeight:500,lineHeight:1.3,marginBottom:3}}>{step.l}</div>
-                          <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                            color:'var(--t2)',lineHeight:1.4}}>{step.s}</div>
-                        </div>
-                        {i<flow.steps.length-1 && (
-                          <div style={{display:'flex',alignItems:'center',
-                            padding:'0 3px',flexShrink:0}}>
-                            <div style={{width:16,height:1,background:'var(--wire2)'}} />
-                            <div style={{borderTop:'4px solid transparent',
-                              borderBottom:'4px solid transparent',
-                              borderLeft:'6px solid var(--wire2)',width:0,height:0}} />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:10}}>
-                    <div style={{background:'var(--s1)',border:'1px solid var(--wire)',
-                      borderLeft:'2px solid #3d9e6a',borderRadius:4,padding:'14px 16px'}}>
-                      <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'#3d9e6a',
-                        letterSpacing:'.08em',marginBottom:10}}>정책 연관 종목</div>
-                      {flow.bens.map((b,i) => (
-                        <div key={i} style={{fontFamily:'var(--font-mono)',fontSize:11,
-                          color:'var(--amber)',lineHeight:1.9}}>→ {b}</div>
-                      ))}
-                    </div>
-                    <div style={{background:'var(--s1)',border:'1px solid var(--wire)',
-                      borderLeft:'2px solid #b84a4a',borderRadius:4,padding:'14px 16px'}}>
-                      <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'#b84a4a',
-                        letterSpacing:'.08em',marginBottom:10}}>이 흐름의 리스크</div>
-                      {flow.risks.map((r,i) => (
-                        <div key={i} style={{fontSize:12,color:'var(--t2)',lineHeight:1.9}}>
-                          · {r}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </section>
-
-            {/* ④ 정책 관련주 스크리너 */}
-            <section id="screener" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
-              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="정책 관련주 스크리너" />
-              <SecTitle>정책 관련주 조회</SecTitle>
-              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
-                {scRows.length}개 종목 · 정책과 연관된 종목을 탐색하는 도구입니다. 종목 언급은 투자 권유가 아닙니다.
-              </p>
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
-                <input value={scSearch} onChange={e=>setScSearch(e.target.value)}
-                  placeholder="종목명 / 섹터..."
-                  style={{fontFamily:'var(--font-mono)',fontSize:11,background:'var(--s2)',
-                    border:'1px solid var(--wire2)',borderRadius:4,padding:'6px 12px',
-                    color:'var(--t1)',outline:'none',width:150}} />
-                <select value={scCountry} onChange={e=>setScCountry(e.target.value)}
-                  style={{fontFamily:'var(--font-mono)',fontSize:11,background:'var(--s2)',
-                    border:'1px solid var(--wire2)',borderRadius:4,padding:'6px 10px',
-                    color:'var(--t1)',outline:'none'}}>
-                  <option value="all">전체 국가</option>
-                  {countries.map(c=><option key={c.id} value={c.id}>{c.flag} {c.name}</option>)}
-                </select>
-                <button onClick={()=>setScKorea(!scKorea)} style={{
-                    ...btn(scKorea),
-                    borderColor: scKorea ? '#c9a83a' : undefined,
-                    color: scKorea ? '#c9a83a' : undefined,
-                  }}>🇰🇷 코스피</button>
-                {[{v:'all',l:'전체'},{v:'pos',l:'관련주'},{v:'neg',l:'리스크'}].map(f=>(
-                  <button key={f.v} onClick={()=>setScImpact(f.v)} style={btn(scImpact===f.v)}>
-                    {f.l}
-                  </button>
-                ))}
-              </div>
-              <div style={{border:'1px solid var(--wire)',borderRadius:4,overflow:'hidden',
-                overflowX:'auto'}}>
-                <div style={{display:'grid',minWidth:500,
-                  gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
-                  background:'var(--s2)',padding:'8px 16px',borderBottom:'1px solid var(--wire)'}}>
-                  {(mobile?['종목','섹터','연관도']:['종목','섹터','연관도','ETF','국가']).map(h=>(
-                    <div key={h} style={{fontFamily:'var(--font-mono)',fontSize:9,
-                      color:'var(--t3)',letterSpacing:'.08em'}}>{h}</div>
-                  ))}
-                </div>
-                {scRows.slice(0,60).map((r,i) => (
-                  <div key={i}
-                    style={{display:'grid',minWidth:500,
-                      gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
-                      padding:'9px 16px',
-                      borderBottom:i<scRows.length-1?'1px solid var(--wire)':'none',
-                      background:i%2===0?'var(--s1)':'var(--ink)',transition:'background .1s'}}
-                    onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
-                    onMouseLeave={e=>e.currentTarget.style.background=i%2===0?'var(--s1)':'var(--ink)'}>
-                    <div style={{fontFamily:'var(--font-mono)',fontSize:12,
-                      color:'var(--t1)',fontWeight:500,alignSelf:'center'}}>{r.stock}</div>
-                    <div style={{fontSize:11,color:'var(--t2)',alignSelf:'center'}}>{r.sector}</div>
-                    <div style={{alignSelf:'center'}}><Dots v={r.impact} pos={r.pos} /></div>
-                    {!mobile && (
-                    <div style={{alignSelf:'center'}}>
-                      {r.etfs.slice(0,3).map(e=>(
-                        <span key={e} style={{fontFamily:'var(--font-mono)',fontSize:9,
-                          color:'var(--amber)',background:'rgba(184,146,74,.1)',
-                          border:'1px solid rgba(184,146,74,.2)',borderRadius:2,
-                          padding:'1px 5px',marginRight:3,display:'inline-block',marginBottom:2}}>
-                          {e}
-                        </span>
-                      ))}
-                    </div>
-                    )}
-                    {!mobile && <div style={{display:'flex',alignItems:'center',gap:5,alignSelf:'center'}}>
-                      <span style={{fontSize:13}}>{r.country.flag}</span>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
-                        color:r.country.color}}>{r.country.name}</span>
-                    </div>}
-                  </div>
-                ))}
-              </div>
-              {scRows.length>60 && (
-                <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t3)',
-                  marginTop:10,textAlign:'center'}}>
-                  상위 60개 표시 · 전체 {scRows.length}개
-                </div>
-              )}
-            </section>
-
-            {/* ⑤ 히트맵 */}
-            <section id="heatmap" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
-              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="정책 강도 히트맵" />
-              <SecTitle>국가 × 섹터 정책 집중도</SecTitle>
-              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
-                어느 국가가 어느 섹터에 정책 화력을 집중하는지 보여줍니다. 셀 클릭 시 관련 정책과 겹치는 종목 확인.
-              </p>
-
-              {/* 범례 */}
-              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,flexWrap:'wrap'}}>
-                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)'}}>강도</span>
-                {[0,2,4,6,8,10].map(v => (
-                  <div key={v} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
-                    <div style={{width:26,height:16,background:cellBg(v),border:'1px solid var(--wire)',borderRadius:2}} />
-                    <span style={{fontFamily:'var(--font-mono)',fontSize:8,color:'var(--t3)'}}>{v}</span>
-                  </div>
-                ))}
-                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)',marginLeft:4}}>낮음 → 높음</span>
-              </div>
-
-              <div style={{overflowX:'auto'}}>
-                <div style={{
-                  display:'grid',
-                  gridTemplateColumns:`150px repeat(${countries.length},1fr)`,
-                  gap:1, minWidth:560,
-                }}>
-                  {/* 헤더 */}
-                  <div />
-                  {countries.map(c => (
-                    <div key={c.id} style={{padding:'8px 4px',textAlign:'center'}}>
-                      <div style={{fontSize:18,marginBottom:2}}>{c.flag}</div>
-                      <div style={{fontFamily:'var(--font-serif)',fontSize:12,color:c.color}}>{c.name}</div>
-                    </div>
-                  ))}
-
-                  {/* 데이터 행 */}
-                  {SECTORS.map(s => (
-                    <>
-                      {/* 섹터 라벨 */}
-                      <div key={s.id+'_l'} style={{
-                        padding:'9px 10px',display:'flex',alignItems:'center',
-                        borderTop:'1px solid var(--wire)',
-                      }}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t2)'}}>{s.l}</span>
-                      </div>
-
-                      {/* 셀들 */}
-                      {countries.map(c => {
-                        const cell = matrix[c.id][s.id];
-                        const isSelected = hmSelected?.c===c.id && hmSelected?.s===s.id;
-                        return (
-                          <div
-                            key={c.id+s.id}
-                            onClick={() => {
-                              if (cell.count === 0) return;
-                              setHmSelected(isSelected ? null : {c:c.id, s:s.id});
-                            }}
-                            style={{
-                              background: isSelected ? c.color+'33' : cellBg(cell.score),
-                              border: isSelected ? `2px solid ${c.color}` : '1px solid rgba(255,255,255,0.04)',
-                              cursor: cell.count>0 ? 'pointer' : 'default',
-                              display:'flex', flexDirection:'column',
-                              alignItems:'center', justifyContent:'center',
-                              padding:'9px 4px', transition:'all .15s', minHeight:46,
-                              outline: isSelected ? `2px solid ${c.color}` : 'none',
-                            }}
-                          >
-                            {cell.count > 0 ? (
-                              <>
-                                <div style={{
-                                  fontFamily:'var(--font-mono)', fontSize:14, fontWeight:600,
-                                  color: isSelected ? c.color : cellTxt(cell.score), lineHeight:1,
-                                }}>{cell.score}</div>
-                                <div style={{
-                                  fontFamily:'var(--font-mono)', fontSize:8,
-                                  color: isSelected ? c.color : cellTxt(cell.score),
-                                  opacity:.7, marginTop:2,
-                                }}>{cell.count}개</div>
-                              </>
-                            ) : (
-                              <div style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>—</div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </>
-                  ))}
-                </div>
-              </div>
-
-              {/* 선택된 셀 상세 패널 */}
-              {hmSelected && matrix[hmSelected.c]?.[hmSelected.s]?.count > 0 && (() => {
-                const c = countries.find(x => x.id===hmSelected.c);
-                const sec = SECTORS.find(x => x.id===hmSelected.s);
-                const cell = matrix[hmSelected.c][hmSelected.s];
-                return (
-                  <div style={{
-                    marginTop:16, border:`1px solid ${c.color}40`,
-                    borderLeft:`3px solid ${c.color}`,
-                    borderRadius:4, overflow:'hidden',
-                    animation:'fadeIn .15s ease',
-                  }}>
-                    {/* 패널 헤더 */}
-                    <div style={{
-                      display:'flex', alignItems:'center', justifyContent:'space-between',
-                      padding:'12px 18px',
-                      background:`${c.color}0d`,
-                      borderBottom:'1px solid var(--wire)',
-                    }}>
-                      <div style={{display:'flex',alignItems:'center',gap:12,padding:'0 4px'}}>
-                        <span style={{fontSize:18}}>{c.flag}</span>
-                        <div>
-                          <span style={{fontFamily:'var(--font-serif)',fontSize:16,color:c.color}}>{c.name}</span>
-                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',margin:'0 8px'}}>×</span>
-                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t2)'}}>{sec.l}</span>
-                        </div>
-                        <span style={{
-                          fontFamily:'var(--font-mono)',fontSize:11,
-                          color:c.color, background:`${c.color}18`,
-                          border:`1px solid ${c.color}40`,
-                          borderRadius:3, padding:'2px 8px',
-                        }}>강도 {cell.score}</span>
-                      </div>
-                      <button
-                        onClick={() => setHmSelected(null)}
-                        style={{
-                          fontFamily:'var(--font-mono)', fontSize:11,
-                          color:'var(--t3)', background:'none', border:'none',
-                          cursor:'pointer', padding:'4px 8px',
-                        }}
-                      >✕ 닫기</button>
-                    </div>
-
-                    {/* 정책 목록 */}
-                    <div style={{background:'var(--s1)'}}>
-                      {cell.policies.map((p, pi) => (
-                        <div key={p.id} style={{
-                          padding:'14px 18px',
-                          borderBottom: pi < cell.policies.length-1 ? '1px solid var(--wire)' : 'none',
-                        }}>
-                          {/* 정책 헤더 */}
-                          <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:8}}>
-                            <span style={{
-                              fontFamily:'var(--font-mono)', fontSize:8,
-                              color: p.status==='active'?'#3d9e6a':'#b8924a',
-                              border:`1px solid ${p.status==='active'?'rgba(61,158,106,.3)':'rgba(184,146,74,.3)'}`,
-                              borderRadius:2, padding:'2px 6px', flexShrink:0, marginTop:3,
-                            }}>{p.status==='active'?'ACTIVE':'UPCOMING'}</span>
-                            <div>
-                              <div style={{fontFamily:'var(--font-serif)',fontSize:16,color:'var(--t1)',marginBottom:3}}>
-                                {p.name}
-                              </div>
-                              <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
-                                {p.budget}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* 배경 설명 */}
-                          <p style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,marginBottom:12,
-                            whiteSpace:'pre-wrap'}}>
-                            {p.background}
-                          </p>
-
-                          {/* 관련주 + 리스크 2컬럼 */}
-                          <div style={{
-                            display:'grid',
-                            gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
-                            gap:1, background:'rgba(255,255,255,0.06)',
-                          }}>
-                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
-                              <div style={{
-                                fontFamily:'var(--font-mono)',fontSize:8,color:'#3d9e6a',
-                                letterSpacing:'.07em',marginBottom:8,
-                              }}>수혜 산업</div>
-                              {(p.beneficiaries||[]).filter(b=>b.pos).slice(0,4).map((b,bi) => (
-                                <div key={bi} style={{marginBottom:8}}>
-                                  <div style={{display:'flex',justifyContent:'space-between',gap:8,marginBottom:2}}>
-                                    <span style={{fontSize:12,color:'var(--t1)',fontWeight:500}}>{b.sector}</span>
-                                    <div style={{display:'flex',gap:2,flexShrink:0}}>
-                                      {[1,2,3,4,5].map(i=>(
-                                        <div key={i} style={{
-                                          width:6,height:6,borderRadius:1,
-                                          background:i<=b.impact?'#3d9e6a':'rgba(255,255,255,0.07)',
-                                        }}/>
-                                      ))}
-                                    </div>
-                                  </div>
-                                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
-                                    {(b.stocks||[]).slice(0,3).join(' · ')}
-                                    {(b.etfs||[]).length>0 && (
-                                      <span style={{color:'var(--t3)',marginLeft:6}}>
-                                        ETF {b.etfs.slice(0,2).join(' ')}
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
-                              <div style={{
-                                fontFamily:'var(--font-mono)',fontSize:8,color:'#b84a4a',
-                                letterSpacing:'.07em',marginBottom:8,
-                              }}>리스크 · 타임라인</div>
-                              {p.risks && (
-                                <div style={{
-                                  fontSize:11,color:'var(--t2)',lineHeight:1.7,marginBottom:10,
-                                  padding:'8px 10px',
-                                  background:'rgba(184,74,74,0.06)',
-                                  border:'1px solid rgba(184,74,74,0.12)',
-                                  borderRadius:3,
-                                }}>
-                                  ⚠ {p.risks}
-                                </div>
-                              )}
-                              {(p.timeline||[]).slice(-4).map((t,ti) => (
-                                <div key={ti} style={{
-                                  display:'flex',gap:8,marginBottom:6,
-                                  paddingLeft:8, borderLeft:'1px solid var(--wire2)',
-                                }}>
-                                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                                    color:c.color,flexShrink:0,minWidth:60}}>{t.date}</div>
-                                  <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.5}}>{t.event}</div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })()}
+              
 
             </section>
 
@@ -1791,6 +1132,679 @@ export default function Home() {
             </section>
 
             {/* 푸터 */}
+            
+            {/* 자산제곱 구독자료 섹션 */}
+            <section id="subscribe" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="자산제곱 구독자료" />
+              <SecTitle>심층 분석 · 투자 전략</SecTitle>
+              {/* 자산제곱 리포트 */}
+              <div style={{marginBottom:24}}>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                  color:'rgba(255,255,255,0.25)',letterSpacing:'.1em',marginBottom:12}}>
+                  자산제곱 — 구독자료
+                </div>
+                {/* 메인 구독 카드 */}
+                <a href="https://contents.premium.naver.com/assetx2/assetsx2"
+                  target="_blank" rel="noopener"
+                  style={{display:'block',textDecoration:'none',
+                    background:'rgba(29,80,50,0.25)',
+                    border:'1px solid rgba(29,180,100,0.2)',
+                    borderRadius:4,padding:'18px 20px',marginBottom:8,
+                    transition:'background .15s'}}
+                  onMouseEnter={e=>e.currentTarget.style.background='rgba(29,80,50,0.4)'}
+                  onMouseLeave={e=>e.currentTarget.style.background='rgba(29,80,50,0.25)'}>
+                  {/* 상단 배지 */}
+                  <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'#3dc47e',background:'rgba(29,180,100,0.15)',
+                      border:'1px solid rgba(29,180,100,0.3)',
+                      borderRadius:2,padding:'2px 8px',letterSpacing:'.08em'}}>
+                      N NAVER PREMIUM
+                    </span>
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'rgba(255,255,255,0.35)'}}>
+                      주 3회 발행 · 187편+
+                    </span>
+                    <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
+                      fontSize:9,color:'#3dc47e'}}>구독하기 →</span>
+                  </div>
+                  {/* 제목·설명 */}
+                  <div style={{fontFamily:'var(--font-sans)',fontSize:15,fontWeight:700,
+                    color:'var(--t1)',marginBottom:8}}>자산제곱 구독자료</div>
+                  <div style={{fontFamily:'var(--font-sans)',fontSize:12,
+                    color:'rgba(255,255,255,0.45)',marginBottom:14,lineHeight:1.6}}>
+                    핵심 전략으로 귀하게 대접하겠습니다.
+                  </div>
+                  {/* 태그 */}
+                  <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                    {['투자 전략','시나리오','시장 리포트','기술적 분석'].map(t=>(
+                      <span key={t} style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        border:'1px solid rgba(255,255,255,0.15)',
+                        borderRadius:2,padding:'3px 8px',
+                        color:'rgba(255,255,255,0.5)'}}>{t}</span>
+                    ))}
+                  </div>
+                </a>
+                {/* 미래에셋 VIP+ 배지 */}
+                <div style={{display:'flex',alignItems:'center',gap:12,
+                  background:'rgba(184,146,74,0.08)',
+                  border:'1px solid rgba(184,146,74,0.15)',
+                  borderRadius:4,padding:'12px 16px'}}>
+                  <span style={{fontSize:18}}>🏆</span>
+                  <div>
+                    <div style={{fontFamily:'var(--font-sans)',fontSize:12,
+                      fontWeight:700,color:'var(--amber)',marginBottom:2}}>
+                      미래에셋 VIP+ 서비스 제공 콘텐츠
+                    </div>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'rgba(255,255,255,0.3)'}}>실력으로 검증된 프리미엄 리서치</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 핵심 지금 시나리오 카드 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 24 : 40,
+              }}>
+                {[
+                  {
+                    tag: '🚨 현재 진행 중',
+                    title: '미-이란 전쟁 · 호르무즈 봉쇄',
+                    body: '2026.02.28 Operation Epic Fury. 브렌트 $120 터치 후 현재 $92. 6주째 봉쇄 — 중동 원유 수출 절반 차단. 4월 13일 미국 해상봉쇄 발효, 이란행 선박 전면 차단. 봉쇄 지속 시 $150~$200 경고.',
+                    link: 'XLE·FRO·셰니어(LNG)·GLD — 정책 연관 섹터',
+                    color: '#c00000',
+                  },
+                  {
+                    tag: '🔴 최고 경계',
+                    title: '미-중 관세 재결렬',
+                    body: '90일 유예 기간 종료(~7월 8일) 내 합의 실패 시 145% 관세 복귀. 중국의 희귀광물 전면 금지 카드가 맞물리면 공급망 대혼란.',
+                    link: '반도체·K-방산 — 정책 직접 연관',
+                    color: '#b84a4a',
+                  },
+                  {
+                    tag: '🟡 현재: 4월 흡수 → 5~7월 방출',
+                    title: '재무부 TGA 사이클 — 지금은 흡수 구간',
+                    body: '4월 15일 세금 납부 마감 → TGA 피크(유동성 흡수). 이후 5~7월 정부 지출 가속 → TGA 감소 → 시중 유동성 방출. 역RRP 완충재 소진으로 TGA 변동이 준비금 직격. 방출 구간이 위험자산 랠리 트리거.',
+                    link: 'FRED WDTGAL 매주 수요일 — TGA 방향 확인',
+                    color: '#b8924a',
+                  },
+                  {
+                    tag: '🟢 구조적 기회',
+                    title: 'HBM 병목 — AI의 급소',
+                    body: 'SK하이닉스 HBM4가 엔비디아 B300에 독점 공급 중. GPU가 아무리 많아도 HBM 없이는 작동 불가. 중국 자체 개발 2027 목표이지만 수율 불확실.',
+                    link: '정책 연관: SK하이닉스·삼성·마이크론',
+                    color: '#3d9e6a',
+                  },
+                ].map(({tag, title, body, link, color}, i) => (
+                  <div key={i} style={{
+                    background: 'var(--s1)', padding: mobile ? '16px' : '20px 22px',
+                    position: 'relative', overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      position: 'absolute', top: 0, left: 0, right: 0,
+                      height: 2, background: color,
+                    }} />
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 9,
+                      color, letterSpacing: '.06em', marginBottom: 8,
+                    }}>{tag}</div>
+                    <div style={{
+                      fontFamily:'var(--font-serif)', fontSize: mobile ? 16 : 18,
+                      color:'var(--t1)', fontWeight: 400, marginBottom: 10, lineHeight: 1.3,
+                    }}>{title}</div>
+                    <p style={{
+                      fontSize: 12, color:'var(--t2)', lineHeight: 1.8, marginBottom: 12,
+                    }}>{body}</p>
+                    <div style={{
+                      fontFamily:'var(--font-mono)', fontSize: 10,
+                      color, opacity: 0.8,
+                    }}>→ {link}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 이 사이트 활용법 */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)',
+                gap: 1, background: 'rgba(255,255,255,0.06)',
+                marginBottom: mobile ? 32 : 48,
+              }}>
+                {[
+                  { icon:'⊞', label:'국가별 정책 분석',
+                    desc:'정부가 어디에 돈을 쓰고 어떤 산업을 밀어주는지 확인합니다. 대부분의 개인 투자자는 뉴스 헤드라인만 보지만, 실제 예산 규모·수혜 산업·타임라인까지 한번에 볼 수 있는 곳은 극히 드뭅니다.' },
+                  { icon:'⬡', label:'연결고리 맵',
+                    desc:'정책 하나가 어떤 흐름으로 어떤 종목까지 영향을 미치는지 인과관계로 시각화했습니다. 예를 들어 "미국 부채한도 해결 → TGA 방출 → 시중 유동성 증가 → 위험자산 상승"처럼, 눈에 안 보이는 돈의 흐름을 추적합니다.' },
+                  { icon:'◈', label:'정책 관련주 탐색',
+                    desc:'특정 정책의 수혜를 받을 수 있는 종목을 국가·섹터·연관도별로 필터링합니다. 어떤 종목이 어떤 정책과 연결돼 있는지 빠르게 확인하는 출발점으로 활용하세요. 종목 언급은 투자 권유가 아닙니다.' },
+                  { icon:'▦', label:'정책 히트맵',
+                    desc:'5개국 × 12개 섹터를 격자로 보여줍니다. 미국이 반도체에 집중하는 동안 유럽은 방산에, 한국은 원전에 화력을 쏟고 있다는 사실을 한눈에 파악할 수 있습니다. 어디에 정책 자금이 몰리는지가 보입니다.' },
+                  { icon:'⚡', label:'정책 충돌 지도',
+                    desc:'서로 반대 방향을 가리키는 정책들을 정리했습니다. 예컨대 "트럼프 관세"는 리쇼어링을 돕지만 동시에 원자재 비용을 올려 제조업을 압박합니다. 이런 충돌 구간에서 투자 판단이 엇갈립니다.' },
+                  { icon:'↻', label:'섹터 로테이션 타임라인',
+                    desc:'정책 흐름에 따라 지금부터 2년 후까지 어떤 섹터가 언제 주목받을 가능성이 높은지 정리했습니다. 지금은 에너지·방산, 3개월 후는 유동성·나스닥, 6개월 후는 반도체·AI 인프라 순입니다. 참고용 시나리오입니다.' },
+                  { icon:'◷', label:'이벤트 캘린더',
+                    desc:'법 발효일, 정책 표결, 협상 데드라인을 날짜별로 정리했습니다. 예를 들어 "7월 8일 관세 유예 만료"처럼 시장에 충격을 줄 수 있는 일정을 미리 알고 있는 것만으로도 대부분의 개인 투자자보다 한발 앞설 수 있습니다.' },
+                  { icon:'⚠', label:'리스크 레이더',
+                    desc:'현재 진행 중이거나 임박한 리스크를 충격 규모 × 발생 가능성 순으로 정리했습니다. 이란 전쟁·미-중 관세·BOJ 금리 인상처럼 포트폴리오에 직접 영향을 줄 수 있는 위험 요소와 대응 방향을 확인하세요.' },
+                ].map(({icon, label, desc}, i) => (
+                  <div key={i} style={{
+                    background:'var(--s1)', padding:'14px 16px',
+                  }}>
+                    <div style={{
+                      display:'flex', alignItems:'center', gap: 8, marginBottom: 6,
+                    }}>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 13,
+                        color:'var(--amber)', flexShrink: 0,
+                      }}>{icon}</span>
+                      <span style={{
+                        fontFamily:'var(--font-mono)', fontSize: 11,
+                        color:'var(--t1)', fontWeight: 500,
+                      }}>{label}</span>
+                    </div>
+                    <p style={{
+                      fontSize: 11, color:'var(--t2)', lineHeight: 1.7, margin: 0,
+                    }}>{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+{/* ② 국가별 정책 */}
+            <section id="policies" style={{paddingTop:mobile?40:56}}>
+              <Label text="국가별 정책 분석" />
+              <SecTitle>정책 상세 분석</SecTitle>
+              {/* 정책 검색 */}
+              <div style={{position:'relative',marginBottom:20,maxWidth:360}}>
+                <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',
+                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>⌕</span>
+                <input
+                  value={policySearch} onChange={e=>setPolicySearch(e.target.value)}
+                  placeholder="정책명, 키워드, 종목 검색..."
+                  style={{width:'100%',fontFamily:'var(--font-mono)',fontSize:12,
+                    background:'var(--s2)',border:'1px solid var(--wire2)',
+                    borderRadius:4,padding:'9px 12px 9px 32px',
+                    color:'var(--t1)',outline:'none',boxSizing:'border-box'}}
+                />
+                {policySearch && (
+                  <button onClick={()=>setPolicySearch('')}
+                    style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',
+                      background:'none',border:'none',cursor:'pointer',
+                      fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>✕</button>
+                )}
+              </div>
+              {/* 모바일 국가 필터 */}
+              {mobile && (
+                <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:20,
+                  paddingBottom:4,scrollbarWidth:'none',flexWrap:'nowrap'}}>
+                  <button onClick={()=>setFilterCountry(null)}
+                    style={btn(!filterCountry)}>전체</button>
+                  {countries.map(c => (
+                    <button key={c.id} onClick={()=>setFilterCountry(filterCountry===c.id?null:c.id)}
+                      style={{...btn(filterCountry===c.id),
+                        color:filterCountry===c.id?'var(--ink)':c.color,
+                        background:filterCountry===c.id?c.color:'transparent',
+                        border:`1px solid ${filterCountry===c.id?c.color:c.color+'40'}`}}>
+                      {c.flag} {c.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {policySearch && displayedCountries.length === 0 && (
+                <div style={{padding:'40px 0',textAlign:'center',
+                  fontFamily:'var(--font-mono)',fontSize:12,color:'var(--t3)'}}>
+                  '{policySearch}'에 해당하는 정책이 없습니다
+                </div>
+              )}
+              {displayedCountries.map(c => (
+                <div key={c.id} style={{padding:mobile?'24px 0':'36px 0',
+                  borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
+                  <div style={{display:'grid',
+                    gridTemplateColumns:mobile?'1fr':'1fr 200px',
+                    gap:mobile?16:28,marginBottom:18,paddingBottom:16,
+                    borderBottom:`1px solid ${c.color}25`}}>
+                    <div>
+                      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:10}}>
+                        <span style={{fontSize:mobile?26:30,lineHeight:1}}>{c.flag}</span>
+                        <div>
+                          <h3 style={{fontFamily:'var(--font-serif)',
+                            fontSize:mobile?20:28,fontWeight:400,
+                            color:c.color,lineHeight:1.1}}>{c.name}</h3>
+                          <div style={{fontFamily:'var(--font-mono)',fontSize:11,
+                            color:'var(--t3)',marginTop:4}}>{c.tagline}</div>
+                        </div>
+                      </div>
+                      <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.85,maxWidth:500}}>
+                        {c.summary}
+                      </p>
+                    </div>
+                    {!mobile && (
+                      <div style={{display:'flex',flexDirection:'column',gap:1}}>
+                        {[{l:'분석 정책',v:c.policies.length},
+                          {l:'최근 업데이트',v:c.updated},
+                          {l:'핵심 테마',v:[...new Set(c.policies.flatMap(p=>p.themes||[]))].length+'개'}
+                        ].map(({l,v}) => (
+                          <div key={l} style={{display:'flex',justifyContent:'space-between',
+                            alignItems:'center',padding:'8px 12px',background:'var(--s1)',
+                            borderLeft:`2px solid ${c.color}40`}}>
+                            <span style={{fontFamily:'var(--font-mono)',fontSize:11,
+                              color:'var(--t2)'}}>{l}</span>
+                            <span style={{fontFamily:'var(--font-serif)',fontSize:15,
+                              color:c.color}}>{v}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {c.policies.map(p => (
+                    <PolicyRow key={p.id} policy={p} color={c.color} mobile={mobile} />
+                  ))}
+                </div>
+              ))}
+            </section>
+
+            {/* ③ 연결고리 맵 */}
+            <section id="flow" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="정책 연결고리 맵" />
+              <SecTitle>정책은 어떻게 연결되는가</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
+                개별 정책을 넘어 큰 흐름의 인과관계를 추적합니다. 2026년 현재 기준.
+              </p>
+              <div style={{display:'flex',gap:8,marginBottom:24,flexWrap:'wrap'}}>
+                {FLOW_DATA.map(f => (
+                  <button key={f.id} onClick={()=>setFlowId(f.id)}
+                    style={{fontFamily:'var(--font-sans)',fontSize:12,
+                      background:flowId===f.id?f.color+'22':'transparent',
+                      color:flowId===f.id?'var(--t1)':'var(--t2)',
+                      border:`1px solid ${flowId===f.id?f.color:'var(--wire2)'}`,
+                      borderRadius:4,padding:'7px 13px',cursor:'pointer',transition:'all .15s'}}>
+                    {f.title}
+                  </button>
+                ))}
+              </div>
+              {flow && (
+                <div style={{animation:'fadeIn .2s ease'}}>
+                  <div style={{display:'flex',alignItems:'center',
+                    overflowX:'auto',paddingBottom:8,marginBottom:20,gap:0}}>
+                    {flow.steps.map((step,i) => (
+                      <div key={i} style={{display:'flex',alignItems:'center',flexShrink:0}}>
+                        <div style={{width:mobile?108:140,padding:mobile?'10px 10px':'12px 14px',
+                          background:'var(--s2)',borderRadius:4,
+                          border:`1px solid ${TC[step.t]}50`,
+                          borderTop:`2px solid ${TC[step.t]}`}}>
+                          <div style={{fontFamily:'var(--font-mono)',fontSize:8,
+                            color:TC[step.t],letterSpacing:'.07em',marginBottom:4}}>
+                            {TL[step.t]}
+                          </div>
+                          <div style={{fontSize:mobile?10:12,color:'var(--t1)',
+                            fontWeight:500,lineHeight:1.3,marginBottom:3}}>{step.l}</div>
+                          <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                            color:'var(--t2)',lineHeight:1.4}}>{step.s}</div>
+                        </div>
+                        {i<flow.steps.length-1 && (
+                          <div style={{display:'flex',alignItems:'center',
+                            padding:'0 3px',flexShrink:0}}>
+                            <div style={{width:16,height:1,background:'var(--wire2)'}} />
+                            <div style={{borderTop:'4px solid transparent',
+                              borderBottom:'4px solid transparent',
+                              borderLeft:'6px solid var(--wire2)',width:0,height:0}} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:10}}>
+                    <div style={{background:'var(--s1)',border:'1px solid var(--wire)',
+                      borderLeft:'2px solid #3d9e6a',borderRadius:4,padding:'14px 16px'}}>
+                      <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'#3d9e6a',
+                        letterSpacing:'.08em',marginBottom:10}}>정책 연관 종목</div>
+                      {flow.bens.map((b,i) => (
+                        <div key={i} style={{fontFamily:'var(--font-mono)',fontSize:11,
+                          color:'var(--amber)',lineHeight:1.9}}>→ {b}</div>
+                      ))}
+                    </div>
+                    <div style={{background:'var(--s1)',border:'1px solid var(--wire)',
+                      borderLeft:'2px solid #b84a4a',borderRadius:4,padding:'14px 16px'}}>
+                      <div style={{fontFamily:'var(--font-mono)',fontSize:9,color:'#b84a4a',
+                        letterSpacing:'.08em',marginBottom:10}}>이 흐름의 리스크</div>
+                      {flow.risks.map((r,i) => (
+                        <div key={i} style={{fontSize:12,color:'var(--t2)',lineHeight:1.9}}>
+                          · {r}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* ④ 정책 관련주 스크리너 */}
+            <section id="screener" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="정책 관련주 스크리너" />
+              <SecTitle>정책 관련주 조회</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:16}}>
+                {scRows.length}개 종목 · 정책과 연관된 종목을 탐색하는 도구입니다. 종목 언급은 투자 권유가 아닙니다.
+              </p>
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
+                <input value={scSearch} onChange={e=>setScSearch(e.target.value)}
+                  placeholder="종목명 / 섹터..."
+                  style={{fontFamily:'var(--font-mono)',fontSize:11,background:'var(--s2)',
+                    border:'1px solid var(--wire2)',borderRadius:4,padding:'6px 12px',
+                    color:'var(--t1)',outline:'none',width:150}} />
+                <select value={scCountry} onChange={e=>setScCountry(e.target.value)}
+                  style={{fontFamily:'var(--font-mono)',fontSize:11,background:'var(--s2)',
+                    border:'1px solid var(--wire2)',borderRadius:4,padding:'6px 10px',
+                    color:'var(--t1)',outline:'none'}}>
+                  <option value="all">전체 국가</option>
+                  {countries.map(c=><option key={c.id} value={c.id}>{c.flag} {c.name}</option>)}
+                </select>
+                <button onClick={()=>setScKorea(!scKorea)} style={{
+                    fontFamily:'var(--font-mono)',fontSize:10,
+                    background:scKorea?'rgba(184,146,74,0.15)':'transparent',
+                    color:scKorea?'#c9a83a':'var(--t2)',
+                    border:`1px solid ${scKorea?'#c9a83a':'var(--wire2)'}`,
+                    borderRadius:2,padding:'4px 10px',cursor:'pointer',
+                  }}>🇰🇷 코스피</button>
+                {[{v:'all',l:'전체'},{v:'pos',l:'관련주'},{v:'neg',l:'리스크'}].map(f=>(
+                  <button key={f.v} onClick={()=>setScImpact(f.v)} style={btn(scImpact===f.v)}>
+                    {f.l}
+                  </button>
+                ))}
+              </div>
+              <div style={{border:'1px solid var(--wire)',borderRadius:4,overflow:'hidden',
+                overflowX:'auto'}}>
+                <div style={{display:'grid',minWidth:500,
+                  gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
+                  background:'var(--s2)',padding:'8px 16px',borderBottom:'1px solid var(--wire)'}}>
+                  {(mobile?['종목','섹터','연관도']:['종목','섹터','연관도','ETF','국가']).map(h=>(
+                    <div key={h} style={{fontFamily:'var(--font-mono)',fontSize:9,
+                      color:'var(--t3)',letterSpacing:'.08em'}}>{h}</div>
+                  ))}
+                </div>
+                {scRows.slice(0,60).map((r,i) => (
+                  <div key={i}
+                    style={{display:'grid',minWidth:500,
+                      gridTemplateColumns:mobile?'2fr 1.5fr 60px':'2fr 1.5fr 70px 1.5fr 1fr',
+                      padding:'9px 16px',
+                      borderBottom:i<scRows.length-1?'1px solid var(--wire)':'none',
+                      background:i%2===0?'var(--s1)':'var(--ink)',transition:'background .1s'}}
+                    onMouseEnter={e=>e.currentTarget.style.background='var(--s2)'}
+                    onMouseLeave={e=>e.currentTarget.style.background=i%2===0?'var(--s1)':'var(--ink)'}>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:12,
+                      color:'var(--t1)',fontWeight:500,alignSelf:'center'}}>{r.stock}</div>
+                    <div style={{fontSize:11,color:'var(--t2)',alignSelf:'center'}}>{r.sector}</div>
+                    <div style={{alignSelf:'center'}}><Dots v={r.impact} pos={r.pos} /></div>
+                    {!mobile && (
+                    <div style={{alignSelf:'center'}}>
+                      {r.etfs.slice(0,3).map(e=>(
+                        <span key={e} style={{fontFamily:'var(--font-mono)',fontSize:9,
+                          color:'var(--amber)',background:'rgba(184,146,74,.1)',
+                          border:'1px solid rgba(184,146,74,.2)',borderRadius:2,
+                          padding:'1px 5px',marginRight:3,display:'inline-block',marginBottom:2}}>
+                          {e}
+                        </span>
+                      ))}
+                    </div>
+                    )}
+                    {!mobile && <div style={{display:'flex',alignItems:'center',gap:5,alignSelf:'center'}}>
+                      <span style={{fontSize:13}}>{r.country.flag}</span>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                        color:r.country.color}}>{r.country.name}</span>
+                    </div>}
+                  </div>
+                ))}
+              </div>
+              {scRows.length>60 && (
+                <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t3)',
+                  marginTop:10,textAlign:'center'}}>
+                  상위 60개 표시 · 전체 {scRows.length}개
+                </div>
+              )}
+            </section>
+
+            {/* ⑤ 히트맵 */}
+            <section id="heatmap" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="정책 강도 히트맵" />
+              <SecTitle>국가 × 섹터 정책 집중도</SecTitle>
+              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:24}}>
+                어느 국가가 어느 섹터에 정책 화력을 집중하는지 보여줍니다. 셀 클릭 시 관련 정책과 겹치는 종목 확인.
+              </p>
+
+              {/* 범례 */}
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,flexWrap:'wrap'}}>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)'}}>강도</span>
+                {[0,2,4,6,8,10].map(v => (
+                  <div key={v} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
+                    <div style={{width:26,height:16,background:cellBg(v),border:'1px solid var(--wire)',borderRadius:2}} />
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:8,color:'var(--t3)'}}>{v}</span>
+                  </div>
+                ))}
+                <span style={{fontFamily:'var(--font-mono)',fontSize:9,color:'var(--t3)',marginLeft:4}}>낮음 → 높음</span>
+              </div>
+
+              <div style={{overflowX:'auto'}}>
+                <div style={{
+                  display:'grid',
+                  gridTemplateColumns:`150px repeat(${countries.length},1fr)`,
+                  gap:1, minWidth:560,
+                }}>
+                  {/* 헤더 */}
+                  <div />
+                  {countries.map(c => (
+                    <div key={c.id} style={{padding:'8px 4px',textAlign:'center'}}>
+                      <div style={{fontSize:18,marginBottom:2}}>{c.flag}</div>
+                      <div style={{fontFamily:'var(--font-serif)',fontSize:12,color:c.color}}>{c.name}</div>
+                    </div>
+                  ))}
+
+                  {/* 데이터 행 */}
+                  {SECTORS.map(s => (
+                    <>
+                      {/* 섹터 라벨 */}
+                      <div key={s.id+'_l'} style={{
+                        padding:'9px 10px',display:'flex',alignItems:'center',
+                        borderTop:'1px solid var(--wire)',
+                      }}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--t2)'}}>{s.l}</span>
+                      </div>
+
+                      {/* 셀들 */}
+                      {countries.map(c => {
+                        const cell = matrix[c.id][s.id];
+                        const isSelected = hmSelected?.c===c.id && hmSelected?.s===s.id;
+                        return (
+                          <div
+                            key={c.id+s.id}
+                            onClick={() => {
+                              if (cell.count === 0) return;
+                              setHmSelected(isSelected ? null : {c:c.id, s:s.id});
+                            }}
+                            style={{
+                              background: isSelected ? c.color+'33' : cellBg(cell.score),
+                              border: isSelected ? `2px solid ${c.color}` : '1px solid rgba(255,255,255,0.04)',
+                              cursor: cell.count>0 ? 'pointer' : 'default',
+                              display:'flex', flexDirection:'column',
+                              alignItems:'center', justifyContent:'center',
+                              padding:'9px 4px', transition:'all .15s', minHeight:46,
+                              outline: isSelected ? `2px solid ${c.color}` : 'none',
+                            }}
+                          >
+                            {cell.count > 0 ? (
+                              <>
+                                <div style={{
+                                  fontFamily:'var(--font-mono)', fontSize:14, fontWeight:600,
+                                  color: isSelected ? c.color : cellTxt(cell.score), lineHeight:1,
+                                }}>{cell.score}</div>
+                                <div style={{
+                                  fontFamily:'var(--font-mono)', fontSize:8,
+                                  color: isSelected ? c.color : cellTxt(cell.score),
+                                  opacity:.7, marginTop:2,
+                                }}>{cell.count}개</div>
+                              </>
+                            ) : (
+                              <div style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)'}}>—</div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </>
+                  ))}
+                </div>
+              </div>
+
+              {/* 선택된 셀 상세 패널 */}
+              {hmSelected && matrix[hmSelected.c]?.[hmSelected.s]?.count > 0 && (() => {
+                const c = countries.find(x => x.id===hmSelected.c);
+                const sec = SECTORS.find(x => x.id===hmSelected.s);
+                const cell = matrix[hmSelected.c][hmSelected.s];
+                return (
+                  <div style={{
+                    marginTop:16, border:`1px solid ${c.color}40`,
+                    borderLeft:`3px solid ${c.color}`,
+                    borderRadius:4, overflow:'hidden',
+                    animation:'fadeIn .15s ease',
+                  }}>
+                    {/* 패널 헤더 */}
+                    <div style={{
+                      display:'flex', alignItems:'center', justifyContent:'space-between',
+                      padding:'12px 18px',
+                      background:`${c.color}0d`,
+                      borderBottom:'1px solid var(--wire)',
+                    }}>
+                      <div style={{display:'flex',alignItems:'center',gap:12,padding:'0 4px'}}>
+                        <span style={{fontSize:18}}>{c.flag}</span>
+                        <div>
+                          <span style={{fontFamily:'var(--font-serif)',fontSize:16,color:c.color}}>{c.name}</span>
+                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',margin:'0 8px'}}>×</span>
+                          <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t2)'}}>{sec.l}</span>
+                        </div>
+                        <span style={{
+                          fontFamily:'var(--font-mono)',fontSize:11,
+                          color:c.color, background:`${c.color}18`,
+                          border:`1px solid ${c.color}40`,
+                          borderRadius:3, padding:'2px 8px',
+                        }}>강도 {cell.score}</span>
+                      </div>
+                      <button
+                        onClick={() => setHmSelected(null)}
+                        style={{
+                          fontFamily:'var(--font-mono)', fontSize:11,
+                          color:'var(--t3)', background:'none', border:'none',
+                          cursor:'pointer', padding:'4px 8px',
+                        }}
+                      >✕ 닫기</button>
+                    </div>
+
+                    {/* 정책 목록 */}
+                    <div style={{background:'var(--s1)'}}>
+                      {cell.policies.map((p, pi) => (
+                        <div key={p.id} style={{
+                          padding:'14px 18px',
+                          borderBottom: pi < cell.policies.length-1 ? '1px solid var(--wire)' : 'none',
+                        }}>
+                          {/* 정책 헤더 */}
+                          <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:8}}>
+                            <span style={{
+                              fontFamily:'var(--font-mono)', fontSize:8,
+                              color: p.status==='active'?'#3d9e6a':'#b8924a',
+                              border:`1px solid ${p.status==='active'?'rgba(61,158,106,.3)':'rgba(184,146,74,.3)'}`,
+                              borderRadius:2, padding:'2px 6px', flexShrink:0, marginTop:3,
+                            }}>{p.status==='active'?'ACTIVE':'UPCOMING'}</span>
+                            <div>
+                              <div style={{fontFamily:'var(--font-serif)',fontSize:16,color:'var(--t1)',marginBottom:3}}>
+                                {p.name}
+                              </div>
+                              <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
+                                {p.budget}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 배경 설명 */}
+                          <p style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,marginBottom:12,
+                            whiteSpace:'pre-wrap'}}>
+                            {p.background}
+                          </p>
+
+                          {/* 관련주 + 리스크 2컬럼 */}
+                          <div style={{
+                            display:'grid',
+                            gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
+                            gap:1, background:'rgba(255,255,255,0.06)',
+                          }}>
+                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
+                              <div style={{
+                                fontFamily:'var(--font-mono)',fontSize:8,color:'#3d9e6a',
+                                letterSpacing:'.07em',marginBottom:8,
+                              }}>수혜 산업</div>
+                              {(p.beneficiaries||[]).filter(b=>b.pos).slice(0,4).map((b,bi) => (
+                                <div key={bi} style={{marginBottom:8}}>
+                                  <div style={{display:'flex',justifyContent:'space-between',gap:8,marginBottom:2}}>
+                                    <span style={{fontSize:12,color:'var(--t1)',fontWeight:500}}>{b.sector}</span>
+                                    <div style={{display:'flex',gap:2,flexShrink:0}}>
+                                      {[1,2,3,4,5].map(i=>(
+                                        <div key={i} style={{
+                                          width:6,height:6,borderRadius:1,
+                                          background:i<=b.impact?'#3d9e6a':'rgba(255,255,255,0.07)',
+                                        }}/>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--amber)'}}>
+                                    {(b.stocks||[]).slice(0,3).join(' · ')}
+                                    {(b.etfs||[]).length>0 && (
+                                      <span style={{color:'var(--t3)',marginLeft:6}}>
+                                        ETF {b.etfs.slice(0,2).join(' ')}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <div style={{background:'var(--s2)',padding:'12px 14px'}}>
+                              <div style={{
+                                fontFamily:'var(--font-mono)',fontSize:8,color:'#b84a4a',
+                                letterSpacing:'.07em',marginBottom:8,
+                              }}>리스크 · 타임라인</div>
+                              {p.risks && (
+                                <div style={{
+                                  fontSize:11,color:'var(--t2)',lineHeight:1.7,marginBottom:10,
+                                  padding:'8px 10px',
+                                  background:'rgba(184,74,74,0.06)',
+                                  border:'1px solid rgba(184,74,74,0.12)',
+                                  borderRadius:3,
+                                }}>
+                                  ⚠ {p.risks}
+                                </div>
+                              )}
+                              {(p.timeline||[]).slice(-4).map((t,ti) => (
+                                <div key={ti} style={{
+                                  display:'flex',gap:8,marginBottom:6,
+                                  paddingLeft:8, borderLeft:'1px solid var(--wire2)',
+                                }}>
+                                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
+                                    color:c.color,flexShrink:0,minWidth:60}}>{t.date}</div>
+                                  <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.5}}>{t.event}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </section>
+
             <div style={{borderTop:'1px solid var(--wire)',marginTop:8,
               padding:mobile?'24px 0 40px':'28px 0 40px'}}>
               {/* 면책 조항 */}
