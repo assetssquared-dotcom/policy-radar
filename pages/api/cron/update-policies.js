@@ -147,7 +147,7 @@ async function detectNew(countryId, existingIds) {
 새 정책만 JSON배열. 없으면[].
 [{"id":"id","name":"이름","budget":"규모","date":"YYYY-MM~","themes":["id"],"status":"active|upcoming","background":"설명(한글 2문단)","beneficiaries":[{"sector":"섹터","impact":3,"pos":true,"stocks":["종목(티커)"],"etfs":["ETF"]}],"risks":"리스크","budgetData":[],"timeline":[]}]
 테마: semiconductor,ai_policy,defense,energy_transition,nuclear,dollar_hegemony,stablecoin,reshoring,yuan_intl,critical_minerals,supply_chain,debt_fiscal,real_estate,quantum,cyber
-규칙: 순수JSON만.`;
+규칙: 순수JSON만. HTML태그 절대 금지.`;
 
   const q = queries.map((q,i)=>(i+1)+'. '+q).join('\n');
   const text = await callClaude(system, (country?.name||countryId)+' 전 부처 최신 정책:\n'+q, true);
@@ -162,7 +162,7 @@ async function checkUpdates(countryId, policies) {
 
   const system = `정책 상태 점검. ${today} 기준.
 JSON: {"updates":[{"id":"ID","statusChanged":false,"newStatus":"active","note":"변경사항(없으면null)"}]}
-순수JSON만.`;
+순수JSON만. HTML태그 절대 금지.`;
 
   const text = await callClaude(system,
     `다음 정책들의 최신 상태 확인:\n${pList}`, true);
