@@ -262,6 +262,13 @@ const SECTORS = [
 const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 
 // ── 유틸 ──────────────────────────────────────
+
+// cite 태그 제거 유틸
+function stripCite(text) {
+  if (!text) return text;
+  return text.replace(/<cite[^>]*>/g, '').replace(/<\/cite>/g, '');
+}
+
 function useMobile() {
   const [m, setM] = useState(false);
   useEffect(() => {
@@ -358,7 +365,7 @@ function PolicyRow({ policy, color, mobile }) {
         <div style={{paddingBottom:24,paddingLeft:14,animation:'fadeIn .15s ease'}}>
           <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.85,marginBottom:20,
             whiteSpace:'pre-wrap'}}>
-            {policy.background}
+            {stripCite(policy.background)}
           </p>
           <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr',
             gap:1,background:'rgba(255,255,255,0.06)'}}>
@@ -423,7 +430,7 @@ function PolicyRow({ policy, color, mobile }) {
                     RISK FACTOR
                   </div>
                   <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.65}}>
-                    {policy.risks}
+                    {stripCite(policy.risks)}
                   </div>
                 </div>
               )}
@@ -1365,7 +1372,7 @@ export default function Home() {
                           {/* 배경 설명 */}
                           <p style={{fontSize:12,color:'var(--t2)',lineHeight:1.8,marginBottom:12,
                             whiteSpace:'pre-wrap'}}>
-                            {p.background}
+                            {stripCite(p.background)}
                           </p>
 
                           {/* 관련주 + 리스크 2컬럼 */}
@@ -1416,7 +1423,7 @@ export default function Home() {
                                   border:'1px solid rgba(184,74,74,0.12)',
                                   borderRadius:3,
                                 }}>
-                                  ⚠ {p.risks}
+                                  ⚠ {stripCite(p.risks)}
                                 </div>
                               )}
                               {(p.timeline||[]).slice(-4).map((t,ti) => (
