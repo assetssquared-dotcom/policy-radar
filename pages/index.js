@@ -147,55 +147,60 @@ const RE_POLICIES = [
     tag: '규제', color: '#b84a4a',
     title: '이재명 정부 3중 규제',
     status: '진행 중',
-    impact: '매수 억제',
-    desc: '수도권 주담대 6억 한도·갭투자 봉쇄·서울 전역 토지거래허가구역',
+    impact: '매수 억제 · 매물 동결',
+    desc: '은행 대출을 최대 6억원까지만 허용(수도권). 전세를 끼고 집 사는 갭투자 원천 차단. 서울 전역 + 경기 12곳을 토지거래허가구역으로 묶어 집 사면 2년간 직접 살아야 함.',
+    effect: '→ 집을 살 수 있는 사람이 줄고, 동시에 전세 임대 매물도 줄어 전셋값이 오르는 역설 발생. 규제가 오히려 세입자 부담을 높이고 있다는 비판.',
     keyDate: '2026.05.09',
-    keyDateLabel: '양도세 유예 종료',
-    watch: '매물 출회 여부',
+    keyDateLabel: '다주택자 양도세 유예 종료',
+    watch: '급매물 출회 여부 · 강남권 호가 변화',
   },
   {
     id: 'policy_jeonse',
     tag: '시장', color: '#b87030',
-    title: '공급 절벽·전세 품귀',
+    title: '공급 절벽 · 전세 품귀',
     status: '심화 중',
-    impact: '전월세 상승',
-    desc: '수도권 2026년 입주 27% 감소. 서울 전셋값 4.7% 상승 전망. 월세화 가속',
+    impact: '전세↑ 월세↑ 주거비 급등',
+    desc: '2026년 수도권 새 아파트 입주 물량이 작년보다 27% 줄어든다. 서울 착공이 2022년 6만 3천 → 2025년 1만 9천 가구로 급감. 이 여파가 2027~2028년까지 이어진다.',
+    effect: '→ 전세 매물이 귀해져 서울 전셋값 4.7% 상승 전망(집값 상승률 4.2%보다 높음). 전세가 없으니 월세로 이동 가속 — 서울 임대 거래 중 월세 비중이 60% 돌파 후 유지 중.',
     keyDate: '2027~2028',
-    keyDateLabel: '정비사업 입주 시작',
-    watch: '주간 전세수급지수',
+    keyDateLabel: '정비사업 입주 시작 — 그때까지 공급 부족 지속',
+    watch: '주간 전세수급지수(한국부동산원)',
   },
   {
     id: 'policy_pf',
     tag: '리스크', color: '#7a4ab8',
-    title: 'PF 부실·건설사 위기',
+    title: 'PF 부실 · 건설사 위기',
     status: '구조조정 중',
-    impact: '공급 지연',
-    desc: '135조원 PF 중 브릿지론 집중 부실. 착공 예년 대비 40% 수준',
+    impact: '아파트 공급 지연 · 미완성 리스크',
+    desc: 'PF(프로젝트 파이낸싱)는 건설사가 아파트를 짓기 전 금융사에서 빌리는 돈이다. 현재 이 대출 잔액이 135조원인데 금리가 오르고 분양이 안 되면서 갚지 못하는 사업장이 급증. 건설업 부도 건수 2021년 12개 → 2023년 21개.',
+    effect: '→ 계약한 아파트가 완공 못 될 수 있다. 청약 전 시공사 재무 상태 필수 확인. 특히 지방 소규모 건설사 분양 단지 주의. 저축은행 PF 부실로 제2금융권 건전성도 흔들림.',
     keyDate: '2026',
-    keyDateLabel: 'NPL 펀드 본격 조성',
-    watch: '건설업 부도 건수',
+    keyDateLabel: 'NPL(부실채권) 펀드 본격 조성',
+    watch: '건설업 부도 건수 · 저축은행 고정이하여신비율',
   },
   {
     id: 'policy_reconstruction',
     tag: '기회', color: '#3d9e6a',
-    title: '재건축·재개발 물꼬',
+    title: '재건축 · 재개발 물꼬',
     status: '진행 중',
-    impact: '공급 기대',
-    desc: '신통기획·보정계수로 57곳 물꼬. 그러나 이주비 규제·공사비로 착공 지연',
+    impact: '장기 공급 기대 · 단기 착공 지연',
+    desc: '서울시 신속통합기획(신통기획)은 재건축·재개발 인허가를 빠르게 처리해주는 제도. 사업성 보정계수 도입으로 1년 만에 57곳 정비사업이 다시 움직이기 시작. 그러나 이주비 대출 규제로 실제 착공은 늦어지는 중.',
+    effect: '→ 장기적으로 강남·한강벨트 공급이 늘지만 실제 입주는 2028년 이후. 지금 당장 집값을 잡는 데는 한계. 현대건설·삼성물산·GS건설 등 시공 능력 상위사에 수주 집중.',
     keyDate: '2027',
-    keyDateLabel: '신통기획 1세대 착공',
-    watch: '사업성 보정 적용 사업장 수',
+    keyDateLabel: '신통기획 1세대 사업지 착공 시작',
+    watch: '사업성 보정 적용 사업장 수 · 착공 실적',
   },
   {
     id: 'policy_polarization',
     tag: '트렌드', color: '#4a7fd4',
     title: '초양극화 — 강남 vs 지방',
     status: '심화 중',
-    impact: '지역별 차별화',
-    desc: '서울 6.6% vs 지방 0.3% 상승. 강남·한강벨트 신고가. 지방 미분양 7만+',
+    impact: '지역 따라 완전히 다른 시장',
+    desc: '2025년 서울 집값 6.6% 상승, 강남3구·마용성·한강벨트는 신고가 경신. 반면 지방은 0.3% 상승 — 사실상 정체. 지방 미분양은 7만 가구 이상 쌓여있다.',
+    effect: '→ 2026년은 서울 외곽·수도권 중저가 아파트가 한강벨트 상승을 뒤따르는 "갭 메우기" 구간 예상. 지방은 반등이 아닌 지연 상태 — 수요 자체가 약해졌기 때문. 지방 투자 시 인구 유입·고용 기반 먼저 확인.',
     keyDate: '2026',
-    keyDateLabel: '갭 메우기 상승 예상',
-    watch: '수도권 외곽 거래량',
+    keyDateLabel: '수도권 외곽 갭 메우기 상승 예상',
+    watch: '수도권 외곽 거래량 · 지방 미분양 소진율',
   },
 ];
 
@@ -1836,43 +1841,71 @@ export default function Home() {
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="부동산 투자" />
               <SecTitle>부동산 정책과 시장 흐름</SecTitle>
-              <p style={{fontSize:13,color:'var(--t2)',lineHeight:1.75,marginBottom:28}}>
-                정책·규제·공급 흐름을 한눈에 정리했습니다. 투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
+              <p style={{fontSize:15,color:'var(--t2)',lineHeight:1.85,marginBottom:32,maxWidth:700}}>
+                정책이 부동산 시장을 어떻게 바꾸고 있는지 정리했습니다.
+                투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
               </p>
 
-              {/* 정책 카드 5개 */}
-              <div style={{display:'grid',
-                gridTemplateColumns:mobile?'1fr':'1fr 1fr',
-                gap:1,background:'rgba(255,255,255,0.06)',marginBottom:24}}>
+              {/* 정책 카드 — 세로 1열로 넓게 */}
+              <div style={{display:'flex',flexDirection:'column',gap:2,marginBottom:32}}>
                 {RE_POLICIES.map(p=>(
-                  <div key={p.id} style={{background:'var(--s1)',padding:'18px 20px',
-                    position:'relative',overflow:'hidden'}}>
-                    <div style={{position:'absolute',top:0,left:0,right:0,height:3,background:p.color}}/>
-                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:8,
-                        color:p.color,background:`${p.color}18`,
-                        border:`1px solid ${p.color}40`,
-                        borderRadius:2,padding:'1px 7px'}}>{p.tag}</span>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
+                  <div key={p.id} style={{background:'var(--s1)',
+                    borderLeft:`4px solid ${p.color}`,
+                    padding:mobile?'20px 18px':'24px 28px',
+                    position:'relative'}}>
+
+                    {/* 상단 배지 행 */}
+                    <div style={{display:'flex',alignItems:'center',
+                      gap:10,marginBottom:14,flexWrap:'wrap'}}>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:10,
+                        color:p.color,background:`${p.color}1a`,
+                        border:`1px solid ${p.color}50`,
+                        borderRadius:2,padding:'2px 10px',letterSpacing:'.04em'}}>{p.tag}</span>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:11,
                         color:'var(--t3)'}}>{p.status}</span>
                       <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
-                        fontSize:9,color:'var(--t2)',
-                        background:'rgba(255,255,255,0.04)',
+                        fontSize:10,color:'var(--t2)',
+                        background:'rgba(255,255,255,0.05)',
                         border:'1px solid var(--wire)',
-                        borderRadius:2,padding:'1px 6px'}}>{p.impact}</span>
+                        borderRadius:2,padding:'2px 10px'}}>{p.impact}</span>
                     </div>
-                    <div style={{fontFamily:'var(--font-serif)',fontSize:mobile?14:16,
-                      color:'var(--t1)',marginBottom:8,fontWeight:400}}>{p.title}</div>
-                    <div style={{fontSize:12,color:'var(--t2)',lineHeight:1.7,
-                      marginBottom:12}}>{p.desc}</div>
-                    <div style={{display:'flex',gap:8,alignItems:'center',
-                      paddingTop:10,borderTop:'1px solid var(--wire)'}}>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
-                        color:p.color}}>{p.keyDate}</span>
-                      <span style={{fontFamily:'var(--font-mono)',fontSize:9,
-                        color:'var(--t2)'}}>{p.keyDateLabel}</span>
-                      <span style={{marginLeft:'auto',fontFamily:'var(--font-mono)',
-                        fontSize:8,color:'var(--t3)'}}>주시: {p.watch}</span>
+
+                    {/* 제목 */}
+                    <div style={{fontFamily:'var(--font-serif)',
+                      fontSize:mobile?17:20,
+                      color:'var(--t1)',marginBottom:12,
+                      fontWeight:400,lineHeight:1.4}}>{p.title}</div>
+
+                    {/* 설명 */}
+                    <div style={{fontSize:14,color:'var(--t2)',
+                      lineHeight:1.85,marginBottom:14}}>{p.desc}</div>
+
+                    {/* 투자 영향 — 강조 박스 */}
+                    <div style={{
+                      background:`${p.color}0d`,
+                      border:`1px solid ${p.color}30`,
+                      borderRadius:3,
+                      padding:'12px 16px',
+                      marginBottom:16,
+                      fontSize:14,
+                      color:'var(--t1)',
+                      lineHeight:1.8,
+                    }}>{p.effect}</div>
+
+                    {/* 하단 정보 행 */}
+                    <div style={{display:'flex',gap:16,
+                      alignItems:'center',flexWrap:'wrap',
+                      paddingTop:12,
+                      borderTop:'1px solid var(--wire)'}}>
+                      <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:10,
+                          color:p.color,fontWeight:600}}>{p.keyDate}</span>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:11,
+                          color:'var(--t2)'}}>{p.keyDateLabel}</span>
+                      </div>
+                      <div style={{marginLeft:'auto',
+                        fontFamily:'var(--font-mono)',fontSize:10,
+                        color:'var(--t3)'}}>주시 → {p.watch}</div>
                     </div>
                   </div>
                 ))}
@@ -1881,39 +1914,43 @@ export default function Home() {
               {/* 체크리스트 + 캘린더 2컬럼 */}
               <div style={{display:'grid',
                 gridTemplateColumns:mobile?'1fr':'1fr 1fr',
-                gap:16,marginBottom:0}}>
+                gap:24}}>
 
                 {/* 투자자 체크리스트 */}
                 <div>
-                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                    color:'var(--amber)',letterSpacing:'.1em',marginBottom:12}}>
+                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,
+                    color:'var(--amber)',letterSpacing:'.12em',
+                    marginBottom:16,textTransform:'uppercase'}}>
                     투자자 체크리스트
                   </div>
                   {RE_CHECKLIST.map((cat,ci)=>(
-                    <div key={ci} style={{marginBottom:16}}>
-                      <div style={{fontFamily:'var(--font-mono)',fontSize:10,
-                        color:'var(--t2)',marginBottom:8,
-                        paddingBottom:6,borderBottom:'1px solid var(--wire)'}}>
+                    <div key={ci} style={{marginBottom:20}}>
+                      <div style={{fontFamily:'var(--font-mono)',fontSize:11,
+                        color:'var(--t1)',marginBottom:10,
+                        paddingBottom:8,
+                        borderBottom:'1px solid var(--wire)',
+                        fontWeight:600}}>
                         {cat.category}
                       </div>
                       {cat.items.map((item,ii)=>(
-                        <div key={ii} style={{display:'flex',gap:8,
-                          marginBottom:6,alignItems:'flex-start'}}>
+                        <div key={ii} style={{display:'flex',gap:10,
+                          marginBottom:10,alignItems:'flex-start'}}>
                           <span style={{
-                            fontFamily:'var(--font-mono)',fontSize:8,
-                            padding:'1px 5px',borderRadius:2,flexShrink:0,marginTop:1,
-                            background: item.priority==='高'?'rgba(184,74,74,0.15)':
-                              item.priority==='中'?'rgba(184,146,74,0.15)':
-                              'rgba(255,255,255,0.05)',
-                            color: item.priority==='高'?'#b84a4a':
+                            fontFamily:'var(--font-mono)',fontSize:10,
+                            padding:'2px 7px',borderRadius:2,
+                            flexShrink:0,marginTop:2,
+                            background: item.priority==='高'?'rgba(184,74,74,0.18)':
+                              item.priority==='中'?'rgba(184,146,74,0.18)':
+                              'rgba(255,255,255,0.06)',
+                            color: item.priority==='高'?'#e05050':
                               item.priority==='中'?'var(--amber)':
                               'var(--t3)',
-                            border: `1px solid ${item.priority==='高'?'rgba(184,74,74,0.3)':
-                              item.priority==='中'?'rgba(184,146,74,0.3)':
+                            border: `1px solid ${item.priority==='高'?'rgba(184,74,74,0.35)':
+                              item.priority==='中'?'rgba(184,146,74,0.35)':
                               'var(--wire)'}`,
                           }}>{item.priority}</span>
-                          <span style={{fontSize:11,color:'var(--t2)',
-                            lineHeight:1.6}}>{item.label}</span>
+                          <span style={{fontSize:13,color:'var(--t1)',
+                            lineHeight:1.75}}>{item.label}</span>
                         </div>
                       ))}
                     </div>
@@ -1922,32 +1959,32 @@ export default function Home() {
 
                 {/* 주요 일정 */}
                 <div>
-                  <div style={{fontFamily:'var(--font-mono)',fontSize:9,
-                    color:'var(--amber)',letterSpacing:'.1em',marginBottom:12}}>
+                  <div style={{fontFamily:'var(--font-mono)',fontSize:10,
+                    color:'var(--amber)',letterSpacing:'.12em',
+                    marginBottom:16,textTransform:'uppercase'}}>
                     주요 일정 & 모니터링
                   </div>
-                  <div style={{display:'flex',flexDirection:'column',gap:1,
-                    background:'rgba(255,255,255,0.04)'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:2}}>
                     {RE_CALENDAR.map((ev,i)=>{
-                      const typeColor = ev.type==='critical'?'#b84a4a':
-                        ev.type==='risk'?'#b87030':
+                      const typeColor = ev.type==='critical'?'#c94f4f':
+                        ev.type==='risk'?'#c47830':
                         ev.type==='supply'?'#3d9e6a':'#4a7fd4';
                       return (
-                        <div key={i} style={{padding:'10px 14px',
+                        <div key={i} style={{padding:'14px 16px',
                           background:'var(--s1)',
-                          borderLeft:`3px solid ${typeColor}`}}>
+                          borderLeft:`4px solid ${typeColor}`}}>
                           <div style={{display:'flex',gap:10,
-                            alignItems:'center',marginBottom:4}}>
+                            alignItems:'center',marginBottom:6,flexWrap:'wrap'}}>
                             <span style={{fontFamily:'var(--font-mono)',
-                              fontSize:10,color:typeColor,
-                              flexShrink:0}}>{ev.date}</span>
+                              fontSize:11,color:typeColor,
+                              fontWeight:700,flexShrink:0}}>{ev.date}</span>
                             <span style={{fontFamily:'var(--font-sans)',
-                              fontSize:12,color:'var(--t1)',
+                              fontSize:14,color:'var(--t1)',
                               fontWeight:500}}>{ev.event}</span>
                           </div>
-                          <div style={{fontFamily:'var(--font-mono)',
-                            fontSize:9,color:'var(--t3)',
-                            paddingLeft:0}}>{ev.impact}</div>
+                          <div style={{fontFamily:'var(--font-sans)',
+                            fontSize:13,color:'var(--t2)',
+                            lineHeight:1.65}}>{ev.impact}</div>
                         </div>
                       );
                     })}
@@ -1955,7 +1992,6 @@ export default function Home() {
                 </div>
               </div>
             </section>
-
             <section id="subscribe" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="자산제곱 구독자료" />
