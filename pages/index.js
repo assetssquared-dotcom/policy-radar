@@ -1072,6 +1072,51 @@ export default function Home() {
               </div>
             </section>
 
+            {/* 정책 뉴스 섹션 */}
+            <section id="news" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
+              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+              <Label text="정책 뉴스" />
+              <SecTitle>오늘의 정책 뉴스</SecTitle>
+              <p style={{fontSize:15,color:'var(--t2)',lineHeight:1.8,marginBottom:8,maxWidth:640}}>
+                매일 아침 자동 업데이트 — 주요 정책 흐름의 최신 뉴스.
+              </p>
+              {newsUpdatedAt && (
+                <p style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',marginBottom:24}}>
+                  업데이트: {new Date(newsUpdatedAt).toLocaleString('ko-KR')}
+                </p>
+              )}
+              {newsItems.length === 0 ? (
+                <div style={{color:'var(--t3)',fontSize:14,padding:'24px 0'}}>
+                  뉴스 데이터를 불러오는 중...
+                </div>
+              ) : (
+                <div style={{display:'flex',flexDirection:'column',gap:2}}>
+                  {newsItems.map((item,i) => (
+                    <div key={i} style={{
+                      background:'var(--s1)',
+                      borderLeft:'3px solid var(--amber)',
+                      padding:mobile?'14px 16px':'16px 20px',
+                    }}>
+                      <div style={{display:'flex',alignItems:'center',
+                        gap:10,marginBottom:6,flexWrap:'wrap'}}>
+                        <span style={{fontFamily:'var(--font-mono)',fontSize:11,
+                          color:'var(--amber)',flexShrink:0}}>{item.date}</span>
+                        <span style={{fontSize:15,color:'var(--t1)',
+                          fontWeight:500,lineHeight:1.4}}>{item.title}</span>
+                      </div>
+                      <p style={{fontSize:14,color:'var(--t2)',
+                        lineHeight:1.7,margin:0,marginBottom:item.impact?6:0}}>{item.summary}</p>
+                      {item.impact && (
+                        <div style={{fontFamily:'var(--font-mono)',fontSize:11,
+                          color:'var(--t3)'}}>→ {item.impact}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+
 {/* ⑥ 이벤트 캘린더 */}
             <section id="policies" style={{paddingTop:mobile?40:56}}>
               <Label text="국가별 정책 분석" />
@@ -2009,49 +2054,6 @@ export default function Home() {
               </div>
             </section>
             
-            {/* 정책 뉴스 섹션 */}
-            <section id="news" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
-              borderTop:'1px solid rgba(255,255,255,0.08)'}}>
-              <Label text="정책 뉴스" />
-              <SecTitle>오늘의 정책 뉴스</SecTitle>
-              <p style={{fontSize:15,color:'var(--t2)',lineHeight:1.8,marginBottom:8,maxWidth:640}}>
-                매일 아침 7시 자동 업데이트 — 주요 정책 흐름의 최신 뉴스를 한눈에.
-              </p>
-              {newsUpdatedAt && (
-                <p style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',marginBottom:24}}>
-                  마지막 업데이트: {new Date(newsUpdatedAt).toLocaleString('ko-KR')}
-                </p>
-              )}
-              {newsItems.length === 0 ? (
-                <div style={{color:'var(--t3)',fontSize:14,padding:'32px 0'}}>
-                  뉴스 데이터를 불러오는 중입니다...
-                </div>
-              ) : (
-                <div style={{display:'flex',flexDirection:'column',gap:2}}>
-                  {newsItems.map((item,i) => (
-                    <div key={i} style={{
-                      background:'var(--s1)',
-                      borderLeft:'3px solid var(--amber)',
-                      padding:mobile?'14px 16px':'16px 20px',
-                    }}>
-                      <div style={{display:'flex',alignItems:'center',
-                        gap:10,marginBottom:6,flexWrap:'wrap'}}>
-                        <span style={{fontFamily:'var(--font-mono)',fontSize:11,
-                          color:'var(--amber)',flexShrink:0}}>{item.date}</span>
-                        <span style={{fontSize:15,color:'var(--t1)',
-                          fontWeight:500,lineHeight:1.4}}>{item.title}</span>
-                      </div>
-                      <p style={{fontSize:14,color:'var(--t2)',
-                        lineHeight:1.7,margin:0,marginBottom:6}}>{item.summary}</p>
-                      {item.impact && (
-                        <div style={{fontFamily:'var(--font-mono)',fontSize:11,
-                          color:'var(--t3)'}}>→ {item.impact}</div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
 <section id="subscribe" style={{padding:mobile?'40px 0 32px':'60px 0 48px',
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="자산제곱 구독자료" />
