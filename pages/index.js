@@ -21,7 +21,7 @@ const NAV = [
 // ── 섹션 정의 ──────────────────────────────────
 const SECS = [
   { id:'hero',     label:'소개',            icon:'◎' },
-  { id:'news',     label:'정책 뉴스',       icon:'📡' },
+  { id:'news',     label:'정책 뉴스',       icon:'◉' },
   { id:'policies', label:'국가별 정책',     icon:'⊞' },
   { id:'flow',     label:'연결고리 맵',     icon:'⬡' },
   { id:'screener', label:'정책 관련주', icon:'◈' },
