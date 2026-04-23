@@ -50,7 +50,10 @@ async function callClaude(query) {
 }
 
 export default async function handler(req, res) {
-  if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
+  const auth = req.headers['authorization'];
+  const isVercelCron = auth === `Bearer ${process.env.CRON_SECRET}`;
+  const isAdmin = req.headers['x-admin-secret'] === process.env.ADMIN_SECRET;
+  if (!isVercelCron && !isAdmin) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
