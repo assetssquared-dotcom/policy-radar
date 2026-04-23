@@ -22,7 +22,7 @@ async function callClaude(query) {
     tools: [{ type: 'web_search_20250305', name: 'web_search' }],
     messages: [{ role: 'user', content:
       `다음 주제의 최신 뉴스 1건을 찾아서 JSON으로만 답해줘. HTML 태그 없이.
-{"title":"제목(한국어,30자이내)","summary":"핵심내용(한국어,80자이내)","date":"YYYY-MM-DD","impact":"투자영향(30자이내)"}
+{"title":"제목(한국어,30자이내)","summary":"핵심내용(한국어,80자이내)","date":"YYYY-MM-DD","impact":"투자영향(30자이내)","url":"출처URL또는빈문자열"}
 주제: ${query}` }],
   };
 
