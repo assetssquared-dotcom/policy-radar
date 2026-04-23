@@ -582,7 +582,7 @@ function PolicyRow({ policy, color, mobile }) {
 export default function Home() {
   const mobile = useMobile();
   const [countries, setCountries] = useState(STATIC);
-  const [newsItems, setNewsItems] = useState([{"date": "2026-04-23", "title": "미-이란 협상 채널 가동 중", "summary": "트럼프 측근에 이란과 대결 종식 원한다 전달. 이란 조건부 협상 의사. 브렌트 $92 유지.", "impact": "에너지株 단기 조정 vs 봉쇄 장기화 시 $120+ 재도전"}, {"date": "2026-04-23", "title": "BOJ 4월 27~28일 회의 — 0.75% 동결 예상", "summary": "우에다 총재 G7서 중동 불확실성 이유로 추가 인상 신중. 시장은 동결 99% 반영.", "impact": "엔 캐리 청산 리스크 유지 — 닛케이·코스피 변동성 주시"}, {"date": "2026-04-23", "title": "미-중 관세 유예 2026.11.10까지 연장", "summary": "작년 11월 쿠알라룸푸르 합의로 중국 관세 10% 유지. USTR Sec.301 조사 4월 청문회.", "impact": "반도체·K-방산 공급망 불확실성 지속"}, {"date": "2026-04-23", "title": "K-방산 2026년 270억달러+ 수출 전망", "summary": "2025년 154억달러 달성 후 루마니아·사우디·이라크·페루 계약 추가. 수주잔고 72조원+.", "impact": "한화에어로·현대로템·LIG넥스원 실적 가시성 높음"}, {"date": "2026-04-23", "title": "연준 QT 종료 후 RMP 유지 중", "summary": "2025년 12월 QT 공식 종료. 소규모 자산매입(RMP) 재개. 현재 기준금리 3.5~3.75%.", "impact": "TGA 5~7월 방출 시 유동성 이중 공급 — 위험자산 반등 환경"}, {"date": "2026-04-23", "title": "서울 아파트 실거래가 7개월 만에 하락", "summary": "3월 기준 -0.59%. 양도세 유예 만료(5.9 D-16) 앞두고 급매물 출회. 전국 -0.50%.", "impact": "5월 9일 이후 매물 소화 속도가 하반기 방향 결정"}, {"date": "2026-04-23", "title": "CBAM 탄소국경세 2026년 본격 시행", "summary": "EU 탄소국경세 전면 적용. 철강·알루미늄 수출 기업 탄소비용 부담 증가.", "impact": "포스코·현대제철 EU 수출 비용 상승 — 친환경 전환 가속"}, {"date": "2026-04-23", "title": "엔비디아 루빈 GPU 양산 — HBM4 수요 폭증", "summary": "루빈 GPU당 HBM4 12스택. SK하이닉스 독점 공급. CoWoS 리드타임 40주로 병목.", "impact": "SK하이닉스·TSMC 수혜 지속. 삼성 HBM4 납품 재도전 주목"}, {"date": "2026-04-23", "title": "GENIUS Act 스테이블코인 법안 상원 표결 임박", "summary": "미국 최초 스테이블코인 규제 법안. 달러 패권 강화 목적. 준비금 요건 명시.", "impact": "서클(USDC)·테더(USDT) 규제 준수 비용. 암호화폐 기관화 가속"}, {"date": "2026-04-23", "title": "EU AI Act 고위험 AI 의무 등록 2026.08 시행", "summary": "세계 최초 포괄적 AI 규제. 고위험 AI 시스템 의무 등록·평가. GPAI 모델 규정 적용.", "impact": "글로벌 AI 기업 EU 컴플라이언스 비용 증가. 한국 AI 기본법 참조"}]);
+  const [newsItems, setNewsItems] = useState([{"date": "2026-04-23", "title": "미-이란 협상 채널 가동 중", "summary": "트럼프 측근에 이란과 대결 종식 원한다 전달. 이란 조건부 협상 의사. 브렌트 $92 유지.", "impact": "에너지株 단기 조정 vs 봉쇄 장기화 시 $120+ 재도전", "url": "https://www.bloomberg.com"}, {"date": "2026-04-23", "title": "BOJ 4월 27~28일 회의 — 0.75% 동결 예상", "summary": "우에다 총재 G7서 중동 불확실성 이유로 추가 인상 신중. 시장은 동결 99% 반영.", "impact": "엔 캐리 청산 리스크 유지 — 닛케이·코스피 변동성 주시", "url": "https://tradingeconomics.com/japan/interest-rate"}, {"date": "2026-04-23", "title": "미-중 관세 유예 2026.11.10까지 연장", "summary": "작년 11월 쿠알라룸푸르 합의로 중국 관세 10% 유지. USTR Sec.301 조사 4월 청문회.", "impact": "반도체·K-방산 공급망 불확실성 지속", "url": "https://www.china-briefing.com/news/us-china-tariff-rates-2025/"}, {"date": "2026-04-23", "title": "K-방산 2026년 270억달러+ 수출 전망", "summary": "2025년 154억달러 달성 후 루마니아·사우디·이라크·페루 계약 추가. 수주잔고 72조원+.", "impact": "한화에어로·현대로템·LIG넥스원 실적 가시성 높음", "url": "https://en.sedaily.com/politics/2026/03/24/koreas-defense-exports-hit-154b-in-2025-set-to-grow-further"}, {"date": "2026-04-23", "title": "연준 QT 종료 후 RMP 유지 중", "summary": "2025년 12월 QT 공식 종료. 소규모 자산매입(RMP) 재개. 현재 기준금리 3.5~3.75%.", "impact": "TGA 5~7월 방출 시 유동성 이중 공급 — 위험자산 반등 환경", "url": "https://www.federalreserve.gov"}, {"date": "2026-04-23", "title": "서울 아파트 실거래가 7개월 만에 하락", "summary": "3월 기준 -0.59%. 양도세 유예 만료(5.9) 앞두고 급매물 출회. 전국 -0.50%.", "impact": "5월 9일 이후 매물 소화 속도가 하반기 방향 결정", "url": "https://www.newspim.com/news/view/20260416001300"}, {"date": "2026-04-23", "title": "CBAM 탄소국경세 2026년 본격 시행", "summary": "EU 탄소국경세 전면 적용. 철강·알루미늄 수출 기업 탄소비용 부담 증가.", "impact": "포스코·현대제철 EU 수출 비용 상승 — 친환경 전환 가속", "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en"}, {"date": "2026-04-23", "title": "엔비디아 루빈 GPU 양산 — HBM4 수요 폭증", "summary": "루빈 GPU당 HBM4 12스택. SK하이닉스 독점 공급. CoWoS 리드타임 40주로 병목.", "impact": "SK하이닉스·TSMC 수혜 지속. 삼성 HBM4 납품 재도전 주목", "url": "https://www.bloomberg.com"}, {"date": "2026-04-23", "title": "GENIUS Act 스테이블코인 법안 상원 표결 임박", "summary": "미국 최초 스테이블코인 규제 법안. 달러 패권 강화 목적. 준비금 요건 명시.", "impact": "서클(USDC)·테더(USDT) 규제 준수 비용. 암호화폐 기관화 가속", "url": "https://www.congress.gov"}, {"date": "2026-04-23", "title": "EU AI Act 고위험 AI 의무 등록 2026.08 시행", "summary": "세계 최초 포괄적 AI 규제. 고위험 AI 시스템 의무 등록·평가. GPAI 모델 규정 적용.", "impact": "글로벌 AI 기업 EU 컴플라이언스 비용 증가. 한국 AI 기본법 참조", "url": "https://artificialintelligenceact.eu"}])
   const [newsUpdatedAt, setNewsUpdatedAt] = useState(null);
   const [activeSection, setActiveSection] = useState('hero');
   const [filterCountry, setFilterCountry] = useState(null);
@@ -611,9 +611,13 @@ export default function Home() {
     fetch('/api/policies').then(r=>r.json()).then(d=>{
       if (d.countries) setCountries(d.countries);
     }).catch(()=>{});
+    // 뉴스: Redis 준비되면 교체, 없으면 기본값 유지
     fetch('/api/news').then(r=>r.json()).then(d=>{
-      if (d.items && d.items.length > 0) { setNewsItems(d.items); setNewsUpdatedAt(d.updatedAt); }
-    }).catch(()=>{});
+      if (d && d.items && Array.isArray(d.items) && d.items.length > 0) {
+        setNewsItems(d.items);
+        setNewsUpdatedAt(d.updatedAt);
+      }
+    }).catch(()=>{ /* Redis 없으면 기본값 유지 */ });
   }, []);
 
   // 스크롤 → 활성 섹션 감지
@@ -1108,10 +1112,23 @@ export default function Home() {
                       </div>
                       <p style={{fontSize:14,color:'var(--t2)',
                         lineHeight:1.7,margin:0,marginBottom:item.impact?6:0}}>{item.summary}</p>
-                      {item.impact && (
-                        <div style={{fontFamily:'var(--font-mono)',fontSize:11,
-                          color:'var(--t3)'}}>→ {item.impact}</div>
-                      )}
+                      <div style={{display:'flex',alignItems:'center',
+                        justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
+                        {item.impact && (
+                          <div style={{fontFamily:'var(--font-mono)',fontSize:11,
+                            color:'var(--t3)',flex:1}}>→ {item.impact}</div>
+                        )}
+                        {item.url && (
+                          <a href={item.url} target="_blank" rel="noopener"
+                            style={{fontFamily:'var(--font-mono)',fontSize:11,
+                              color:'var(--amber)',textDecoration:'none',
+                              flexShrink:0,opacity:.8}}
+                            onMouseEnter={e=>e.currentTarget.style.opacity='1'}
+                            onMouseLeave={e=>e.currentTarget.style.opacity='.8'}>
+                            원문 →
+                          </a>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
