@@ -582,6 +582,8 @@ function PolicyRow({ policy, color, mobile }) {
 export default function Home() {
   const mobile = useMobile();
   const [countries, setCountries] = useState(STATIC);
+  const [newsItems, setNewsItems] = useState([]);
+  const [newsUpdatedAt, setNewsUpdatedAt] = useState(null);
   const [activeSection, setActiveSection] = useState('hero');
   const [filterCountry, setFilterCountry] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
