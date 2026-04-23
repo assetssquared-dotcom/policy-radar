@@ -584,6 +584,7 @@ export default function Home() {
   const [countries, setCountries] = useState(STATIC);
   const [newsItems, setNewsItems] = useState([]);
   const [newsUpdatedAt, setNewsUpdatedAt] = useState(null);
+  const [newsLoading, setNewsLoading] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [filterCountry, setFilterCountry] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1079,9 +1080,36 @@ export default function Home() {
               borderTop:'1px solid rgba(255,255,255,0.08)'}}>
               <Label text="정책 뉴스" />
               <SecTitle>오늘의 정책 뉴스</SecTitle>
-              <p style={{fontSize:15,color:'var(--t2)',lineHeight:1.8,marginBottom:8,maxWidth:640}}>
-                매일 아침 자동 업데이트 — 주요 정책 흐름의 최신 뉴스.
-              </p>
+              <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:8,flexWrap:'wrap'}}>
+                <p style={{fontSize:15,color:'var(--t2)',lineHeight:1.8,margin:0,maxWidth:580}}>
+                  매일 아침 자동 업데이트 — 주요 정책 흐름의 최신 뉴스.
+                </p>
+                <button onClick={async()=>{
+                  const secret = prompt('Admin Secret:');
+                  if (!secret) return;
+                  setNewsLoading(true);
+                  try {
+                    const r = await fetch('/api/trigger-news', {
+                      method:'POST',
+                      headers:{'x-admin-secret':secret}
+                    });
+                    const d = await r.json();
+                    if (d.triggered) {
+                      const r2 = await fetch('/api/news');
+                      const d2 = await r2.json();
+                      if (d2.items) { setNewsItems(d2.items); setNewsUpdatedAt(d2.updatedAt); }
+                    }
+                  } catch(e) {} finally { setNewsLoading(false); }
+                }} style={{
+                  fontFamily:'var(--font-mono)',fontSize:11,
+                  background:'rgba(255,255,255,0.06)',
+                  border:'1px solid var(--wire)',
+                  color:'var(--t2)',borderRadius:4,
+                  padding:'4px 10px',cursor:'pointer',flexShrink:0,
+                }}>
+                  {newsLoading ? '업데이트 중...' : '↺ 지금 업데이트'}
+                </button>
+              </div>
               {newsUpdatedAt && (
                 <p style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--t3)',marginBottom:24}}>
                   업데이트: {new Date(newsUpdatedAt).toLocaleString('ko-KR')}
