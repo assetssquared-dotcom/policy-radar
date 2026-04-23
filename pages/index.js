@@ -612,7 +612,7 @@ export default function Home() {
       if (d.countries) setCountries(d.countries);
     }).catch(()=>{});
     fetch('/api/news').then(r=>r.json()).then(d=>{
-      if (d.items) { setNewsItems(d.items); setNewsUpdatedAt(d.updatedAt); }
+      if (d.items && d.items.length > 0) { setNewsItems(d.items); setNewsUpdatedAt(d.updatedAt); }
     }).catch(()=>{});
   }, []);
 
