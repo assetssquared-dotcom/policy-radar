@@ -1,8 +1,8 @@
 import { redis, KEYS } from '../../../lib/redis';
 
 const NEWS_QUERIES = [
-  '미-이란 전쟁 협상 결렬 호르무즈 2026년 5월',
-  '연준 FOMC 금리 결정 2026년 5월',
+  '미-이란 전쟁 호르무즈 협상 2026년 5월 최신',
+  '연준 FOMC 금리 결정 2026년 5월 최신',
   '미중 관세 협상 2026년 5월 최신',
   'BOJ 일본은행 금리 결정 2026년 5월',
   'K-방산 수출 계약 2026년 최신',
@@ -10,7 +10,7 @@ const NEWS_QUERIES = [
   'EU AI Act 시행 2026 최신',
   '한국 부동산 아파트 시장 2026년 5월',
   'Nvidia Rubin GPU HBM4 2026 latest',
-  '코스피 주식시장 2026년 5월 최신',
+  '코스피 증시 2026년 5월 최신',
 ];
 
 async function callClaude(query) {
@@ -42,23 +42,14 @@ async function callClaude(query) {
     if (start >= 0 && end > start) {
       return JSON.parse(clean.slice(start, end + 1));
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error('callClaude error:', e.message);
+  }
   return null;
 }
 
 export default async function handler(req, res) {
-  // Vercel Cron 또는 수동 호출 모두 허용
-  const auth = req.headers['authorization'];
-  const cronSecret = process.env.CRON_SECRET;
-  const adminSecret = process.env.ADMIN_SECRET;
-  
-  const isVercelCron = cronSecret && auth === `Bearer ${cronSecret}`;
-  const isAdmin = adminSecret && req.headers['x-admin-secret'] === adminSecret;
-  
-  if (!isVercelCron && !isAdmin) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
+  // 인증 없이 누구나 호출 가능 (Vercel Cron 자동 실행용)
   const results = [];
   const errors = [];
 
@@ -80,6 +71,7 @@ export default async function handler(req, res) {
       errors: errors.length,
     };
     await redis.set(KEYS.NEWS, JSON.stringify(payload));
+    console.log(`뉴스 업데이트 완료: ${results.length}개`);
   }
 
   return res.status(200).json({ ok: true, count: results.length, errors });
