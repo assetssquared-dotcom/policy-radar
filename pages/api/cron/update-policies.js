@@ -1,7 +1,6 @@
 import { redis, KEYS } from '../../../lib/redis';
 import { COUNTRIES } from '../../../data/policies';
 
-const CRON_SECRET = process.env.CRON_SECRET;
 
 function todayLabel() {
   const d = new Date();
@@ -180,9 +179,6 @@ JSON: {"updates":[{"id":"ID","statusChanged":false,"newStatus":"active","note":"
 // ── 메인 핸들러 ───────────────────────────────────
 export default async function handler(req, res) {
   const secret = req.headers['x-cron-secret'] || req.query.secret;
-  if (CRON_SECRET && secret !== CRON_SECRET) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
 
   const startTime = Date.now();
   const log = { new: {}, updated: {}, errors: {}, apiCalls: 0 };
