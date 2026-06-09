@@ -231,6 +231,7 @@ export default async function handler(req, res) {
       }
       if (updCount) { log.updated[countryId] = updCount; totalUpdated += updCount; }
 
+      // 업데이트 여부와 무관하게 항상 오늘 날짜로 갱신
       countryData.updated = new Date().toISOString().slice(0,10);
 
       // 국가별 summary 업데이트
