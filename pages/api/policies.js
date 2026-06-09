@@ -10,8 +10,16 @@ function mergeWithStatic(redisCountries, staticCountries) {
     }
   }
 
-  return redisCountries.map(country => ({
+  const staticCountryMap = {};
+  for (const c of staticCountries) staticCountryMap[c.id] = c;
+
+  return redisCountries.map(country => {
+    const sc = staticCountryMap[country.id];
+    return {
     ...country,
+    // 국가 updated, summary는 Redis 값 유지
+    updated: country.updated ?? sc?.updated,
+    summary: country.summary ?? sc?.summary,
     policies: (country.policies || []).map(policy => {
       const sp = staticPolicyMap[policy.id];
       if (!sp) return policy;
@@ -28,9 +36,13 @@ function mergeWithStatic(redisCountries, staticCountries) {
         beneficiaries: sp.beneficiaries,
         risks:         sp.risks,
         budgetData:    sp.budgetData,
+        // Redis 업데이트 값 유지 (static으로 덮지 않음)
+        updated:       policy.updated ?? sp.updated,
+        summary:       policy.summary ?? sp.summary,
       };
     }),
-  }));
+  };
+  });
 }
 
 export default async function handler(req, res) {
