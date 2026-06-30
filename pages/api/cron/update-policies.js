@@ -34,9 +34,14 @@ const NEW_POLICY_QUERIES = {
     'USDA food supply chain fertilizer policy latest',
   ],
   kr: [
-    // 한국은행·기재부
-    '한국은행 기준금리 통화정책 최신',
+    // 한국은행·통화정책 (bok_rate_policy)
+    '한국은행 기준금리 금통위 신현송 최신',
+    '한국 인플레이션 물가 경제성장률 전망 최신',
+    // 기재부·재정
     '기획재정부 예산 경제정책 최신',
+    // 국민연금·유동성 (nps_rebalancing)
+    '국민연금 기금운용위원회 국내주식 해외주식 비중 최신',
+    '국민연금 코스피 매수 리밸런싱 최신',
     // 산업부·과기부
     '산업통상자원부 반도체 배터리 방산 수출 최신',
     '과학기술정보통신부 AI 양자 정책 최신',
@@ -46,10 +51,13 @@ const NEW_POLICY_QUERIES = {
     // 에너지·원전
     '한국 원전 SMR 수출 에너지 정책 최신',
     '한국 전력망 변압기 전선 수출',
-    // 반도체·AI
-    'SK하이닉스 삼성전자 HBM 패키징 최신',
-    '한국 AI 반도체 밸류업 코스피',
-    // 부동산·건설 (매일 업데이트 — 2026.04)
+    // 반도체 슈퍼사이클 (kr_semicon_supercycle)
+    'SK하이닉스 삼성전자 반도체 수출 실적 최신',
+    'HBM D램 메모리 가격 슈퍼사이클 최신',
+    '한국 반도체 수출 코스피 최신',
+    // 밸류업·기업개혁
+    '한국 밸류업 자사주 소각 배당 최신',
+    // 부동산·건설
     '서울 아파트 실거래가 가격 동향 최신',
     '한국 부동산 정책 전세 공급 규제 최신',
     '서울 아파트 재건축 재개발 신통기획 분양가',
@@ -164,7 +172,11 @@ async function detectNew(countryId, existingIds) {
 async function checkUpdates(countryId, policies) {
   if (!policies?.length) return [];
   const today = todayLabel();
-  const pList = policies.slice(0,8).map(p=>p.id+':'+p.name).join(', ');
+  // 매일 다른 8개씩 순환 점검 — 날짜 기반 오프셋으로 전체 정책이 골고루 업데이트되게 함
+  const dayOffset = new Date().getDate() % Math.max(1, Math.ceil(policies.length / 8));
+  const start = (dayOffset * 8) % policies.length;
+  const rotated = [...policies.slice(start), ...policies.slice(0, start)];
+  const pList = rotated.slice(0,8).map(p=>p.id+':'+p.name).join(', ');
 
   const system = `정책 상태 점검. ${today} 기준.
 JSON: {"updates":[{"id":"ID","statusChanged":false,"newStatus":"active","note":"변경사항(없으면null)"}]}
@@ -231,7 +243,21 @@ export default async function handler(req, res) {
       }
       if (updCount) { log.updated[countryId] = updCount; totalUpdated += updCount; }
 
+      // 업데이트 여부와 무관하게 항상 오늘 날짜로 갱신
       countryData.updated = new Date().toISOString().slice(0,10);
+
+      // 국가별 summary 업데이트
+      try {
+        const today = new Date().toISOString().slice(0,10);
+        const sysPrompt = '투자 리서치 전문가. 한국어로 간결하게 답해.';
+        const userPrompt = `오늘(${today}) 기준 ${countryData.name}의 최신 정책 동향을 투자자 관점에서 2~3문장으로 요약해줘. 2026년 현재 상황만.`;
+        const summaryText = await callClaude(sysPrompt, userPrompt, true);
+        if (summaryText && summaryText.trim().length > 20) {
+          countryData.summary = summaryText.trim().slice(0, 300);
+        }
+      } catch(e) {
+        // summary 업데이트 실패해도 계속 진행
+      }
 
     } catch (e) {
       log.errors[countryId] = e.message;
