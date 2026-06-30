@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/update-news",
       "schedule": "0 23 * * *"
+    },
+    {
+      "path": "/api/cron/update-extras",
+      "schedule": "0 21 * * *"
     }
   ]
 }
