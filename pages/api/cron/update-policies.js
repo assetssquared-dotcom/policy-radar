@@ -1,293 +1,104 @@
-import { redis, KEYS } from '../../../lib/redis';
-import { COUNTRIES } from '../../../data/policies';
+import * as R from '../../../lib/redis';
+import * as D from '../../../data/policies';
 
+export const config = { maxDuration: 300 };
 
-function todayLabel() {
-  const d = new Date();
-  return `${d.getFullYear()}년 ${d.getMonth()+1}월`;
-}
+const redis = R.redis || R.default;
+const KEYS = R.KEYS || { POLICIES: 'policies', LAST_RUN: 'last-run' };
+const MODEL = 'claude-haiku-4-5-20251001';
 
-// ── 국가별 전 부처 정책 탐지 쿼리 ────────────────
-const NEW_POLICY_QUERIES = {
-  us: [
-    // 국방부·DARPA·군사
-    'Pentagon DoD defense policy program contract latest',
-    'DARPA new program technology defense latest',
-    'US military AI autonomous weapons procurement',
-    'US defense semiconductor chip supply chain national security',
-    // 상무부·무역
-    'Commerce Department export controls chips technology latest',
-    'Trump tariff trade policy latest',
-    'US reshoring manufacturing incentive latest',
-    // 재무부·연준·유동성
-    'Federal Reserve interest rate decision latest',
-    'US Treasury TGA liquidity debt latest',
-    'GENIUS Act stablecoin crypto policy latest',
-    // 에너지부·인프라
-    'Department of Energy nuclear quantum AI infrastructure',
-    'US LNG energy export power grid latest',
-    'Stargate AI data center infrastructure latest',
-    // 국토안보·사이버
-    'CISA cybersecurity critical infrastructure policy latest',
-    'US quantum computing DARPA NQIA latest',
-    // 농업부·식량
-    'USDA food supply chain fertilizer policy latest',
-  ],
-  kr: [
-    // 한국은행·통화정책 (bok_rate_policy)
-    '한국은행 기준금리 금통위 신현송 최신',
-    '한국 인플레이션 물가 경제성장률 전망 최신',
-    // 기재부·재정
-    '기획재정부 예산 경제정책 최신',
-    // 국민연금·유동성 (nps_rebalancing)
-    '국민연금 기금운용위원회 국내주식 해외주식 비중 최신',
-    '국민연금 코스피 매수 리밸런싱 최신',
-    // 산업부·과기부
-    '산업통상자원부 반도체 배터리 방산 수출 최신',
-    '과학기술정보통신부 AI 양자 정책 최신',
-    // 방산·국방
-    '방위사업청 방산 수출 계약 최신',
-    '한국 방산 K2 K9 FA50 수출 계약',
-    // 에너지·원전
-    '한국 원전 SMR 수출 에너지 정책 최신',
-    '한국 전력망 변압기 전선 수출',
-    // 반도체 슈퍼사이클 (kr_semicon_supercycle)
-    'SK하이닉스 삼성전자 반도체 수출 실적 최신',
-    'HBM D램 메모리 가격 슈퍼사이클 최신',
-    '한국 반도체 수출 코스피 최신',
-    // 밸류업·기업개혁
-    '한국 밸류업 자사주 소각 배당 최신',
-    // 부동산·건설
-    '서울 아파트 실거래가 가격 동향 최신',
-    '한국 부동산 정책 전세 공급 규제 최신',
-    '서울 아파트 재건축 재개발 신통기획 분양가',
-    '부동산 PF 건설사 저축은행 부실 연체 최신',
-    '이재명 정부 부동산 양도세 보유세 세제 최신',
-    '한국 전세 월세 수급지수 오피스텔 최신',
-  ],
-  cn: [
-    // 인민은행·재정부
-    'PBOC China LPR RRR monetary policy latest',
-    'China fiscal stimulus spending policy latest',
-    // 국방·군사
-    'China PLA military AI defense technology latest',
-    'China defense spending budget program latest',
-    // 기술·산업
-    'China semiconductor chip AI DeepSeek latest',
-    'China rare earth critical minerals export control latest',
-    'China EV battery BYD CATL policy latest',
-    // 외교·무역
-    'China US trade war tariff retaliation latest',
-    'China yuan internationalization mBridge BRICS latest',
-  ],
-  eu: [
-    // ECB·재정
-    'ECB European Central Bank interest rate latest',
-    'EU fiscal spending deficit rules latest',
-    // 국방·안보
-    'EU ReArm Europe defense procurement spending latest',
-    'NATO defense budget spending latest',
-    // 산업·기술
-    'EU AI Act implementation enforcement latest',
-    'EU CBAM carbon border tax latest',
-    'EU critical minerals supply chain policy latest',
-    // 에너지
-    'EU energy independence LNG nuclear policy latest',
-    'EU semiconductor chips act factory latest',
-  ],
-  jp: [
-    // 일본은행·재무성
-    'Bank of Japan BOJ interest rate policy latest',
-    'Japan fiscal stimulus spending budget latest',
-    // 국방·안보
-    'Japan defense spending military budget latest',
-    'Japan US security alliance chip semiconductor latest',
-    // 산업·기술
-    'Japan Rapidus semiconductor chip policy latest',
-    'Japan corporate governance shareholder return latest',
-    'Japan rare earth critical minerals supply latest',
-  ],
-};
-
-// ── 기존 정책 업데이트 쿼리 ───────────────────────
-const UPDATE_QUERIES = {
-  us: 'Latest US government policy news across all departments: DoD DARPA defense, Commerce trade exports, Treasury Fed rates, Energy nuclear quantum, DHS cyber, USDA food',
-  kr: '한국 전 부처 최신 정책: 한국은행 금리, 기재부 예산, 산업부 반도체방산에너지, 과기부 AI양자, 방사청 방산수출, 원전수출',
-  cn: 'Latest China government policy: PBOC monetary, PLA defense, MIIT technology, NDRC industrial, rare earth minerals, EV semiconductor AI',
-  eu: 'Latest EU policy: ECB rates, ReArm defense, AI Act, CBAM carbon, energy independence, chips act, critical minerals',
-  jp: 'Latest Japan policy: BOJ rates, defense budget, Rapidus semiconductor, corporate governance, US security alliance, rare earth',
-};
-
-// ── Claude API 호출 ───────────────────────────────
-async function callClaude(system, user, useSearch) {
-  const body = {
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 2000,
-    system,
-    messages: [{ role: 'user', content: user }],
-  };
-  if (useSearch) {
-    body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
-  }
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function callClaude(system, user) {
+  const key = (process.env.ANTHROPIC_API_KEY || '').trim();
+  if (!key) throw new Error('ANTHROPIC_API_KEY 환경변수가 비어있음');
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 800,
+      system,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
+      messages: [{ role: 'user', content: user }],
+    }),
   });
-  if (!res.ok) throw new Error('API error: ' + res.status);
-  const data = await res.json();
-  return (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+  const txt = await r.text();
+  if (!r.ok) throw new Error(`Claude ${r.status}: ${txt.slice(0, 200)}`);
+  const j = JSON.parse(txt);
+  return (j.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('').trim();
 }
 
-function safeParseArray(text) {
-  try { const m = text.match(/\[[\s\S]*\]/); if (m) return JSON.parse(m[0]); } catch {}
-  return [];
-}
-function safeParseObject(text) {
-  try { const m = text.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); } catch {}
-  return null;
+function asList(c) {
+  return Array.isArray(c) ? c : Object.values(c || {});
 }
 
-// ── 1) 신규 정책 탐지 ─────────────────────────────
-async function detectNew(countryId, existingIds) {
-  const queries = NEW_POLICY_QUERIES[countryId];
-  const country = COUNTRIES.find(c => c.id === countryId);
-  const today = todayLabel();
-
-  const system = `글로벌 정책 분석. ${today} 기준.
-기존ID(제외): ${existingIds.slice(-15).join(',')}
-
-경제·금융뿐 아니라 국방·기술·에너지·사이버·식량·무역 등 모든 부처 정책 포함.
-새 정책만 JSON배열. 없으면[].
-[{"id":"id","name":"이름","budget":"규모","date":"YYYY-MM~","themes":["id"],"status":"active|upcoming","background":"설명(한글 2문단)","beneficiaries":[{"sector":"섹터","impact":3,"pos":true,"stocks":["종목(티커)"],"etfs":["ETF"]}],"risks":"리스크","budgetData":[],"timeline":[]}]
-테마: semiconductor,ai_policy,defense,energy_transition,nuclear,dollar_hegemony,stablecoin,reshoring,yuan_intl,critical_minerals,supply_chain,debt_fiscal,real_estate,quantum,cyber
-규칙: 순수JSON만. HTML태그 절대 금지.`;
-
-  const q = queries.map((q,i)=>(i+1)+'. '+q).join('\n');
-  const text = await callClaude(system, (country?.name||countryId)+' 전 부처 최신 정책:\n'+q, true);
-  return safeParseArray(text);
-}
-
-// ── 2) 기존 정책 상태 점검 ────────────────────────
-async function checkUpdates(countryId, policies) {
-  if (!policies?.length) return [];
-  const today = todayLabel();
-  // 매일 다른 8개씩 순환 점검 — 날짜 기반 오프셋으로 전체 정책이 골고루 업데이트되게 함
-  const dayOffset = new Date().getDate() % Math.max(1, Math.ceil(policies.length / 8));
-  const start = (dayOffset * 8) % policies.length;
-  const rotated = [...policies.slice(start), ...policies.slice(0, start)];
-  const pList = rotated.slice(0,8).map(p=>p.id+':'+p.name).join(', ');
-
-  const system = `정책 상태 점검. ${today} 기준.
-JSON: {"updates":[{"id":"ID","statusChanged":false,"newStatus":"active","note":"변경사항(없으면null)"}]}
-순수JSON만. HTML태그 절대 금지.`;
-
-  const text = await callClaude(system,
-    `다음 정책들의 최신 상태 확인:\n${pList}`, true);
-  const parsed = safeParseObject(text);
-  return parsed?.updates || [];
-}
-
-// ── 메인 핸들러 ───────────────────────────────────
 export default async function handler(req, res) {
-  const secret = req.headers['x-cron-secret'] || req.query.secret;
-
-  const startTime = Date.now();
-  const log = { new: {}, updated: {}, errors: {}, apiCalls: 0 };
-  let totalNew = 0, totalUpdated = 0;
-
-  let countries = COUNTRIES.map(c => ({ ...c, policies: [...(c.policies||[])] }));
+  const today = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+  const errors = [];
+  let saved = null;
   try {
     const stored = await redis.get(KEYS.POLICIES);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed?.countries?.length) countries = parsed.countries;
-    }
+    saved = typeof stored === 'string' ? JSON.parse(stored) : stored;
   } catch (e) {
-    log.errors.redis_load = e.message;
+    errors.push('redis read: ' + e.message);
   }
+  let countries = saved && saved.countries && Object.keys(saved.countries).length ? saved.countries : (D.COUNTRIES || D.default);
+  countries = JSON.parse(JSON.stringify(countries));
 
-  for (const countryId of ['us','kr','cn','eu','jp']) {
-    const countryData = countries.find(c => c.id === countryId);
-    if (!countryData) continue;
+  const sys = `오늘은 ${today}. 반드시 웹검색으로 최근 2주 이내 뉴스만 근거로 한국어로 답한다. 2025년 이전 정보는 쓰지 않는다. 서론 없이 결과만 출력.`;
+  let ok = 0;
 
+  for (const c of asList(countries)) {
+    const name = c.name || c.id || c.country || '국가';
     try {
-      const existingIds = (countryData.policies||[]).map(p=>p.id);
-
-      // 1) 신규 탐지
-      const newPolicies = await detectNew(countryId, existingIds);
-      log.apiCalls++;
-      const toAdd = (newPolicies||[]).filter(p => p?.id && !existingIds.includes(p.id));
-      if (toAdd.length) {
-        countryData.policies = [...(countryData.policies||[]), ...toAdd];
-        log.new[countryId] = toAdd.length;
-        totalNew += toAdd.length;
+      const t = await callClaude(
+        sys,
+        `${name}의 최신 경제·금융 정책 동향(금리, 규제, 관세, 유동성, 산업정책 포함)을 3문장, 280자 이내로 요약해줘.`
+      );
+      if (t.length > 20) {
+        c.summary = t.slice(0, 300);
+        c.updated = today;
+        ok++;
       }
-
-      // 2) 상태 점검
-      const updates = await checkUpdates(countryId, countryData.policies);
-      log.apiCalls++;
-      let updCount = 0;
-      for (const u of (updates||[])) {
-        const p = countryData.policies.find(x=>x.id===u.id);
-        if (!p || !u.statusChanged) continue;
-        if (u.newStatus && u.newStatus !== p.status) {
-          p.status = u.newStatus;
-          updCount++;
-        }
-        if (u.note && u.note !== 'null') {
-          const today = new Date().toISOString().slice(0,10);
-          p.background = (p.background||'') + '\n\n(' + today + ') ' + u.note;
-          updCount++;
-        }
-      }
-      if (updCount) { log.updated[countryId] = updCount; totalUpdated += updCount; }
-
-      // 업데이트 여부와 무관하게 항상 오늘 날짜로 갱신
-      countryData.updated = new Date().toISOString().slice(0,10);
-
-      // 국가별 summary 업데이트
-      try {
-        const today = new Date().toISOString().slice(0,10);
-        const sysPrompt = '투자 리서치 전문가. 한국어로 간결하게 답해.';
-        const userPrompt = `오늘(${today}) 기준 ${countryData.name}의 최신 정책 동향을 투자자 관점에서 2~3문장으로 요약해줘. 2026년 현재 상황만.`;
-        const summaryText = await callClaude(sysPrompt, userPrompt, true);
-        if (summaryText && summaryText.trim().length > 20) {
-          countryData.summary = summaryText.trim().slice(0, 300);
-        }
-      } catch(e) {
-        // summary 업데이트 실패해도 계속 진행
-      }
-
     } catch (e) {
-      log.errors[countryId] = e.message;
+      errors.push(`${name}: ${e.message}`);
     }
   }
 
-  try {
-    await redis.set(KEYS.POLICIES, JSON.stringify({
-      countries,
-      lastUpdated: new Date().toISOString(),
-    }));
-    if (totalNew > 0 || totalUpdated > 0) {
-      let cl = [];
-      try { cl = JSON.parse(await redis.get(KEYS.CHANGELOG)||'[]'); } catch {}
-      cl.unshift({
-        date: new Date().toISOString(),
-        policyName: `업데이트 완료 — 신규 ${totalNew}개 · 변경 ${totalUpdated}개`,
-        status: 'active',
-      });
-      await redis.set(KEYS.CHANGELOG, JSON.stringify(cl.slice(0,50)));
+  // 정책 카드: 하루 8개 순환 점검
+  const all = [];
+  asList(countries).forEach((c) => (c.policies || []).forEach((p) => all.push({ c, p })));
+  const start = (Math.floor(Date.now() / 86400000) * 8) % Math.max(all.length, 1);
+  let checked = 0;
+  for (let i = 0; i < Math.min(8, all.length); i++) {
+    const { c, p } = all[(start + i) % all.length];
+    const title = p.title || p.name || p.id;
+    try {
+      const t = await callClaude(
+        sys,
+        `정책 "${title}"(${c.name || ''})의 최근 진행 상황을 1~2문장(150자 이내)으로 알려줘. 새 소식이 없으면 "변동 없음"만 출력.`
+      );
+      if (t && !t.includes('변동 없음')) {
+        p.latest = t.slice(0, 200);
+        p.updated = today;
+      }
+      p.checked = today;
+      checked++;
+    } catch (e) {
+      errors.push(`${title}: ${e.message}`);
     }
-  } catch (e) {
-    log.errors.redis_save = e.message;
   }
 
-  const elapsed = ((Date.now() - startTime)/1000).toFixed(1);
-  return res.status(200).json({
-    success: true, totalNew, totalUpdated,
-    apiCalls: log.apiCalls,
-    elapsed: elapsed + 's',
-    log,
-  });
+  if (ok > 0 || checked > 0) {
+    try {
+      await redis.set(KEYS.POLICIES, JSON.stringify({ countries, lastUpdated: today }));
+      await redis.set(KEYS.LAST_RUN, new Date().toISOString());
+    } catch (e) {
+      errors.push('redis write: ' + e.message);
+    }
+  }
+  res.status(200).json({ ok: errors.length === 0, countriesUpdated: ok, policiesChecked: checked, errors });
 }
